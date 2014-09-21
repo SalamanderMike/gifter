@@ -3,21 +3,16 @@ class SessionController < ApplicationController
     render :new
   end
 
-  def new
+  def new # login
     @home_page = true
-    #login
   end
 
   def create
     # Authenticate
-    puts "HELLO!"
-
     @user = User.authenticate(params[:user][:username], params[:user][:password])
-    puts @user.inspect
     if @user
-      puts @user.inspect
       session[:id] = @user.id
-      redirect_to user_path # ADJUST PATH AS NEEDED
+      redirect_to user_path(session[:id])
     else
     redirect_to login_path
     end
@@ -25,7 +20,7 @@ class SessionController < ApplicationController
 
   def destroy
     # Logout
-    session[:user_id] = nil
+    session[:id] = nil
     redirect_to login_path
   end
 end

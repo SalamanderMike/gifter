@@ -4,10 +4,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def is_authenticated?
-    redirect_to root_path if session[:user_id].nil? #IS ROOT_PATH CORRECT?***
+    redirect_to login_path if session[:id].nil?
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if !@current_user
+    @current_user ||= User.find(session[:id]) if !@current_user
   end
 end

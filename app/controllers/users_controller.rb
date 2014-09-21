@@ -13,8 +13,8 @@ class UsersController < ApplicationController
 
   def create # POST for new User Sign-up
     user = User.create(user_params)
-    session[:user_id] = user.id
-    redirect_to user_path(user.id)
+    session[:id] = user.id
+    redirect_to user_path(session[:id])
   end
 
   def edit # Fill out profile data
@@ -23,17 +23,18 @@ class UsersController < ApplicationController
   end
 
   def show # Home Page
-    @current_user = current_user
-    @user = User.find_by_id(params[:id])
+    @user = User.find_by_id(session[:id])
   end
 
-  def destroy #Logout?? or session#destroy?
+  def destroy # Deletes user from database
     current_user.destroy
-    redirect_to root_path
+    redirect_to login_path
   end
 
 
   private
+
+
 
   def user_params
     params.require(:user).permit(:firstName, :lastName, :username, :password)
