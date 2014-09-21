@@ -6,7 +6,26 @@
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body class="<%= @home_page ? 'home_page': '' %>">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/users">Gifter!</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="<%= new_user_path %>">Sign Up!</a></li>
+        <li><a href="/users/1/edit">Edit</a></li>
+        <li><a href="/users/1">Show</a></li>
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to " Logout", logout_path %></li>
+      </ul>
+    </div>
+  </div>
+</nav><br/><br/><br/>
 
 <%= yield %>
 

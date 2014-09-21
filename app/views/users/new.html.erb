@@ -1,0 +1,23 @@
+<h1>NEW USER SIGN-UP PAGE</h1>
+
+<h3 style="text-align: center;font-style:italic;">New User!</h3>
+<div class="container">
+  <%= form_for @user do |f| %>
+
+    <%= f.label :firstName %><br />
+    <%= f.text_field :firstName, class: "form-control", placeholder: "First Name",
+    autofocus: true %></br>
+
+    <%= f.label :lastName %><br />
+    <%= f.text_field :lastName,  class: "form-control", placeholder: "Last Name" %></br>
+
+    <%= f.label :username %><br />
+    <%= f.text_field :username,      class: "form-control", placeholder: "email" %></br>
+
+    <%= f.label :password %><br />
+    <%= f.password_field :password, class: "form-control", placeholder: "password" %><br />
+
+    <%= f.submit "Signup!", :class => "btn btn-sunny text-uppercase" %>
+  <% end %>
+</div>
+

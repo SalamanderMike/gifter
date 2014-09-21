@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20140921035548) do
     t.string   "firstName"
     t.string   "lastName"
     t.string   "username"
-    t.string   "password"
+    t.string   "password_digest"
     t.integer  "zip"
     t.string   "match"
     t.string   "purchase"

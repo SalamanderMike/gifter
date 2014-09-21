@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
-  root to: 'sites#index'
-  resources :sites
+  get "/" => "session#new"
+  post "/" => "session#create"
+  get "/login" => "session#new"
+  # post "/login" => "session#create"
+  get "/logout" => "session#destroy"
+
+  root to: 'session#index'
+
+  resources :session
+  resources :users
 end
