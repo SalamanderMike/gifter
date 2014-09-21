@@ -1,0 +1,27 @@
+{
+  "name": "gifter",
+  "version": "0.0.1",
+  "authors": [
+    "salamandermike <salamandermike@gmail.com>"
+  ],
+  "description": "Gift exchange app",
+  "keywords": [
+    "gift"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "*",
+    "angular-route": "*",
+    "angular-resource": "*",
+    "angular-animate": "*",
+    "angular-bootstrap": "*",
+    "bootstrap-sass": "*"
+  }
+}
