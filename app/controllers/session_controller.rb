@@ -1,26 +1,23 @@
 class SessionController < ApplicationController
-  def index
-    render :new
-  end
+  respond_to :json, :html
 
-  def new # login
+  def new # login => Authenticate
     @home_page = true
   end
 
-  def create
-    # Authenticate
+  def create # Authenticate
     @user = User.authenticate(params[:user][:username], params[:user][:password])
-    if @user
-      session[:id] = @user.id
-      redirect_to user_path(session[:id])
-    else
-    redirect_to login_path
-    end
+    redirect_to login_path if !@user
+    session[:id] = @user.id
+    redirect_to user_path(session[:id])
   end
 
-  def destroy
-    # Logout
+  def destroy # Logout
     session[:id] = nil
     redirect_to login_path
   end
+
+
+private
+
 end

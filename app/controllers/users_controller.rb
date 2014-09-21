@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :is_authenticated?, :except => [:new, :create]
+  before_action :set_user, except: [:new, :create]
 
   YELP_KEY = ENV["YELP_KEY"]
   YELP_SECRET = ENV["YELP_SECRET"]
@@ -18,23 +19,23 @@ class UsersController < ApplicationController
   end
 
   def edit # Fill out profile data
-    @user = current_user
-    render :edit
   end
 
   def show # Home Page
-    @user = User.find_by_id(session[:id])
   end
 
   def destroy # Deletes user from database
     current_user.destroy
+    session[:id] = nil
     redirect_to login_path
   end
 
 
   private
 
-
+  def set_user
+    @user = User.find(session[:id])
+  end
 
   def user_params
     params.require(:user).permit(:firstName, :lastName, :username, :password)
