@@ -18,6 +18,8 @@
 /vendor/assets/components
 
 notes.txt
+profileObject.json
 
 # Ignore environment var
 .env
+

@@ -6,8 +6,8 @@ class SessionController < ApplicationController
   end
 
   def create # Authenticate
-    @user = User.authenticate(params[:user][:username], params[:user][:password])
-    redirect_to login_path if !@user
+    @user = User.authenticate(params[:user][:email], params[:user][:password])
+    redirect_to login_path unless @user
     session[:id] = @user.id
     redirect_to user_path(session[:id])
   end

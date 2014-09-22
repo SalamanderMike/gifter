@@ -7,9 +7,10 @@ class User < ActiveRecord::Base
     self.save!
   end
 
-  def self.authenticate (username, password)
-    User.find_by_username(username).try(:authenticate, password)
+  def self.authenticate (email, password)
+    User.find_by_email(email).try(:authenticate, password)
   end
 
-  has_many :events
+  has_many :users_events
+  has_many :events, through: :users_events
 end

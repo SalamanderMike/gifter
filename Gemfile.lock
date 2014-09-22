@@ -164,6 +164,7 @@ DEPENDENCIES
   factory_girl_rails
   jbuilder (~> 2.0)
   jquery-rails
+  json
   letter_opener
   pg
   pry

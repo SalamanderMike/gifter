@@ -1,0 +1,18 @@
+<h1>Make an Event!</h1>
+
+<div class="container">
+  <div class="col-md-2">
+
+  <%= form_for :event do |f| %>
+      <p>Event Name <%= f.text_field :eventName, placeholder: "An Event Name" %> </p>
+      <p>Group ID <%= f.text_field :password, placeholder: "A Group ID" %> </p>
+      <p>Number of Participants <%= f.text_field :participants, placeholder: "How many participants?" %> </p>
+      <p>Spending Limit <%= f.text_field :spendingLimit, placeholder: "Group Spending Limit?" %> </p>
+      <%= f.submit "Make Event!", class: "btn btn-sunny text-uppercase" %><br/>
+    <% end %>
+
+  <p><%= @user %></p>
+  </div>
+</div>
+
+

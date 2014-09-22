@@ -21,6 +21,7 @@
         <% if session[:id] %>
           <li><%= link_to " Edit", edit_user_path(session[:id]) %></li>
           <li><%= link_to " Show", user_path(session[:id]) %></li>
+          <li><%= link_to " Make an Event!", new_user_event_path(session[:id]), class: "active" %></li>
 
       </ul>
       <ul class="nav navbar-nav navbar-right">

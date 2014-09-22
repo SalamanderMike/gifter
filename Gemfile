@@ -32,6 +32,9 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'typhoeus'
 
 gem 'letter_opener'
+
+gem 'json'
+
 group :development do
   gem 'pry'
   gem 'pry-rails'
