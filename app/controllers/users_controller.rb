@@ -1,8 +1,11 @@
 class UsersController < ApplicationController
-  before_action :is_authenticated?, :except => [:new, :create]
+  before_action :render_main_layout_if_format_html, only: [:new]
+  before_action :is_authenticated?, except: [:new, :create]
   before_action :set_user, except: [:new, :create]
   before_action :find_profile, only: [:show, :edit]
   before_action :set_up_event_panels, only: [:show, :edit]
+
+  respond_to :json, :html
 
   YELP_KEY = ENV["YELP_KEY"]
   YELP_SECRET = ENV["YELP_SECRET"]
@@ -49,6 +52,14 @@ class UsersController < ApplicationController
 
 
   private
+
+  def render_main_layout_if_format_html
+    if request.format.symbol == :html
+      render "users/new"
+    # else
+    #   redirect_to
+    end
+  end
 
   def set_user
     @user = User.find(session[:id])

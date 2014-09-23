@@ -1,7 +1,7 @@
 class Router
   constructor: (@routeProvider, @locationProvider) ->
     @routeProvider.
-      when "/",
+      when "/users/:id",
         templateUrl: "/gifter_templates",
         controller: "GifterCtrl as gifter"
 

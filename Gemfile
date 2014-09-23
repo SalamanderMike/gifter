@@ -35,6 +35,8 @@ gem 'letter_opener'
 
 gem 'json'
 
+gem 'gon'
+
 group :development do
   gem 'pry'
   gem 'pry-rails'
