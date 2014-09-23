@@ -1,0 +1,8 @@
+<h1><%= @profileName %> is your Match!</h1>
+<h3><%= @profileName %> likes</h3>
+
+<% @profile.cuisine.each do |food|%>
+  <p><%= food %></p>
+<% end %>
+
+

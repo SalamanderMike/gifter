@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   resources :session
   resources :users do
     resources :events
+    resources :profile
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140922001106) do
+ActiveRecord::Schema.define(version: 20140922215021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,22 +38,40 @@ ActiveRecord::Schema.define(version: 20140922001106) do
     t.string   "eventName"
     t.string   "password"
     t.integer  "admin_id"
-    t.string   "participants"
+    t.text     "participants",  array: true
     t.integer  "spendingLimit"
-    t.string   "match"
+    t.text     "match",         array: true
     t.date     "expire"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "profiles", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "zip"
+    t.text     "cuisine",    array: true
+    t.text     "shops",      array: true
+    t.text     "services",   array: true
+    t.text     "bookGenre",  array: true
+    t.text     "musicGenre", array: true
+    t.text     "clothes",    array: true
+    t.text     "color",      array: true
+    t.text     "animal",     array: true
+    t.text     "metal",      array: true
+    t.text     "element",    array: true
+    t.text     "art",        array: true
+    t.text     "hobbies",    array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "firstname"
     t.string   "lastname"
     t.string   "email"
     t.string   "password_digest"
-    t.integer  "zip"
-    t.string   "purchase"
-    t.string   "personality"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -61,7 +79,6 @@ ActiveRecord::Schema.define(version: 20140922001106) do
   create_table "users_events", force: true do |t|
     t.integer  "user_id"
     t.integer  "event_id"
-    t.string   "profile"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

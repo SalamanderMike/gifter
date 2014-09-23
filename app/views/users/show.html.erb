@@ -1,2 +1,8 @@
 <h1>HOME PAGE - LANDING PAGE AFTER LOGIN</h1>
-<p><%= @current_user.inspect %></p>
+<h3><%= @user.firstname %> belongs to groups:</h3>
+
+<% @event_panel.each do |event|%>
+  <h3><%= event.eventName %></h3>
+<% end %>
+
+<a href="/users/<%= @user.id %>/profile/<%= @match %>" style="font-size:2em;"><%= @user.firstname %>'s match is <%= @matchName %>!</a>

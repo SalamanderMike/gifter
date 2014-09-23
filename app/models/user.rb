@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
     User.find_by_email(email).try(:authenticate, password)
   end
 
+  has_one :profile
   has_many :users_events
   has_many :events, through: :users_events
 end

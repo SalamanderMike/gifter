@@ -4,9 +4,9 @@ class CreateEvents < ActiveRecord::Migration
       t.string :eventName
       t.string :password
       t.integer :admin_id
-      t.string :participants
+      t.text :participants, :array => true
       t.integer :spendingLimit
-      t.string :match
+      t.text :match, :array => true
       t.date :expire
 
       t.timestamps

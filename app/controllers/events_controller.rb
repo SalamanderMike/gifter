@@ -1,6 +1,8 @@
 class EventsController < ApplicationController
   before_action :find_user
   before_action :find_user_event, :except => [:index, :new, :create]
+  before_action :find_match_profile, only: [:show]
+
 
   def index
   end
@@ -36,11 +38,19 @@ class EventsController < ApplicationController
   end
 
   private
+  # SHUFFLE equation:
+  # but use User.where() instead to limit to groups
+  # User.all.map(&:id).shuffle.zip(User.all.map(&:id).shuffle)
+
 
   def find_user
     user_id = params[:user_id]
     @user = User.find_by_id(user_id)
     # redirect_to users_path unless @user
+  end
+
+  def find_match_profile
+
   end
 
   def find_user_event
