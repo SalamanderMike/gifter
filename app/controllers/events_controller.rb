@@ -1,10 +1,9 @@
 class EventsController < ApplicationController
   before_action :find_user
   before_action :find_user_event, :except => [:index, :new, :create]
-  before_action :find_match_profile, only: [:show]
 
 
-  def index
+  def index # Show example Settings Manager
   end
 
   def new # New Event
@@ -17,14 +16,7 @@ class EventsController < ApplicationController
     redirect_to edit_user_event_path(@user.id, event.id)
   end
 
-  def show # Look over Giftee's Profile
-    # Navbar allows "Manage Event Settings"(events/edit)
-    # event = Event.find(event_id)
-    # jsonObject = event.match[user_id]
-    # Top 10 items!
-    # Every item is a link to Yelp or Amazon
-    # Magic Shopper button
-
+  def show
   end
 
   def edit # ADMIN SETTINGS
@@ -47,10 +39,6 @@ class EventsController < ApplicationController
     user_id = params[:user_id]
     @user = User.find_by_id(user_id)
     # redirect_to users_path unless @user
-  end
-
-  def find_match_profile
-
   end
 
   def find_user_event

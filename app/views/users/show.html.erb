@@ -2,7 +2,8 @@
 <h3><%= @user.firstname %> belongs to groups:</h3>
 
 <% @event_panel.each do |event|%>
-  <h3><%= event.eventName %></h3>
+  <h3><%= event.eventName %> <%= @matchReady %></h3>
 <% end %>
 
-<a href="/users/<%= @user.id %>/profile/<%= @match %>" style="font-size:2em;"><%= @user.firstname %>'s match is <%= @matchName %>!</a>
+<a href="/users/<%= @user.id %>/profile/<%= @match[1] %>" style="font-size:2em;"><%= @user.firstname %>'s match is <%= @matchName %>!</a>
+

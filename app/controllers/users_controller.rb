@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :is_authenticated?, :except => [:new, :create]
   before_action :set_user, except: [:new, :create]
   before_action :find_profile, only: [:show, :edit]
+  before_action :set_up_event_panels, only: [:show, :edit]
 
   YELP_KEY = ENV["YELP_KEY"]
   YELP_SECRET = ENV["YELP_SECRET"]
@@ -38,26 +39,6 @@ class UsersController < ApplicationController
     #   linkedIn style editable tags w/autocomplete
     #   Iterate through user DB
     #   save arrays to user DB and jsonObject to users_events:profile DB on each submit
-
-#find all event ids of current user
-    UsersEvent.where(user_id: @user.id).each do |event|
-      eachEvent = Event.find_by_id(event.event_id)
-      @event_panel.push(eachEvent) #holds each event
-
-      if eachEvent.match
-        eachEvent.match.each do |participant|
-          if participant[0].to_i == @user.id
-            @match = participant[1].to_i
-          end
-        end
-        @matchName = User.find_by_id(@match).firstname
-        @eventMatch = Profile.where(user_id: @match)[0]
-      end
-    end
-
-
-
-
   end
 
   def destroy # Deletes user account from database
@@ -72,7 +53,26 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find(session[:id])
     @event_panel = []
-    @match = ""
+    @match = []
+    @matchReady = "NOT READY"
+  end
+
+  def set_up_event_panels
+    UsersEvent.where(user_id: @user.id).each do |event|# find this user's events
+      eachEvent = Event.find_by_id(event.event_id)
+      @event_panel.push(eachEvent) #holds each event
+      if eachEvent.match
+        eachEvent.match.each do |participant|
+          if participant[0].to_i == @user.id
+            @match.push(eachEvent.id, participant[1].to_i)#[event_id,user_id] 2D array
+          end
+        end
+        @matchReady = "READY!"
+        @matchName = User.find_by_id(@match[1]).firstname
+        @eventMatch = Profile.where(user_id: @match[1])[0]
+      else
+      end
+    end
   end
 
   def find_profile
@@ -83,3 +83,6 @@ class UsersController < ApplicationController
     params.require(:user).permit(:firstName, :lastName, :username, :password)
   end
 end
+
+
+

@@ -1,23 +1,14 @@
-<h1>NEW USER SIGN-UP PAGE</h1>
+<h3 style="text-align:center;font-style:italic;">Create an Account!</h3>
 
-<h3 style="text-align: center;font-style:italic;">New User!</h3>
 <div class="container">
   <%= form_for @user do |f| %>
-
-    <%= f.label :firstname %><br />
-    <%= f.text_field :firstname, class: "form-control", placeholder: "First Name",
-    autofocus: true %></br>
-
-    <%= f.label :lastname %><br />
-    <%= f.text_field :lastname,  class: "form-control", placeholder: "Last Name" %></br>
-
-    <%= f.label :email %><br />
-    <%= f.text_field :email,      class: "form-control", placeholder: "email" %></br>
-
-    <%= f.label :password %><br />
-    <%= f.password_field :password, class: "form-control", placeholder: "password" %><br />
-
-    <%= f.submit "Signup!", :class => "btn btn-sunny text-uppercase" %>
+    <p><%= f.text_field :firstname, class: "form-control", placeholder: "First Name",
+    autofocus: true %></p>
+    <p><%= f.text_field :lastname, class: "form-control", placeholder: "Last Name" %></p>
+    <p><%= f.text_field :email, class: "form-control", placeholder: "email" %></p>
+    <p><%= f.password_field :password, class: "form-control", placeholder: "password" %></p>
+    <%= f.submit "Signup!", class: "btn btn-sunny text-uppercase" %><br>
+    <%= link_to "Login to your account!", new_user_path %>
   <% end %>
 </div>
 

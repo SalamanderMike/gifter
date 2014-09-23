@@ -1,34 +1,14 @@
 class ProfileController < ApplicationController
   before_action :find_match_profile, only: [:show]
 
-
-  def index
+  def index # Example profile for general public
   end
 
   def show # Show Matched Profile
-
-
-
-
-
-
-
-
-    # UsersEvent.where(user_id: @user.id).each do |event|
-    #   eachEvent = Event.find_by_id(event.event_id)
-    #   @event_panel.push(eachEvent) #holds each event
-
-    #   if eachEvent.match
-    #     eachEvent.match.each do |participant|
-    #       if participant[0].to_i == @user.id
-    #         @match = participant[1].to_i
-    #       end
-    #     end
-    #     @matchName = User.find_by_id(@match).firstname
-    #     @eventMatch = Profile.where(user_id: @match)[0]
-    #   end
-    # end
-
+    # Navbar allows "Manage Event Settings"(events/edit)
+    # Top 10 items!
+    # Every item is a link to Yelp or Amazon
+    # Magic Shopper button
   end
 
 private
@@ -39,7 +19,4 @@ private
     @profileName = User.where(id: @profile.user_id)[0].firstname
     # redirect_to user_events_path(@user.id) unless @event
   end
-
-
-
 end
