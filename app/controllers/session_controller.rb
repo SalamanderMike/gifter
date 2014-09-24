@@ -1,11 +1,15 @@
 class SessionController < ApplicationController
-  before_action :logout_check
-  before_action :login_check
-  before_action :render_main_layout_if_format_html, only: [:new]
+
+
   respond_to :json, :html
 
   def new # login => Authenticate
-    respond_with (@home_page = true)
+    puts session[:id]
+    if session[:id]
+      redirect_to user_path(session[:id])
+    else
+      render :new
+    end
   end
 
   def create # Authenticate
@@ -20,33 +24,22 @@ class SessionController < ApplicationController
   end
 
   def destroy # Logout
+    puts "destroying"
     session[:id] = nil
-    redirect_to login_path
-  end
-
-
-private
-
-  def render_main_layout_if_format_html
-    if request.format.symbol == :html
-      render "/session/new"
+    gon.global.sessionID = nil
+    p session
+    respond_to do |f|
+      f.json { render json: {}}
     end
   end
 
   def login_check
     if session[:id]
       gon.global.sessionID = session[:id]
-      redirect_to user_path(session[:id])
+      render json: User.find_by_id(session[:id]), only: [:id, :email]
+    else
+      render json: {}, status: 401
     end
   end
 
-
-
-  def logout_check #NOT WORKING YET
-    # if gon.global.sessionID = {}#can't set from GifterController
-    #   session[:id] = nil
-    # end
-    # test = session[:id]
-    # puts test
-  end
 end

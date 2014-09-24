@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   post "/" => "session#create"
   # post "/users/:user_id/events/new" => "events#create"
   get "/login" => "session#new"
-  get "/logout" => "session#destroy"
+  get "/stupid" => "session#destroy"
+  get "/login_check" => "session#login_check"
 
   root to: 'session#new'
   resources :site
