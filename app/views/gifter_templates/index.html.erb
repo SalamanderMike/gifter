@@ -2,10 +2,22 @@
 
 <p>This is where all the Angular code should be written</p>
 
-<button ng-click="gifter.logout()">Show Session ID!</button>
+<button ng-click="gifter.logout()">Logout!</button>
 
 
-
+<div class="interestPanel">Favorite Cuisine
+  <div class="viewBox">
+    <!-- <div class="tagBorder"> -->
+      <div class="tags" ng-repeat="tag in gifter.tags">{{tag}}
+        <button class="remove" ng-click=""></button>
+      </div>
+    <!-- </div> -->
+  </div>
+  <div style="display:inline-block;">
+  <input class="inputChoices"type="text" ng-model="">
+  <button>Submit</button>
+  </div>
+</div>
 
 
 

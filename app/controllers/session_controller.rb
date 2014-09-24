@@ -1,10 +1,7 @@
 class SessionController < ApplicationController
-
-
   respond_to :json, :html
 
   def new # login => Authenticate
-    puts session[:id]
     if session[:id]
       redirect_to user_path(session[:id])
     else
@@ -24,16 +21,14 @@ class SessionController < ApplicationController
   end
 
   def destroy # Logout
-    puts "destroying"
     session[:id] = nil
     gon.global.sessionID = nil
-    p session
     respond_to do |f|
       f.json { render json: {}}
     end
   end
 
-  def login_check
+  def authorized
     if session[:id]
       gon.global.sessionID = session[:id]
       render json: User.find_by_id(session[:id]), only: [:id, :email]
@@ -41,5 +36,4 @@ class SessionController < ApplicationController
       render json: {}, status: 401
     end
   end
-
 end

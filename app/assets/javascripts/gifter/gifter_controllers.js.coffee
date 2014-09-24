@@ -1,19 +1,19 @@
 GifterControllers = angular.module("GifterControllers", ["ngResource", "ngAnimate", "ui.bootstrap"])
 
 class GifterCtrl
-  constructor: (@scope, @http, @resource, @rootScope, @modal, @location, @window, @Suggestions) ->
+  constructor: (@scope, @http, @resource, @rootScope, @modal, @location, @Suggestions) ->
     console.log "HELLO! I'm the Gifter Controller!"
-    @rootScope.sessionID = gon.global.sessionID if typeof gon != "undefined"
-    @http.get("/login_check.json")
+    @http.get("/authorized.json")
     .success (user)=>
       @rootScope.sessionID = user.id
     .error ()=>
       location.path("/login")
 
+    @tags = [" Imports ", " Photography ", "Figurines","Indie", "Classical", "Pop"]
 
 
-
-
+    removeTag = ->
+      #delete interestTag from DB and display
 
 
 
@@ -31,16 +31,13 @@ class GifterCtrl
 
 
   logout: ->
-    console.log "LOGOUT!"
-    @http.get("/stupid.json")
+    @http.get("/logout.json")
     .success (data)=>
       location.href = "/"
-      console.log data
-    .error (data)->
-      console.log data
     @rootScope.sessionID = null
+    console.log "LOGGED OUT!"
 
 
 
-GifterControllers.controller("GifterCtrl", ["$scope","$http", "$resource", "$rootScope", "$modal", "$location", "$window", "Suggestions", GifterCtrl])
+GifterControllers.controller("GifterCtrl", ["$scope","$http", "$resource", "$rootScope", "$modal", "$location", "Suggestions", GifterCtrl])
 

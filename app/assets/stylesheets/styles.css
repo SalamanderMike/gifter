@@ -1,0 +1,74 @@
+.interestPanel {
+  background-color: #96b2bb;
+  width: 500px;
+  height: 200px;
+  border: 2px solid #969696;
+  margin: 0 auto;
+  border-radius: 40px;
+}
+
+.inputChoices {
+  position: relative;
+  bottom: -25px;
+  left: 0px;
+  width: 40%;
+  border-color: #f2f2f2;
+}
+
+.viewBox {
+  position: relative;
+  background-color: #f2f2f2;
+  top: 25px;
+  left: 50px;
+  width: 425px;
+  height: 125px;
+  border: 2px solid #7ebfd3;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.tagBorder {
+
+}
+
+.tags {
+  position: relative;
+  display: inline-block;
+  background-color: #8fd9f0;
+  color: black;
+  border: 2px solid #7ebfd3;
+  -webkit-box-shadow: 3px 3px 0px 0px rgba(214, 214, 214, .8);
+  padding: .5em;
+  margin: 1px;
+}
+.remove {
+  position: relative;
+  background-color: #ffd1d1;
+  top: -12px;
+  right: -8px;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
