@@ -11,7 +11,6 @@ class UsersController < ApplicationController
   YELP_SECRET = ENV["YELP_SECRET"]
 
   def index
-    respond_with User.all
   end
 
   def new # User Sign-up
@@ -32,7 +31,6 @@ class UsersController < ApplicationController
   end
 
   def show # Home Page - show Event Panes, Profile Choice Tag Panes?
-    respond_with User.where(id: session[:id])
     # Event Panels - Users_event.all where user_id == session[:id]**
     #   EventName, Ready/Complete indicator, Magic Buy button
     #   event = Event.find(event_id)**
@@ -58,8 +56,6 @@ class UsersController < ApplicationController
   def render_main_layout_if_format_html
     if request.format.symbol == :html
       render "users/new"
-    # else
-    #   redirect_to
     end
   end
 
@@ -68,24 +64,6 @@ class UsersController < ApplicationController
     @event_panel = []
     @match = []
     @matchReady = "NOT READY"
-  end
-
-  def set_up_event_panels
-    UsersEvent.where(user_id: @user.id).each do |event|# find this user's events
-      eachEvent = Event.find_by_id(event.event_id)
-      @event_panel.push(eachEvent) #holds each event
-      if eachEvent.match
-        eachEvent.match.each do |participant|
-          if participant[0].to_i == @user.id
-            @match.push(eachEvent.id, participant[1].to_i)#[event_id,user_id] 2D array
-          end
-        end
-        @matchReady = "READY!"
-        @matchName = User.find_by_id(@match[1]).firstname
-        @eventMatch = Profile.where(user_id: @match[1])[0]
-      else
-      end
-    end
   end
 
   def find_profile

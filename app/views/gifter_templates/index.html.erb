@@ -1,3 +1,4 @@
+<!-- NAVBAR ************************************************************************************-->
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
@@ -14,18 +15,87 @@
   </div>
 </nav><br/><br/><br/>
 
-<div class="image"></div>
+<div class="background"></div>
 
-<div class="interestPanel" ng-repeat="section in gifter.allTags track by $index">
-  <div class="titles">{{gifter.interests[$index]}}</div>
-  <div class="viewBox">
-      <div class="tags" ng-hide="gifter.remove" ng-repeat="tag in section track by $index">{{tag}}
-        <button class="remove"  ng-click="gifter.removeTag(indexOf(tag))"></button>
+<!-- EVENT PANELS ********************************************************************************-->
+<div class="eventPanel">
+  <div class="eventTitles">Your Event!</div>
+  <div class="eventViewer" ng-click="">
+    <p class="eventName">{{gifter.events.eventName}}</p>
+    <div class="eventBox">
+    </div>
+  </div>
+    <span>click me!</span>
+
+</div>
+
+
+
+
+
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<div class="spacer"></div>
+<!-- INTERESTS PANELS ****************************************************************************-->
+
+<div class="interestPanel">
+  <div class="interestTitles">Services</div>
+  <div class="interestViewer">
+      <div class="tags" ng-hide="gifter.remove" ng-repeat="tag in gifter.myProfile.services track by $index">{{tag}}
+        <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
+      </div>
+  </div>
+  <form ng-submit="gifter.addInterest(item)">
+    <span>
+      <input class="inputChoices" type="text" ng-model="item.name" placeholder="Dropbox...">
+      <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
+      <button id="interestSubmit">Add Interest!</button>
+    </span>
+  </form>
+</div>
+
+<div class="interestPanel">
+  <div class="interestTitles">Cuisine</div>
+  <div class="interestViewer">
+      <div class="tags" ng-hide="gifter.remove" ng-repeat="tag in gifter.myProfile.cuisine track by $index">{{tag}}
+        <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
       </div>
   </div>
   <form ng-submit="gifter.addInterest(item)">
     <span>
       <input class="inputChoices" type="text" ng-model="item.name" placeholder="Cookies... burritos...">
+      <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
+      <button id="interestSubmit">Add Interest!</button>
+    </span>
+  </form>
+</div>
+
+<div class="interestPanel">
+  <div class="interestTitles">Book Genre</div>
+  <div class="interestViewer">
+      <div class="tags" ng-hide="gifter.remove" ng-repeat="tag in gifter.myProfile.bookGenre track by $index">{{tag}}
+        <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
+      </div>
+  </div>
+  <form ng-submit="gifter.addInterest(item)">
+    <span>
+      <input class="inputChoices" type="text" ng-model="item.name" placeholder="Romance... Biography...">
+      <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
+      <button id="interestSubmit">Add Interest!</button>
+    </span>
+  </form>
+</div>
+
+<div class="interestPanel">
+  <div class="interestTitles">Music Genre</div>
+  <div class="interestViewer">
+      <div class="tags" ng-hide="gifter.remove" ng-repeat="tag in gifter.myProfile.musicGenre track by $index">{{tag}}
+        <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
+      </div>
+  </div>
+  <form ng-submit="gifter.addInterest(item)">
+    <span>
+      <input class="inputChoices" type="text" ng-model="item.name" placeholder="Heavy Metal... 80's Rock...">
       <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
       <button id="interestSubmit">Add Interest!</button>
     </span>

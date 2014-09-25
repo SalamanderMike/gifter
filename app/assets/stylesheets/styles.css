@@ -3,6 +3,15 @@ html {
 
 }
 
+.logInOut {
+position: fixed;
+top: 400px;
+left: 810px;
+width: 250px;
+}
+
+
+
 .navButtons {
   position: relative;
   top: 7px;
@@ -13,18 +22,90 @@ html {
 }
 
 div.image {
-  position: fixed center;
+  position: fixed;
   width: 1295px;
   height: 530px;
   background-image: url('gifter_splash.png');
   z-index: -1;
 }
 
+div.background {
+  position: fixed center;
+  width: 1295px;
+  height: 530px;
+  background-image: url('background.png');
+  z-index: -1;
+}
+/*EVENT PANELS***********************************************************************************/
+.eventPanel {
+  position:absolute;
+  top: 220px;
+  left: 800px;
+  background: -webkit-linear-gradient(-45deg, rgba(212,251,252,1) 2%,rgba(189,182,237,1) 16%,rgba(186,157,111,1) 50%,rgba(173,115,48,1) 68%,rgba(0,45,229,1) 100%);
+  -webkit-box-shadow: 10px 10px 15px 5px rgba(150,150,150,.6);
+  width: 400px;
+  height: 200px;
+  border: 0px solid #969696;
+  margin: 40px auto;
+  border-radius: 10px;
+}
 
+.eventViewer {
+  position: relative;
+  /*background: -webkit-linear-gradient(-45deg, #848484 0%,#cecece 8%,#e8e8e8 15%,#ffffff 74%);*/
+  background: white;
+  top: 0px;
+  left: 10px;
+  width: 95%;
+  height: 155px;
+  padding-bottom: 50px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
 
+.eventTitles {
+  position: relative;
+  left: 20px;
+  font-size: 2em;
+  font-family: 'Raleway', sans-serif;
+}
 
+div.eventBox {
+  position: relative;
+  display: inline-block;
+  width: 125px;
+  height: 127px;
+  background-image: url('event_box.jpg');
+}
+
+.eventName {
+  position: relative;
+  float: left;
+  left: 4px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.4em
+}
+
+span {
+  font-family: 'Raleway', sans-serif;
+}
+
+#submit {
+  position: relative;
+  bottom: 20px;
+  left: 50px;
+  background-color: -webkit-linear-gradient(-45deg, rgba(252,214,214,1) 0%,rgba(254,144,144,1) 27%,rgba(254,144,144,1) 69%,rgba(255,61,61,1) 100%);
+}
+.spacer {
+  position: fixed;
+  width: 100%;
+  height: 500px;
+  background-image: url('spacer.png');
+}
+/*INTEREST PANELS********************************************************************************/
 .interestPanel {
-  background: -webkit-linear-gradient(-45deg, #e8e8e8 2%,#f4d3ba 16%,#ba9d6f 50%,#ba9d6f 50%,#ad7330 68%,#6d0019 100%);
+  background: -webkit-linear-gradient(-45deg, #fef7c7 2%,#f4d3ba 16%,#ba9d6f 50%,#ba9d6f 50%,#ad7330 68%,#6d0019 100%);
   -webkit-box-shadow: 10px 10px 15px 5px rgba(150,150,150,.6);
   width: 800px;
   min-height: 200px;
@@ -33,19 +114,19 @@ div.image {
   border-radius: 10px;
 }
 
-.titles {
+.interestTitles {
   position: relative;
   left: 20px;
   font-size: 2em;
   font-family: 'Kaushan Script', cursive;
 }
 
-.viewBox {
+.interestViewer {
   position: relative;
   background: -webkit-linear-gradient(-45deg, #848484 0%,#cecece 8%,#e8e8e8 15%,#ffffff 74%);
   top: 0px;
-  left: 50px;
-  width: 725px;
+  left: 10px;
+  width: 780px;
   min-height: 125px;
   border: 1px solid #d2ac65;
   padding-bottom: 50px;
