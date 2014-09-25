@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   before_action :render_main_layout_if_format_html, only: [:new]
   before_action :is_authenticated?, except: [:new, :create]
-  before_action :set_user, except: [:new, :create]
-  before_action :find_profile, only: [:show, :edit]
-  before_action :set_up_event_panels, only: [:show, :edit]
+  # before_action :set_user, except: [:new, :create]
+  # before_action :find_profile, only: [:show, :edit]
+  # before_action :set_up_event_panels, only: [:show, :edit]
 
   respond_to :json, :html
 
@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   YELP_SECRET = ENV["YELP_SECRET"]
 
   def index
+    respond_with User.all
   end
 
   def new # User Sign-up
@@ -31,6 +32,7 @@ class UsersController < ApplicationController
   end
 
   def show # Home Page - show Event Panes, Profile Choice Tag Panes?
+    respond_with User.where(id: session[:id])
     # Event Panels - Users_event.all where user_id == session[:id]**
     #   EventName, Ready/Complete indicator, Magic Buy button
     #   event = Event.find(event_id)**

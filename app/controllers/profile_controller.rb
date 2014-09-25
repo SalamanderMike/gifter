@@ -1,7 +1,10 @@
 class ProfileController < ApplicationController
-  before_action :find_match_profile, only: [:show]
+  # before_action :find_match_profile, only: [:show]
+
+  respond_to :json
 
   def index # Example profile for general public
+    respond_with Profile.all
   end
 
   def show # Show Matched Profile

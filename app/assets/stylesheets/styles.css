@@ -1,31 +1,78 @@
-.interestPanel {
-  background-color: #96b2bb;
-  width: 500px;
-  height: 200px;
-  border: 2px solid #969696;
-  margin: 0 auto;
-  border-radius: 40px;
+html {
+
+
 }
 
-.inputChoices {
+.navButtons {
   position: relative;
-  bottom: -25px;
-  left: 0px;
-  width: 40%;
-  border-color: #f2f2f2;
+  top: 7px;
+  background-color: transparent;
+  border: 0px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 2em;
+}
+
+div.image {
+  position: fixed center;
+  width: 1295px;
+  height: 530px;
+  background-image: url('gifter_splash.png');
+  z-index: -1;
+}
+
+
+
+
+.interestPanel {
+  background: -webkit-linear-gradient(-45deg, #e8e8e8 2%,#f4d3ba 16%,#ba9d6f 50%,#ba9d6f 50%,#ad7330 68%,#6d0019 100%);
+  -webkit-box-shadow: 10px 10px 15px 5px rgba(150,150,150,.6);
+  width: 800px;
+  min-height: 200px;
+  border: 0px solid #969696;
+  margin: 40px auto;
+  border-radius: 10px;
+}
+
+.titles {
+  position: relative;
+  left: 20px;
+  font-size: 2em;
+  font-family: 'Kaushan Script', cursive;
 }
 
 .viewBox {
   position: relative;
-  background-color: #f2f2f2;
-  top: 25px;
+  background: -webkit-linear-gradient(-45deg, #848484 0%,#cecece 8%,#e8e8e8 15%,#ffffff 74%);
+  top: 0px;
   left: 50px;
-  width: 425px;
-  height: 125px;
-  border: 2px solid #7ebfd3;
+  width: 725px;
+  min-height: 125px;
+  border: 1px solid #d2ac65;
+  padding-bottom: 50px;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 30px;
 }
+
+.inputChoices {
+  position: relative;
+  background: -webkit-linear-gradient(-45deg,#cecece 0%,#e8e8e8 15%,#ffffff 74%);
+  display: inline;
+
+  bottom: 30px;
+  left: 80px;
+  width: 190px;
+  border-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+#interestSubmit {
+  position: relative;
+  bottom: 30px;
+  left: 80px;
+  /*border-radius: 5px;*/
+}
+
+
 
 .tagBorder {
 
@@ -34,20 +81,23 @@
 .tags {
   position: relative;
   display: inline-block;
-  background-color: #8fd9f0;
+  background: -webkit-radial-gradient(center, ellipse cover, #f0f9ff 0%,#cbebff 59%,#a1dbff 82%);
   color: black;
   border: 2px solid #7ebfd3;
+  border-radius: 5px;
   -webkit-box-shadow: 3px 3px 0px 0px rgba(214, 214, 214, .8);
   padding: .5em;
   margin: 1px;
 }
 .remove {
   position: relative;
-  background-color: #ffd1d1;
+  background: -webkit-linear-gradient(-45deg, rgba(255,121,114,1) 0%,rgba(255,203,201,1) 21%,rgba(255,238,237,1) 22%,rgba(255,0,0,1) 100%);
   top: -12px;
   right: -8px;
   width: 1.2em;
   height: 1.2em;
+  border-color: #e78d8d;
+  border-radius: 100%;
 }
 
 

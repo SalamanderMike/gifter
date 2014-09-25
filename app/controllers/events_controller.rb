@@ -1,9 +1,11 @@
 class EventsController < ApplicationController
-  before_action :find_user
-  before_action :find_user_event, :except => [:index, :new, :create]
+  # before_action :find_user
+  # before_action :find_user_event, :except => [:index, :new, :create]
 
+  respond_to :json
 
   def index # Show example Settings Manager
+    respond_with Event.all
   end
 
   def new # New Event
@@ -17,6 +19,7 @@ class EventsController < ApplicationController
   end
 
   def show
+    respond_with Users_event.all
   end
 
   def edit # ADMIN SETTINGS

@@ -1,24 +1,36 @@
-<h1>Welcome to planet Angular!!</h1>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand"></a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <button class="navButtons" ng-click="gifter.logout()" style="float:left;">Gifter</button>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <button class="navButtons" ng-click="gifter.logout()" style="float:right;">Logout</button>
+      </ul>
+    </div>
+  </div>
+</nav><br/><br/><br/>
 
-<p>This is where all the Angular code should be written</p>
+<div class="image"></div>
 
-<button ng-click="gifter.logout()">Logout!</button>
-
-
-<div class="interestPanel">Favorite Cuisine
+<div class="interestPanel" ng-repeat="section in gifter.allTags track by $index">
+  <div class="titles">{{gifter.interests[$index]}}</div>
   <div class="viewBox">
-    <!-- <div class="tagBorder"> -->
-      <div class="tags" ng-repeat="tag in gifter.tags">{{tag}}
-        <button class="remove" ng-click=""></button>
+      <div class="tags" ng-hide="gifter.remove" ng-repeat="tag in section track by $index">{{tag}}
+        <button class="remove"  ng-click="gifter.removeTag(indexOf(tag))"></button>
       </div>
-    <!-- </div> -->
   </div>
-  <div style="display:inline-block;">
-  <input class="inputChoices"type="text" ng-model="">
-  <button>Submit</button>
-  </div>
+  <form ng-submit="gifter.addInterest(item)">
+    <span>
+      <input class="inputChoices" type="text" ng-model="item.name" placeholder="Cookies... burritos...">
+      <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
+      <button id="interestSubmit">Add Interest!</button>
+    </span>
+  </form>
 </div>
-
 
 
 
