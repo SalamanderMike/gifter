@@ -45,9 +45,9 @@
         <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
       </div>
   </div>
-  <form ng-submit="gifter.addInterest(item)">
+  <form ng-submit="gifter.addTag(tag)">
     <span>
-      <input class="inputChoices" type="text" ng-model="item.name" placeholder="Dropbox...">
+      <input class="inputChoices" type="text" ng-model="tag.services" placeholder="Dropbox...">
       <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
       <button id="interestSubmit">Add Interest!</button>
     </span>
@@ -61,9 +61,9 @@
         <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
       </div>
   </div>
-  <form ng-submit="gifter.addInterest(item)">
+  <form ng-submit="gifter.addTag(tag)">
     <span>
-      <input class="inputChoices" type="text" ng-model="item.name" placeholder="Cookies... burritos...">
+      <input class="inputChoices" type="text" ng-model="tag.cuisine" placeholder="Cookies... burritos...">
       <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
       <button id="interestSubmit">Add Interest!</button>
     </span>
@@ -77,9 +77,9 @@
         <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
       </div>
   </div>
-  <form ng-submit="gifter.addInterest(item)">
+  <form ng-submit="gifter.addTag(tag)">
     <span>
-      <input class="inputChoices" type="text" ng-model="item.name" placeholder="Romance... Biography...">
+      <input class="inputChoices" type="text" ng-model="tag.bookGenre" placeholder="Romance... Biography...">
       <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
       <button id="interestSubmit">Add Interest!</button>
     </span>
@@ -93,9 +93,9 @@
         <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
       </div>
   </div>
-  <form ng-submit="gifter.addInterest(item)">
+  <form ng-submit="gifter.addTag(tag)">
     <span>
-      <input class="inputChoices" type="text" ng-model="item.name" placeholder="Heavy Metal... 80's Rock...">
+      <input class="inputChoices" type="text" ng-model="tag.musicGenre" placeholder="Heavy Metal... 80's Rock...">
       <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
       <button id="interestSubmit">Add Interest!</button>
     </span>

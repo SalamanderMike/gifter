@@ -41,17 +41,30 @@ class GifterCtrl
 
 
 
-  thisMatchProfile: (matchID)-> # matchID = myMatch[event,matchID]
+  thisMatchProfile: (matchID)=> # matchID = myMatch[event,matchID]
     for i of @profiles
       @matchProfile = @profiles[i] if @profiles[i].user_id == matchID
 
 
-  getTags: ->
+  getTags: =>
 
 
 
-  addTag: (tag)->
+  addTag: (tag)=>
+    console.log tag
+    console.log @myMatch[1]
+    @newTag = {}
 
+    @http.post("/users/#{@sessionID}/profile.json", @newTag).success (data) -> # Create route
+      @myProfile.push(data)
+
+
+
+  removeTag: (tag)=>
+    @http.delete("/users/#{@sessionID}/profile/#{@myMatch[1]}.json").success (data) ->
+      @profiles.splice(@profiles.indexOf(tag),1)
+      @remove = true
+      console.log "REMOVED!"
 
 
 
@@ -63,13 +76,6 @@ class GifterCtrl
     @rootScope.sessionID = null
     console.log "LOGGED OUT!"
 
-
-
-  removeTag: (tag)=>
-    # @http.delete("/books/#{this.book.id}.json").success (data) ->
-    # $scope.books.splice($scope.books.indexOf(book),1)
-    @remove = true
-    console.log "REMOVED!"
 
 
 GifterControllers.controller("GifterCtrl", ["$scope","$http", "$resource", "$rootScope", "$modal", "$location", "Suggestions", GifterCtrl])

@@ -7,6 +7,14 @@ class ProfileController < ApplicationController
     respond_with Profile.all
   end
 
+  def new
+
+  end
+
+  def create
+    respond_with Profile.create(profile_params)
+  end
+
   def show # Show Matched Profile
     # Navbar allows "Manage Event Settings"(events/edit)
     # Top 10 items!
@@ -14,7 +22,15 @@ class ProfileController < ApplicationController
     # Magic Shopper button
   end
 
+  def update # Add tags to profile DB
+
+  end
+
 private
+
+  def profile_params
+    params.require(:profile).permit(:cuisine, :shops, :services, :bookGenre, :musicGenre, :clothes, :animal, :metal, :element, :services, :art, :hobbies)
+  end
 
   def find_match_profile
     id = params[:id]
