@@ -3,9 +3,13 @@ GifterControllers = angular.module("GifterControllers", ["ngResource", "ngAnimat
 class GifterCtrl
   constructor: (@scope, @http, @resource, @rootScope, @modal, @location, @Suggestions) ->
     console.log "HELLO! I'm the Gifter Controller!"
+    if !@rootScope.sessionID
+      console.log "SESSION DOESN'T EXIST"
+
     @http.get("/authorized.json")
     .success (user)=>
       @rootScope.sessionID = user.id
+      console.log @rootScope.sessionID
       @sessionID = user.id
       @user = {}
       @myProfile = {}
@@ -13,12 +17,13 @@ class GifterCtrl
       @remove = false
       @interests = ["Cuisine","Stores","services","Book Genre","Music Genre","Clothing","Color","Animals","Metal","Element","Art",]
 
+      # SET RESOURCE PATHS
       @User = @resource("/user_records.json", {}, {'query': {method: 'GET', isArray: false}})
       @Event = @resource("/event_records.json", {}, {'query': {method: 'GET', isArray: true}})
       @Profile = @resource("/profile_records.json", {}, {'query': {method: 'GET', isArray: true}})
       @UsersEvent = @resource("/user_to_events_records.json", {}, {'query': {method: 'GET', isArray: true}})
 
-
+      # GET DATA
       @User.query (data)=> #find current user data
         @user = data
 

@@ -1,11 +1,11 @@
 <div class="image"></div>
 
-<div class="logInOut">
+<div class="loginSignup">
   <%= form_for :user do |f| %>
     <p><%= f.text_field :email, class: "form-control", placeholder: "Enter your email",autofocus: true %> </p>
     <p><%= f.password_field :password, class: "form-control", placeholder: "Enter your password" %> </p>
     <%= f.submit "Login!", class: "btn btn-sunny text-uppercase" %><br/>
-    <%= link_to "Sign up for a new account!", new_user_path %>
+    <%= link_to("Sign up for a new account!", signup_path, :method => :get) %>
   <% end %>
 </div>
 

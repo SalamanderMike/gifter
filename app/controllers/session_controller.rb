@@ -3,7 +3,7 @@ class SessionController < ApplicationController
 
   def new # login => Authenticate
     if session[:id]
-      redirect_to user_path(session[:id])
+      redirect_to site_index_path
     else
       render :new
     end
@@ -14,7 +14,7 @@ class SessionController < ApplicationController
     if @user
       session[:id] = @user.id
       gon.global.sessionID = session[:id]
-      redirect_to user_path(session[:id])
+      redirect_to site_index_path
     else
       render :new
     end

@@ -8,14 +8,16 @@ Rails.application.routes.draw do
   get "/logout" => "session#destroy"
   get "/authorized" => "session#authorized"
 
+  get "/signup" => "users#new"
+  post "/users/new" => "users#create"
+
   get "/user_records" => "gifter_templates#user_records"
   get "/event_records" => "gifter_templates#event_records"
   get "/profile_records" => "gifter_templates#profile_records"
   get "/user_to_events_records" => "gifter_templates#user_to_events_records"
 
-
-
   root to: 'session#new'
+
   resources :site
   resources :session
   resources :gifter_templates
