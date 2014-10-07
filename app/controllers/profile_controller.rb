@@ -26,10 +26,14 @@ class ProfileController < ApplicationController
     render json: Profile.find_by_user_id(session[:id]).update(profile_params)
   end
 
+  def destroy
+    render json: Profile.destroy
+  end
+
 private
 
   def profile_params
-    params.require(:profile).permit({cuisine: []}, {shops: []}, {services: []}, {bookGenre: []}, {musicGenre: []}, {clothes: []}, {animal: []}, {metal: []}, {element: []}, {services: []}, {art: []}, {hobbies: []})
+    params.require(:profile).permit({cuisine: []}, {shops: []}, {services: []}, {bookGenre: []}, {musicGenre: []}, {clothes: []}, {animal: []}, {metal: []}, {element: []}, {services: []}, {art: []}, {hobbies: []}, {color: []}, :zip)
   end
 
   def find_match_profile

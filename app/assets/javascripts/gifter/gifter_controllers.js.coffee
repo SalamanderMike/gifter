@@ -19,28 +19,16 @@ class GifterCtrl
 
       # SET RESOURCE PATHS
       @User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
-      # @updateUser = @resource("/users/:id.json", {id:"@sessionID"}, {update: {method: 'PUT'}})
       @Event = @resource("/event_records.json", {}, {'query': {method: 'GET', isArray: true}})
-
       @UsersEvent = @resource("/user_to_events_records.json", {}, {'query': {method: 'GET', isArray: true}})
 
       # id: look up from ???
       @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
 
 
-      # test = @Event.query({id:1}, =>
-      #   console.log test.eventName
-      #   test.eventName = "Mike's Event"
-      #   console.log test.eventName)
-
-
       # GET DATA
       @User.get (data)=> #find current user data
         @user = data
-
-        # UPDATE PATTERN
-        # @user.firstname = "Darth"
-        # @user.$update()
 
 
       @Event.query (data)=> #find user's events and Match for each event
@@ -52,10 +40,6 @@ class GifterCtrl
 
       @Profile.get (data)=> #find user's profile
         @myProfile = data
-
-        #UPDATE PATTERN
-        # @myProfile.services.push("Love")
-        # @myProfile.$update()
 
         # @allTags = [@myProfile.cuisine, @myProfile.shops, @myProfile.services,@myProfile.bookGenre, @myProfile.musicGenre, @myProfile.clothes, @myProfile.color,@myProfile.animal,@myProfile.metal,@myProfile.element,@myProfile.art]
 
@@ -71,32 +55,35 @@ class GifterCtrl
 
 
   getTags: =>
+    @Profile.get (data)=>
+      @myProfile = data
+
+
+  addTag: (catagory)=>
+    @myProfile[catagory].push(@scope.newTag)
+    @myProfile.$update()
+    @scope.newTag = ""
+
+    #getTags()???
+    @Profile.get (data)=>
+      @myProfile = data
+
+
+  removeTag: (tag, catagory)=>
+    @myProfile[catagory].splice(tag, 1)
+    @myProfile.$update()
+    #getTags()???
+    @Profile.get (data)=>
+      @myProfile = data
 
 
 
-  addTag: =>
-    # @myProfile.services.push(@scope.newTag) #make catagory mutable******
-    # @myProfile.$update()
 
 
-    console.log @scope.newTag
-    console.log @sessionID
-    # console.log @myMatch[1]
-    console.log @profiles
-
-    # @Profile.save (@scope.newTag)=>
-    #   console.log "SAVED!"
-    # @http.post("/profile_records.json", @scope.newTag).success (data) -> # Create route
-    # console.log data
-    #   @myProfile.push(data)
-    # @newTag = {}
 
 
-  removeTag: (tag)=>
-    @http.delete("/users/#{@sessionID}/profile/#{@myMatch[1]}.json").success (data) ->
-      @profiles.splice(@profiles.indexOf(tag),1)
-      @remove = true
-      console.log "REMOVED!"
+
+
 
 
 
