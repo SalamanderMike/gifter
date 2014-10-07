@@ -45,9 +45,9 @@
         <button class="remove"  ng-click="gifter.removeTag(tag[$index])"></button>
       </div>
   </div>
-  <form ng-submit="gifter.addTag(tag)">
+  <form ng-submit="gifter.addTag()">
     <span>
-      <input class="inputChoices" type="text" ng-model="tag.services" placeholder="Dropbox...">
+      <input class="inputChoices" type="text" ng-model="newTag.services" placeholder="Dropbox...">
       <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
       <button id="interestSubmit">Add Interest!</button>
     </span>

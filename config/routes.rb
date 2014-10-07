@@ -12,8 +12,13 @@ Rails.application.routes.draw do
   post "/users/new" => "users#create"
 
   get "/user_records" => "gifter_templates#user_records"
+  post "/user_records" => "gifter_templates#user_update"
+
   get "/event_records" => "gifter_templates#event_records"
+
   get "/profile_records" => "gifter_templates#profile_records"
+  post "/profile_records" => "gifter_templates#profile_create"
+
   get "/user_to_events_records" => "gifter_templates#user_to_events_records"
 
   root to: 'session#new'

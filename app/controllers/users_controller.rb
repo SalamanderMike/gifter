@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   YELP_SECRET = ENV["YELP_SECRET"]
 
   def index
+    render json: User.find(session[:id])
   end
 
   def new # User Sign-up
@@ -23,14 +24,8 @@ class UsersController < ApplicationController
     redirect_to site_index_path
   end
 
-  def edit # Profile Data WIZARD
-    # Guided questions to fill out interests
-    # save to arrays along the way
-    # save arrays to DB and to object
-    # stringify arrays to jsonObject and save to users_events:profile table
-  end
-
   def show # Home Page - show Event Panes, Profile Choice Tag Panes?
+    render json: User.find(session[:id])
     # Event Panels - Users_event.all where user_id == session[:id]**
     #   EventName, Ready/Complete indicator, Magic Buy button
     #   event = Event.find(event_id)**
@@ -42,6 +37,16 @@ class UsersController < ApplicationController
     #   linkedIn style editable tags w/autocomplete
     #   Iterate through user DB
     #   save arrays to user DB and jsonObject to users_events:profile DB on each submit
+  end
+
+  def update # Profile Data WIZARD
+    respond_with User.find(session[:id]).update(user_params)
+
+
+    # Guided questions to fill out interests
+    # save to arrays along the way
+    # save arrays to DB and to object
+    # stringify arrays to jsonObject and save to users_events:profile table
   end
 
   def destroy # Deletes user account from database
@@ -72,6 +77,10 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:firstname, :lastname, :email, :password)
+  end
+
+  def update_user_params
+    params.require(:user).permit(:firstname, :lastname)
   end
 end
 

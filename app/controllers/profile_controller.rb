@@ -8,7 +8,6 @@ class ProfileController < ApplicationController
   end
 
   def new
-
   end
 
   def create
@@ -16,6 +15,7 @@ class ProfileController < ApplicationController
   end
 
   def show # Show Matched Profile
+    render json: Profile.find_by_user_id(session[:id])
     # Navbar allows "Manage Event Settings"(events/edit)
     # Top 10 items!
     # Every item is a link to Yelp or Amazon
@@ -23,13 +23,13 @@ class ProfileController < ApplicationController
   end
 
   def update # Add tags to profile DB
-
+    render json: Profile.find_by_user_id(session[:id]).update(profile_params)
   end
 
 private
 
   def profile_params
-    params.require(:profile).permit(:cuisine, :shops, :services, :bookGenre, :musicGenre, :clothes, :animal, :metal, :element, :services, :art, :hobbies)
+    params.require(:profile).permit({cuisine: []}, {shops: []}, {services: []}, {bookGenre: []}, {musicGenre: []}, {clothes: []}, {animal: []}, {metal: []}, {element: []}, {services: []}, {art: []}, {hobbies: []})
   end
 
   def find_match_profile
