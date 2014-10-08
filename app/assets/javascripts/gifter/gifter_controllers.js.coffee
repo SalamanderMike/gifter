@@ -11,11 +11,14 @@ class GifterCtrl
       @rootScope.sessionID = user.id
       @sessionID = user.id
       console.log "USER ID:#{@sessionID}"
-      @user = {}
-      @myEvents = []
-      @myProfile = {}
-      @myMatch = [] # [eventID, profileID]
-      @matchProfile = {}
+      @home = true    # Hide/Show Home page
+      @giftee = false # Hide/Show Match Profile page
+      @admin = false  # Hide/Show Admin Settings
+      @user = {}      # Account Info
+      @myEvents = []  # Event Panels
+      @myProfile = {} # Interest Panels/Tags
+      @myMatch = []   # [event_id, profile_id] 2D Array
+      @matchProfile={}# Giftee's Profile
 
       # @interests = ["Cuisine","Stores","services","Book Genre","Music Genre","Clothing","Color","Animals","Metal","Element","Art",]
 
@@ -69,26 +72,44 @@ class GifterCtrl
     @getTags()
 
   removeTag: (tag, catagory)=>
-    # @myProfile[catagory].splice(tag, 1)
-    # @myProfile.$update()
-    # @getTags()
+    @myProfile[catagory].splice(tag, 1)
+    @myProfile.$update()
+    @getTags()
 
-    @thisMatchProfile(2)
-    # console.log @myMatch # TEST DATA
-
-
-  thisMatchProfile: (matchID)=> # matchID = myMatch[event,matchID]
-    @MatchProfile = @resource("users/:user_id/profile.json", {user_id:matchID})
-    @MatchProfile.get (data)=> #find Giftee's profile
-      @matchProfile = data
-      console.log data
+    # @thisMatchProfile(2)
+    # console.log @myEvents # TEST DATA
 
 
+  thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
+    @matchProfile = {}
+    for match in @myMatch
+      if match[0] == eventID
+        if match[1] != false
+          @gifteePage()
+          MatchProfile = @resource("users/:user_id/profile.json", {user_id:match[1]})
+          MatchProfile.get (data)=> #find Giftee's profile
+            @matchProfile = data
+            console.log data
+        else
+          alert "Sorry, your match isn't ready for this Event.\nTry again later!"
 
+  homePage: =>
+    @home = true
+    @giftee = false
+    @admin = false
+    console.log "HOKUS POKUS!!!"
 
+  gifteePage: =>
+    @home = false
+    @giftee = true
+    @admin = false
+    console.log "HOKUS POKUS!!!"
 
-
-
+  adminPage: =>
+    @home = false
+    @giftee = false
+    @admin = true
+    console.log "HOKUS POKUS!!!"
 
 
   logout: ->

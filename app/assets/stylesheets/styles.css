@@ -44,16 +44,20 @@ div.background {
   z-index: -1;
 }
 /*EVENT PANELS***********************************************************************************/
+.container {
+  position:relative;
+  display: inline-block;
+  max-width: 1250px
+}
 .eventPanel {
-  position:absolute;
-  top: 220px;
-  left: 800px;
+  position:relative;
+  display: inline-block;
   background: -webkit-linear-gradient(-45deg, rgba(212,251,252,1) 2%,rgba(189,182,237,1) 16%,rgba(186,157,111,1) 50%,rgba(173,115,48,1) 68%,rgba(0,45,229,1) 100%);
   -webkit-box-shadow: 10px 10px 15px 5px rgba(150,150,150,.6);
   width: 400px;
   height: 200px;
   border: 0px solid #969696;
-  margin: 40px auto;
+  margin: 15px;
   border-radius: 10px;
 }
 
@@ -73,7 +77,7 @@ div.background {
 
 .eventTitles {
   position: relative;
-  left: 20px;
+  text-align: center;
   font-size: 2em;
   font-family: 'Raleway', sans-serif;
 }
