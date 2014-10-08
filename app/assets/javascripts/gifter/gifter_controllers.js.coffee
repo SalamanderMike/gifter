@@ -12,55 +12,41 @@ class GifterCtrl
       @sessionID = user.id
       console.log "USER ID:#{@sessionID}"
       @user = {}
-      @findUserEventIDs = []
       @myEvents = []
       @myProfileID = ""
       @myProfile = {}
       @myMatch = [] # [eventID, profileID]
-      @remove = false
       @interests = ["Cuisine","Stores","services","Book Genre","Music Genre","Clothing","Color","Animals","Metal","Element","Art",]
 
       # SET RESOURCE PATHS
-      @User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
-      @UserEvents = @resource("/users/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
-      # Find all user's events by event ID through linker table
-      @UserEvents.query (data)=>
-        @findUserEventIDs = data
-        # Grab Events by their discovered IDs, push them into an array [myEvents]
-        for i of @findUserEventIDs
-          if @findUserEventIDs[i].event_id
-            eventID = @findUserEventIDs[i].event_id
-            @Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-            @Event.get (data)=>
-              @myEvents.push(data)
-
-
-
-      # id: look up from ???
-      @ProfileID = @resource("users/:user_id/profile.json", {user_id:@sessionID})
-      @ProfileID.get (data)=>
-        @myProfileID = data.id
-        console.log @myProfileID
-
-      @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
-
-
-      # GET DATA
-      @User.get (data)=> #find current user data
+      User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
+      User.get (data)=> #find current user data
         @user = data
 
-      # console.log @myEvents
+      # Find all user's events by event ID through linker table
+      UserEvents = @resource("/users/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
+      UserEvents.query (data)=>
+        index = 0
+        pair = 0
+        # Grab Events by their discovered IDs, push them into an array [myEvents]
+        for link of data
+          if data[link].event_id
+            eventID = data[link].event_id
+            Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+            Event.get (event)=>
+              @myEvents.push(event)
+              matches = @myEvents[index].match
+              ++index
+              for i of matches
+                if +matches[i][0] == @sessionID
+                  @myMatch[pair] = []
+                  @myMatch[pair].push(event.id, +matches[i][1])
+                  ++pair
 
-
-      # @Event.query (data)=> #find user's events and Match for each event
-      #   @events = data[0]
-      #   if @events.match
-      #     for i of @events.match
-      #       if +@events.match[i][0] == @sessionID
-      #         @myMatch.push(@events.id, +@events.match[i][1])
-
+      @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
       @Profile.get (data)=> #find user's profile
         @myProfile = data
+
         # @allTags = [@myProfile.cuisine, @myProfile.shops, @myProfile.services,@myProfile.bookGenre, @myProfile.musicGenre, @myProfile.clothes, @myProfile.color,@myProfile.animal,@myProfile.metal,@myProfile.element,@myProfile.art]
 
     .error ()=>
@@ -95,7 +81,7 @@ class GifterCtrl
     #getTags()???
     @Profile.get (data)=>
       @myProfile = data
-
+    # console.log @myMatch
 
 
 
