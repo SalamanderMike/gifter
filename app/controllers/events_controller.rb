@@ -4,8 +4,8 @@ class EventsController < ApplicationController
 
   respond_to :json
 
-  def index # Show example Settings Manager
-    respond_with Event.all
+  def index # Find all Events a user belongs to
+    respond_with UsersEvent.where(user_id: session[:id])
   end
 
   def new # New Event
@@ -19,10 +19,11 @@ class EventsController < ApplicationController
   end
 
   def show
-    respond_with Users_event.all
+    respond_with Event.find_by_id(params[:id])
   end
 
-  def edit # ADMIN SETTINGS
+  def update # ADMIN SETTINGS
+
     # Modal Popup
     # Progress Bar showing participation
     # List of participants who've joined w/delete buttons

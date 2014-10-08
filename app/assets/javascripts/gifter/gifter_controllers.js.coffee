@@ -2,7 +2,7 @@ GifterControllers = angular.module("GifterControllers", ["ngResource", "ngAnimat
 
 class GifterCtrl
   constructor: (@scope, @http, @resource, @rootScope, @modal, @location, @Suggestions) ->
-    console.log "HELLO! I'm the Gifter Controller!"
+    # console.log "HELLO! I'm the Gifter Controller!"
     # if !@rootScope.sessionID
     #   console.log "SESSION DOESN'T EXIST"
 
@@ -10,8 +10,11 @@ class GifterCtrl
     .success (user)=>
       @rootScope.sessionID = user.id
       @sessionID = user.id
-      console.log @sessionID
+      console.log "USER ID:#{@sessionID}"
       @user = {}
+      @findUserEventIDs = []
+      @myEvents = []
+      @myProfileID = ""
       @myProfile = {}
       @myMatch = [] # [eventID, profileID]
       @remove = false
@@ -19,10 +22,26 @@ class GifterCtrl
 
       # SET RESOURCE PATHS
       @User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
-      @Event = @resource("/event_records.json", {}, {'query': {method: 'GET', isArray: true}})
-      @UsersEvent = @resource("/user_to_events_records.json", {}, {'query': {method: 'GET', isArray: true}})
+      @UserEvents = @resource("/users/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
+      # Find all user's events by event ID through linker table
+      @UserEvents.query (data)=>
+        @findUserEventIDs = data
+        # Grab Events by their discovered IDs, push them into an array [myEvents]
+        for i of @findUserEventIDs
+          if @findUserEventIDs[i].event_id
+            eventID = @findUserEventIDs[i].event_id
+            @Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+            @Event.get (data)=>
+              @myEvents.push(data)
+
+
 
       # id: look up from ???
+      @ProfileID = @resource("users/:user_id/profile.json", {user_id:@sessionID})
+      @ProfileID.get (data)=>
+        @myProfileID = data.id
+        console.log @myProfileID
+
       @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
 
 
@@ -30,17 +49,18 @@ class GifterCtrl
       @User.get (data)=> #find current user data
         @user = data
 
+      # console.log @myEvents
 
-      @Event.query (data)=> #find user's events and Match for each event
-        @events = data[0]
-        if @events.match
-          for i of @events.match
-            if +@events.match[i][0] == @sessionID
-              @myMatch.push(@events.id, +@events.match[i][1])
+
+      # @Event.query (data)=> #find user's events and Match for each event
+      #   @events = data[0]
+      #   if @events.match
+      #     for i of @events.match
+      #       if +@events.match[i][0] == @sessionID
+      #         @myMatch.push(@events.id, +@events.match[i][1])
 
       @Profile.get (data)=> #find user's profile
         @myProfile = data
-
         # @allTags = [@myProfile.cuisine, @myProfile.shops, @myProfile.services,@myProfile.bookGenre, @myProfile.musicGenre, @myProfile.clothes, @myProfile.color,@myProfile.animal,@myProfile.metal,@myProfile.element,@myProfile.art]
 
     .error ()=>

@@ -6,30 +6,30 @@ class GifterTemplatesController < ApplicationController
   end
 
 
-  def user_records
-    render json: User.find(session[:id])
-  end
+  # def user_records
+  #   render json: User.find(session[:id])
+  # end
 
-  def user_update
-    puts @user
-    render json: @user.update(user_params)
-  end
+  # def user_update
+  #   puts @user
+  #   render json: @user.update(user_params)
+  # end
 
   def event_records
     render json: @myEvents
   end
 
-  def profile_records
-    render json: Profile.all
-  end
+  # def profile_records
+  #   render json: Profile.all
+  # end
 
-  def profile_create
-    render json: @userProfile.create(profile_params)
-  end
+  # def profile_create
+  #   render json: @userProfile.create(profile_params)
+  # end
 
-  def user_to_events_records
-    render json: @myEventIDs
-  end
+  # def user_events_records
+  #   render json: UsersEvent.where(user_id: session[:id])
+  # end
 
 private
 

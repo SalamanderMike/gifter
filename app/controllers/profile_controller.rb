@@ -1,17 +1,16 @@
 class ProfileController < ApplicationController
   # before_action :find_match_profile, only: [:show]
 
-  respond_to :json
+  respond_to :json, :html
 
   def index # Example profile for general public
-    respond_with Profile.all
+    render json: Profile.find_by_user_id(session[:id])
   end
 
   def new
   end
 
   def create
-    respond_with Profile.create(profile_params)
   end
 
   def show # Show Matched Profile

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :render_main_layout_if_format_html, only: [:new, :create]
+  # before_action :render_main_layout_if_format_html, only: [:new, :create]
   before_action :is_authenticated?, except: [:new, :create]
   # before_action :set_user, except: [:new, :create]
   # before_action :find_profile, only: [:show, :edit]
@@ -21,6 +21,7 @@ class UsersController < ApplicationController
   def create # POST: New User Sign-up
     user = User.create(user_params)
     session[:id] = user.id
+    Profile.create(user_id:session[:id])
     redirect_to site_index_path
   end
 
@@ -77,10 +78,6 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:firstname, :lastname, :email, :password)
-  end
-
-  def update_user_params
-    params.require(:user).permit(:firstname, :lastname)
   end
 end
 

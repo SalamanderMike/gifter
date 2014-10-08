@@ -18,17 +18,18 @@
 <div class="background"></div>
 
 <!-- EVENT PANELS ********************************************************************************-->
-<div class="eventPanel">
-  <div class="eventTitles">Your Event!</div>
-  <div class="eventViewer" ng-click="">
-    <p class="eventName">{{gifter.events.eventName}}</p>
-    <div class="eventBox">
+<div ng-repeat="event in gifter.myEvents">
+  <div class="eventPanel">
+    <div class="eventTitles">{{event.eventName}}</div>
+    <div class="eventViewer" ng-click="">
+      <p class="eventName"></p>
+      <div class="eventBox">
+      </div>
     </div>
+      <span>click me!</span>
+
   </div>
-    <span>click me!</span>
-
 </div>
-
 
 
 
