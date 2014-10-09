@@ -20,8 +20,6 @@ class GifterCtrl
       @myMatch = []   # [event_id, profile_id] 2D Array
       @matchProfile={}# Giftee's Profile
 
-      # @interests = ["Cuisine","Stores","services","Book Genre","Music Genre","Clothing","Color","Animals","Metal","Element","Art",]
-
       # SET RESOURCE PATHS
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
       User.get (data)=> #find current user data
@@ -56,19 +54,31 @@ class GifterCtrl
       @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
       @Profile.get (data)=> #find user's profile
         @myProfile = data
+        # Interests [Title,DB Column,DB Catagory,Placeholders]
+        @interests = [
+          ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
+          ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
+          ["Services",@myProfile.services,"services","Barnes & Noble Membership..."]
+        ]
 
       # @allTags = [@myProfile.cuisine, @myProfile.shops, @myProfile.services,@myProfile.bookGenre, @myProfile.musicGenre, @myProfile.clothes, @myProfile.color,@myProfile.animal,@myProfile.metal,@myProfile.element,@myProfile.art]
+      # @interests = ["cuisine","stores","services","Book Genre","Music Genre","Clothing","Color","Animals","Metal","Element","Art"]
     .error ()=>
       location.path("/login")
 
   getTags: =>
     @Profile.get (data)=>
       @myProfile = data
+      @interests = [
+        ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
+        ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
+        ["Services",@myProfile.services,"services","Barnes & Noble Membership..."]
+      ]
 
-  addTag: (catagory)=>
-    @myProfile[catagory].push(@scope.newTag)
+  addTag: (newTag, catagory)=>
+    @myProfile[catagory].push(newTag)
     @myProfile.$update()
-    @scope.newTag = ""
+    newTag = null
     @getTags()
 
   removeTag: (tag, catagory)=>
@@ -112,14 +122,16 @@ class GifterCtrl
     console.log "HOKUS POKUS!!!"
 
 
+
+
+
+
+
+
   logout: ->
     @http.get("/logout.json")
     .success (data)=>
       location.href = "/"
     @rootScope.sessionID = null
     console.log "LOGGED OUT!"
-
-
-
 GifterControllers.controller("GifterCtrl", ["$scope","$http", "$resource", "$rootScope", "$modal", "$location", "Suggestions", GifterCtrl])
-

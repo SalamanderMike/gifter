@@ -14,7 +14,6 @@
     </div>
   </div>
 </nav><br/><br/><br/>
-
 <div class="background"></div>
 
 <!-- EVENT PANELS ********************************************************************************-->
@@ -29,59 +28,31 @@
       <span>click me!</span>
   </div>
 </div>
-
-
-
-
-<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
 <div class="spacer"></div>
-<!-- INTERESTS PANELS ****************************************************************************-->
 
-<div class="interestPanel" ng-show="gifter.home">
-  <div class="interestTitles">Services</div>
-  <div class="interestViewer">
-      <div class="tags" ng-repeat="tag in gifter.myProfile.services track by $index">{{tag}}
-        <button class="remove"  ng-click="gifter.removeTag($index, 'services')"></button>
+<!-- INTERESTS PANELS ****************************************************************************-->
+<div class="container">
+    <div class="interestPanel" ng-show="gifter.home" ng-repeat="catagory in gifter.interests">
+      <div class="interestTitles">{{catagory[0]}}</div>
+      <div class="interestViewer">
+          <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
+            <button class="remove"  ng-click="gifter.removeTag($index, catagory[2])"></button>
+          </div>
       </div>
-  </div>
-  <form ng-submit="gifter.addTag('services')">
-    <span>
-      <input class="inputChoices" type="text" ng-model="newTag" placeholder="Dropbox...">
-      <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
-      <button id="interestSubmit">Add Interest!</button>
-    </span>
-  </form>
+      <form ng-submit="gifter.addTag(newTag, catagory[2])">
+        <span>
+          <input class="inputChoices" type="text" ng-model="newTag" placeholder="{{catagory[3]}}">
+          <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
+          <button type="submit" id="interestSubmit">Add Interest!</button>
+        </span>
+      </form>
+    </div>
 </div>
-<div class="interestPanel" ng-show="gifter.home">
-  <div class="interestTitles">Cuisine</div>
-  <div class="interestViewer">
-      <div class="tags" ng-repeat="tag in gifter.myProfile.cuisine track by $index">{{tag}}
-        <button class="remove"  ng-click="gifter.removeTag($index, 'cuisine')"></button>
-      </div>
-  </div>
-  <form ng-submit="gifter.addTag('cuisine')">
-    <span>
-      <input class="inputChoices" type="text" ng-model="newTag" placeholder="Cookies... burritos...">
-      <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
-      <button id="interestSubmit">Add Interest!</button>
-    </span>
-  </form>
-</div>
-<div class="interestPanel" ng-show="gifter.home">
-  <div class="interestTitles">Books</div>
-  <div class="interestViewer">
-      <div class="tags" ng-repeat="tag in gifter.myProfile.bookGenre track by $index">{{tag}}
-        <button class="remove"  ng-click="gifter.removeTag($index, 'bookGenre')"></button>
-      </div>
-  </div>
-  <form ng-submit="gifter.addTag('bookGenre')">
-    <span>
-      <input class="inputChoices" type="text" ng-model="newTag" placeholder="Romance... Biography...">
-      <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
-      <button id="interestSubmit">Add Interest!</button>
-    </span>
-  </form>
-</div>
+
+<!-- Giftee's Profile ****************************************************************************-->
+
+
 
 
 

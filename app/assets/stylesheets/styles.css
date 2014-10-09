@@ -46,7 +46,7 @@ div.background {
 /*EVENT PANELS***********************************************************************************/
 .container {
   position:relative;
-  display: inline-block;
+  /*display: inline-block;*/
   max-width: 1250px
 }
 .eventPanel {
@@ -116,18 +116,21 @@ span {
 }
 /*INTEREST PANELS********************************************************************************/
 .interestPanel {
+  position: relative;
+  display: inline-block;
   background: -webkit-linear-gradient(-45deg, #fef7c7 2%,#f4d3ba 16%,#ba9d6f 50%,#ba9d6f 50%,#ad7330 68%,#6d0019 100%);
   -webkit-box-shadow: 10px 10px 15px 5px rgba(150,150,150,.6);
-  width: 800px;
+  min-width: 500px;
+  max-width:550px;
   min-height: 200px;
   border: 0px solid #969696;
-  margin: 40px auto;
+  margin: 10px;
   border-radius: 10px;
 }
 
 .interestTitles {
   position: relative;
-  left: 20px;
+  left: 10px;
   font-size: 2em;
   font-family: 'Kaushan Script', cursive;
 }
@@ -137,7 +140,7 @@ span {
   background: -webkit-linear-gradient(-45deg, #848484 0%,#cecece 8%,#e8e8e8 15%,#ffffff 74%);
   top: 0px;
   left: 10px;
-  width: 780px;
+  width: 97%;
   min-height: 125px;
   border: 1px solid #d2ac65;
   padding-bottom: 50px;
