@@ -195,12 +195,22 @@ span {
   border-radius: 100%;
 }
 
+/*GIFTEE PAGE ********************************************************************************/
 
+#gifteeEventTitle {
+  font-family: 'Raleway', sans-serif;
+  font-size: 2em;
+}
 
+#gifteeName {
+  font-family: 'Raleway', sans-serif;
+  font-size: 2em;
+}
 
-
-
-
+#gifteeInterests {
+  font-family: 'Raleway', sans-serif;
+  font-size: 2em;
+}
 
 
 

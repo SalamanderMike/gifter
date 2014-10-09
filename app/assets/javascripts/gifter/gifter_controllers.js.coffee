@@ -15,10 +15,13 @@ class GifterCtrl
       @giftee = false # Hide/Show Match Profile page
       @admin = false  # Hide/Show Admin Settings
       @user = {}      # Account Info
+      @eventTitle = ""# Event Title
       @myEvents = []  # Event Panels
       @myProfile = {} # Interest Panels/Tags
       @myMatch = []   # [event_id, profile_id] 2D Array
       @matchProfile={}# Giftee's Profile
+      @matchInterests=[]#Giftee's interests
+      @matchName = "" # Giftee's Name
 
       # SET RESOURCE PATHS
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
@@ -86,10 +89,6 @@ class GifterCtrl
     @myProfile.$update()
     @getTags()
 
-    # @thisMatchProfile(2)
-    # console.log @myEvents # TEST DATA
-
-
   thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
     @matchProfile = {}
     for match in @myMatch
@@ -97,9 +96,19 @@ class GifterCtrl
         if match[1] != false
           @gifteePage()
           MatchProfile = @resource("users/:user_id/profile.json", {user_id:match[1]})
-          MatchProfile.get (data)=> #find Giftee's profile
+          MatchProfile.get (data)=> #Find Giftee's Profile
             @matchProfile = data
-            console.log data
+            @matchInterests = [
+              ["Cuisine",data.cuisine,"cuisine"],
+              ["Stores",data.shops,"shops"],
+              ["Services",data.services,"services"]
+            ]
+            MatchName = @resource("/users/:id.json", {id:data.user_id})
+            MatchName.get (data)=> # Grab Giftee's Name
+              @matchName = "#{data.firstname} #{data.lastname}"
+            EventTitle = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+            EventTitle.get (title)=> # Grab Event Title
+              @eventTitle = title.eventName
         else
           alert "Sorry, your match isn't ready for this Event.\nTry again later!"
 

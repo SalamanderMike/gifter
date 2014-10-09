@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   end
 
   def show # Home Page - show Event Panes, Profile Choice Tag Panes?
-    render json: User.find(session[:id])
+    render json: User.find(params[:id])
     # Event Panels - Users_event.all where user_id == session[:id]**
     #   EventName, Ready/Complete indicator, Magic Buy button
     #   event = Event.find(event_id)**
