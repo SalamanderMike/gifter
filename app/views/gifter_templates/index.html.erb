@@ -1,20 +1,36 @@
 <!-- NAVBAR ************************************************************************************-->
 <nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
+  <!-- <div class="container"> -->
     <div class="navbar-header">
       <a class="navbar-brand"></a>
     </div>
     <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <button class="navButtons" ng-click="gifter.logout()" style="float:left;">Gifter</button>
+      <ul class="nav navbar-nav navbar-left">
+        <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.home">Gifter</button>
+        <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.giftee">Event</button>
       </ul>
+      <span id="gifteeEventTitle" ng-show="gifter.giftee">{{gifter.eventTitle}}</span>
       <ul class="nav navbar-nav navbar-right">
-        <button class="navButtons" ng-click="gifter.logout()" style="float:right;">Logout</button>
+        <div class="navButtonRight">
+          <span class="dropdown" is-open="gifter.toggleDropdown"><!-- Toggle Not Working -->
+            <a href class="dropdown-toggle">
+              {{gifter.user.firstname}} {{gifter.user.lastname}}<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a ng-click="gifter.homePage()">My Profile</a></li>
+              <li><a ng-click="gifter.adminPage()">Event Settings</a></li>
+              <li class="divider"></li>
+              <li><a ng-click="gifter.logout()">Sign Out</a></li>
+            </ul>
+          </span>
+        </div>
       </ul>
     </div>
   </div>
 </nav><br/><br/><br/>
 <div class="background"></div>
+<div id="title" ng-show="gifter.home">Gifter</div>
+<div id="titleSmall" ng-show="gifter.giftee">Gifter</div>
 
 <!-- EVENT PANELS ********************************************************************************-->
 <div class="container" ng-show="gifter.home">
@@ -52,9 +68,16 @@
 
 <!-- Giftee's Profile ****************************************************************************-->
 
-<div id="gifteeEventTitle" ng-show="gifter.giftee">{{gifter.eventTitle}}</div>
-<div id="gifteeName" ng-show="gifter.giftee">Your Giftee is {{gifter.matchName}}!</div>
-<div id="gifteeInterests" ng-show="gifter.giftee">{{gifter.matchInterests}}</div>
+<div id="gifteeName" ng-show="gifter.giftee">Your Giftee is:  <span style="font-family: 'Abril Fatface', cursive;font-size:1.5em;">{{gifter.matchName}}!</span></div>
+
+<div id="topTen" ng-show="gifter.giftee">
+  <ul style="list-style-type: none;padding-left:10px;">
+    <li ng-repeat="interests in gifter.matchInterests">{{interests[0]}}</li>
+  </ul>
+
+
+</div>
+<!-- <div id="gifteeInterests" ng-show="gifter.giftee">{{gifter.matchInterests}}</div> -->
 
 
 

@@ -22,6 +22,7 @@ class GifterCtrl
       @matchProfile={}# Giftee's Profile
       @matchInterests=[]#Giftee's interests
       @matchName = "" # Giftee's Name
+      @toggleDropdown = false
 
       # SET RESOURCE PATHS
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
@@ -111,6 +112,9 @@ class GifterCtrl
               @eventTitle = title.eventName
         else
           alert "Sorry, your match isn't ready for this Event.\nTry again later!"
+
+
+
 
   homePage: =>
     @home = true
