@@ -241,6 +241,18 @@ span {
 
 /*GIFTEE PAGE ********************************************************************************/
 
+.headding {
+  color: rgba(105, 105, 105, 1);
+  font-family: 'Corben', cursive;
+  font-size: 1em;
+}
+
+.body {
+  color: rgba(76, 128, 154, .9);
+  font-family: 'Spirax', cursive;
+  font-size: 1em;
+}
+
 #gifteeEventTitle {
   position: fixed;
   left: 30%;
@@ -256,7 +268,7 @@ span {
   right:190px;
   color: rgba(90, 135, 93, .8);
   text-shadow: 4px 4px 10px rgba(150, 150, 150, .5);
-  font-family: 'Abril Fatface', cursive;
+  font-family: 'Corben', cursive;
   font-size: 2.5em;
 }
 
@@ -270,8 +282,8 @@ span {
   background:rgba(255, 255, 255, .8);
   top: 200px;
   right:100px;
-  width:350px;
-  height: 500px;
+  width:450px;
+  min-height: 500px;
   border-radius: 10px;
   border: solid 1px rgba(76, 128, 154, .2);
   -webkit-box-shadow: 3px 0px 15px 0px rgba(150,150,150,.6);
