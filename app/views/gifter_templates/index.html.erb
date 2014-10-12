@@ -6,7 +6,7 @@
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-left">
-        <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.home">Gifter</button>
+        <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.home">My Profile</button>
         <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.giftee">Event</button>
       </ul>
       <span id="gifteeEventTitle" ng-show="gifter.giftee">{{gifter.eventTitle}}</span>
@@ -30,36 +30,27 @@
   </div>
 </nav><br/><br/><br/>
 <div class="background"></div>
-<div id="title" ng-show="gifter.home">Gifter</div>
-<div id="titleSmall" ng-show="gifter.giftee">Gifter</div>
+<div id="titleSmall">Gifter</div>
 
 <!-- EVENT PANELS ********************************************************************************-->
-<ANY class="slide" ng-include="..."></ANY>
-<div class="slide-animation" ng-if="gifter.home" ng-animate-children>
-<div class="fade-animation" ng-if="gifter.home">
-  <div class="explode-animation" ng-if="gifter.home">
+<div  ng-show="gifter.home" class="show-hide">
 
-<div class="container" ng-show="gifter.home">
+<div class="container">
   <div class="eventPanel" ng-repeat="event in gifter.myEvents track by $index">
     <div class="eventTitles">{{event.eventName}}</div>
     <div class="eventViewer" ng-click="gifter.thisMatchProfile(event.id)">
       <p class="eventName"></p>
-      <div class="eventBox">
-      </div>
+      <div class="eventBox"></div>
     </div>
       <span>click me!</span>
   </div>
-</div>
-
-</div>
-</div>
 </div>
 <br/><br/><br/><br/><br/>
 <div class="spacer"></div>
 
 <!-- INTERESTS PANELS ****************************************************************************-->
 <div class="container">
-    <div class="interestPanel" ng-show="gifter.home" ng-repeat="catagory in gifter.interests">
+    <div class="interestPanel" ng-repeat="catagory in gifter.interests">
       <div class="interestTitles">{{catagory[0]}}</div>
       <div class="interestViewer">
           <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
@@ -76,7 +67,10 @@
     </div>
 </div>
 
+</div>
 <!-- Giftee's Profile ****************************************************************************-->
+<div  ng-show="gifter.giftee" class="show-hide">
+
 
 <div id="gifteeName" class="headding" ng-show="gifter.giftee">Your Giftee is:  <span style="font-family: 'Spirax', cursive;font-size:1.5em;">{{gifter.matchName}}!</span></div>
 
@@ -90,6 +84,8 @@
     </li>
   </ul>
 
+
+</div>
 
 </div>
 <!-- <div id="gifteeInterests" ng-show="gifter.giftee">{{gifter.matchInterests}}</div> -->

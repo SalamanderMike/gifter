@@ -24,6 +24,8 @@ class GifterCtrl
       @matchName = "" # Giftee's Name
       @notReady = true# Indicates there is no match for this event
 
+      @hidden = false
+
       # SET RESOURCE PATHS
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
       User.get (data)=> #find current user data
