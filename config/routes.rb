@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   post "/signup" => "users#create"
 
   get "/index_participants/:event_id" => "events#index_participants"
+  get "/index_admin_events" => "events#index_admin_events"
 
   root to: 'session#new'
 

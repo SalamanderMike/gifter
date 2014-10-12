@@ -9,7 +9,11 @@ class EventsController < ApplicationController
   end
 
   def index_participants
-    respond_with UsersEvent.where(event_id: params[:id])
+    respond_with UsersEvent.where(event_id: params[:event_id])
+  end
+
+  def index_admin_events
+    respond_with Event.where(admin_id: session[:id])
   end
 
   def new # New Event

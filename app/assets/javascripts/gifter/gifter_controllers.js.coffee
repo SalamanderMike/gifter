@@ -14,11 +14,15 @@ class GifterCtrl
       @home = true    # Hide/Show Home page
       @giftee = false # Hide/Show Match Profile page
       @admin = false  # Hide/Show Admin Settings
+      @chooseEvent=false#Hide/Show Event Edit Choice
+      @eventHeadding=false#Hide/Show Event Title in Navbar
+      @createEvent=false#Hide/Show Create New Event page
       @user = {}      # Account Info
       @eventTitle = ""# Event Title
       @myEvents = []  # Event Panels
       @myProfile = {} # Interest Panels/Tags
       @myMatch = []   # [event_id, profile_id] 2D Array
+      @adminsEvents=[]# Events you are leading
       @matchProfile={}# Giftee's Profile
       @matchInterests=[]#Giftee's interests
       @matchName = "" # Giftee's Name
@@ -135,37 +139,70 @@ class GifterCtrl
         else
           alert "Sorry, your match isn't ready for this Event.\nTry again later!"
 
+  findAdminsEvents: =>
+    AdminsEvents = @resource("/index_admin_events.json", {}, {'query': {method: 'GET', isArray: true}})
+    AdminsEvents.query (data)=>
+      if data[0]
+        if data.length > 1
+          @chooseEventToEdit(data)
+        else
+          @adminPage(data[0])
+      else
+        alert "You aren't leading any events, yet.\nTry creating one, then invite people to join!"
+
   participantsInEvent: (eventID)=>
-    UsersInEvents = @resource("/users/:user_id/events.json", {user_id:@eventID}, {'query': {method: 'GET', isArray: true}})
+    console.log "LIST OF PARTICIPANTS..."
+    UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
     UsersInEvents.query (data)=>
       @participants = data
+      console.log data
 
+# SPA PAGES **************************
+  chooseEventToEdit: (events)=>
+    @home = false
+    @giftee = false
+    @admin = false
+    @chooseEvent = true
+    @adminsEvents = events
 
   homePage: =>
     @home = true
     @giftee = false
     @admin = false
-    console.log "HOKUS POKUS!!!"
 
   gifteePage: =>
     @home = false
     @giftee = true
     @admin = false
-    console.log "HOKUS POKUS!!!"
+    @eventHeadding = true
 
-  adminPage: =>
+  adminPage: (event)=>
+    console.log "EVENT SETTINGS..."
     @home = false
     @giftee = false
     @admin = true
-    console.log "HOKUS POKUS!!!"
+    @chooseEvent = false
+    @eventHeadding = true
+    @eventTitle = event.eventName
+    console.log event
+    @participantsInEvent(event.id)
+
+  EventCreatePage: =>
+    console.log "CREATE EVENT PAGE..."
+    @eventHeadding = ""
+    @home = false
+    @giftee = false
+    @admin = false
+    @chooseEvent = false
+    @eventHeadding = true
+    @createEvent = true
+
+  createNewEvent: (data)=>
+    console.log "CREATE THIS EVENT..."
+    console.log data
 
 
-
-
-
-
-
-
+# END OF LINE **************************
   logout: ->
     @http.get("/logout.json")
     .success (data)=>

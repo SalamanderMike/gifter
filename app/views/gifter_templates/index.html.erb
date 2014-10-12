@@ -10,7 +10,7 @@
         <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.giftee">Event</button>
         <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.admin">Event Settings</button>
       </ul>
-      <span id="gifteeEventTitle" ng-show="gifter.giftee">{{gifter.eventTitle}}</span>
+      <span id="gifteeEventTitle" ng-show="gifter.eventHeadding">{{gifter.eventTitle}}</span>
       <ul class="nav navbar-nav navbar-right">
         <div class="navButtonRight">
           <span class="dropdown" is-open="gifter.toggleDropdown"><!-- Toggle Not Working -->
@@ -19,8 +19,8 @@
             </a>
             <ul class="dropdown-menu">
               <li><a ng-click="gifter.homePage()">My Profile</a></li>
-              <li><a ng-click="gifter.homePage()">Create New Event</a></li>
-              <li><a ng-click="gifter.adminPage()">Event Settings</a></li>
+              <li><a ng-click="gifter.EventCreatePage()">Create New Event</a></li>
+              <li><a ng-click="gifter.findAdminsEvents()">Event Settings</a></li>
               <li class="divider"></li>
               <li><a ng-click="gifter.logout()">Sign Out</a></li>
             </ul>
@@ -87,6 +87,19 @@
   <div>Add Spending Limit</div>
 
 </div>
+<!-- CHOOSE EVENT TO EDIT ************************************************************************-->
+<div ng-show="gifter.chooseEvent" class="show-hide">
+  <div class="container">
+    <div class="eventPanel" ng-repeat="event in gifter.adminsEvents track by $index">
+      <div class="eventTitles">{{event.eventName}}</div>
+      <div class="eventViewer" ng-click="gifter.adminPage(event)">
+        <p class="eventName"></p>
+        <div class="eventBox"></div>
+      </div>
+        <span>click me!</span>
+    </div>
+  </div>
+</div>
 <!-- Event Settings ******************************************************************************-->
 <div ng-show="gifter.admin" class="show-hide">
 
@@ -98,17 +111,20 @@
 <div>spending limit</div>
 
 
+</div>
+<!-- Create New Event ******************************************************************************-->
+<div ng-show="gifter.createEvent" class="show-hide">
+
+
+  <form ng-submit="gifter.createNewEvent(data)">
+    <h1>Testing Create Event Page</h1>
+
+
+  </form>
 
 
 
 
 </div>
-
-
-
-
-
-
-
 
 
