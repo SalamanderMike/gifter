@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get "/signup" => "users#new"
   post "/signup" => "users#create"
 
+  get "/index_participants/:event_id" => "events#index_participants"
+
   root to: 'session#new'
 
   resources :site

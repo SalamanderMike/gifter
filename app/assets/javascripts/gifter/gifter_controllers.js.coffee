@@ -23,6 +23,7 @@ class GifterCtrl
       @matchInterests=[]#Giftee's interests
       @matchName = "" # Giftee's Name
       @notReady = true# Indicates there is no match for this event
+      @participants = []
 
       @hidden = false
 
@@ -134,7 +135,10 @@ class GifterCtrl
         else
           alert "Sorry, your match isn't ready for this Event.\nTry again later!"
 
-
+  participantsInEvent: (eventID)=>
+    UsersInEvents = @resource("/users/:user_id/events.json", {user_id:@eventID}, {'query': {method: 'GET', isArray: true}})
+    UsersInEvents.query (data)=>
+      @participants = data
 
 
   homePage: =>
