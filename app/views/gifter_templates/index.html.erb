@@ -18,6 +18,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><a ng-click="gifter.homePage()">My Profile</a></li>
+              <li><a ng-click="gifter.homePage()">Create New Event</a></li>
               <li><a ng-click="gifter.adminPage()">Event Settings</a></li>
               <li class="divider"></li>
               <li><a ng-click="gifter.logout()">Sign Out</a></li>
@@ -33,6 +34,11 @@
 <div id="titleSmall" ng-show="gifter.giftee">Gifter</div>
 
 <!-- EVENT PANELS ********************************************************************************-->
+<ANY class="slide" ng-include="..."></ANY>
+<div class="slide-animation" ng-if="gifter.home" ng-animate-children>
+<div class="fade-animation" ng-if="gifter.home">
+  <div class="explode-animation" ng-if="gifter.home">
+
 <div class="container" ng-show="gifter.home">
   <div class="eventPanel" ng-repeat="event in gifter.myEvents track by $index">
     <div class="eventTitles">{{event.eventName}}</div>
@@ -43,6 +49,10 @@
     </div>
       <span>click me!</span>
   </div>
+</div>
+
+</div>
+</div>
 </div>
 <br/><br/><br/><br/><br/>
 <div class="spacer"></div>
@@ -72,6 +82,7 @@
 
 <div id="topTen" ng-show="gifter.giftee">
   <ul style="list-style-type: none;padding-left:10px;">
+    <div style="color:grey;">click on an item to see where you can buy it</div>
     <li class="headding" ng-repeat="catagories in gifter.matchInterests">{{catagories[0]}}
       <ul>
         <li class="body" ng-repeat="interests in catagories[1]">{{interests}}</li>

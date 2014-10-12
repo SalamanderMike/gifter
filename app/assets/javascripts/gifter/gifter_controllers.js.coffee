@@ -22,7 +22,7 @@ class GifterCtrl
       @matchProfile={}# Giftee's Profile
       @matchInterests=[]#Giftee's interests
       @matchName = "" # Giftee's Name
-      @toggleDropdown = false
+      @notReady = true# Indicates there is no match for this event
 
       # SET RESOURCE PATHS
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
