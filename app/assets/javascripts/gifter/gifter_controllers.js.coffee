@@ -64,11 +64,18 @@ class GifterCtrl
         @interests = [
           ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
           ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
-          ["Services",@myProfile.services,"services","Barnes & Noble Membership..."]
+          ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
+          ["Book Genre",@myProfile.bookGenre,"bookGenre","Barnes & Noble Membership..."],
+          ["Music Genre",@myProfile.musicGenre,"musicGenre","Barnes & Noble Membership..."],
+          ["Clothing",@myProfile.clothes,"clothes","Barnes & Noble Membership..."],
+          ["Animals",@myProfile.animal,"animal","Barnes & Noble Membership..."],
+          ["Color",@myProfile.color,"color","Barnes & Noble Membership..."],
+          ["Metal",@myProfile.metal,"metal","Barnes & Noble Membership..."],
+          ["Element",@myProfile.element,"element","Barnes & Noble Membership..."],
+          ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
+          ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
         ]
 
-      # @allTags = [@myProfile.cuisine, @myProfile.shops, @myProfile.services,@myProfile.bookGenre, @myProfile.musicGenre, @myProfile.clothes, @myProfile.color,@myProfile.animal,@myProfile.metal,@myProfile.element,@myProfile.art]
-      # @interests = ["cuisine","stores","services","Book Genre","Music Genre","Clothing","Color","Animals","Metal","Element","Art"]
     .error ()=>
       location.path("/login")
 
@@ -76,10 +83,19 @@ class GifterCtrl
     @Profile.get (data)=>
       @myProfile = data
       @interests = [
-        ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
-        ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
-        ["Services",@myProfile.services,"services","Barnes & Noble Membership..."]
-      ]
+          ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
+          ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
+          ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
+          ["Book Genre",@myProfile.bookGenre,"bookGenre","Barnes & Noble Membership..."],
+          ["Music Genre",@myProfile.musicGenre,"musicGenre","Barnes & Noble Membership..."],
+          ["Clothing",@myProfile.clothes,"clothes","Barnes & Noble Membership..."],
+          ["Animals",@myProfile.animal,"animal","Barnes & Noble Membership..."],
+          ["Color",@myProfile.color,"color","Barnes & Noble Membership..."],
+          ["Metal",@myProfile.metal,"metal","Barnes & Noble Membership..."],
+          ["Element",@myProfile.element,"element","Barnes & Noble Membership..."],
+          ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
+          ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
+        ]
 
   addTag: (newTag, catagory)=>
     @myProfile[catagory].push(newTag)
@@ -104,7 +120,10 @@ class GifterCtrl
             @matchInterests = [
               ["Cuisine",data.cuisine,"cuisine"],
               ["Stores",data.shops,"shops"],
-              ["Services",data.services,"services"]
+              ["Services",data.services,"services"],
+              ["Book Genre",data.bookGenre,"bookGenre"],
+              ["Music Genre",data.musicGenre,"musicGenre"],
+              ["Clothing",data.clothes,"clothes"]
             ]
             MatchName = @resource("/users/:id.json", {id:data.user_id})
             MatchName.get (data)=> # Grab Giftee's Name
