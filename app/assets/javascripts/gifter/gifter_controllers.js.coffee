@@ -17,6 +17,7 @@ class GifterCtrl
       @chooseEvent=false#Hide/Show Event Edit Choice
       @eventHeadding=false#Hide/Show Event Title in Navbar
       @createEvent=false#Hide/Show Create New Event page
+      @newEventShow=false
       @user = {}      # Account Info
       @eventTitle = ""# Event Title
       @myEvents = []  # Event Panels
@@ -188,18 +189,20 @@ class GifterCtrl
     @participantsInEvent(event.id)
 
   EventCreatePage: =>
-    console.log "CREATE EVENT PAGE..."
-    @eventHeadding = ""
+    @newEventShow = true
     @home = false
     @giftee = false
     @admin = false
     @chooseEvent = false
-    @eventHeadding = true
+    @eventHeadding = false
     @createEvent = true
 
   createNewEvent: (data)=>
+    @newEventShow = false
     console.log "CREATE THIS EVENT..."
     console.log data
+
+    # @adminPage()
 
 
 # END OF LINE **************************
