@@ -23,6 +23,7 @@ class GifterCtrl
       @eventTitle = ""# Event Title
       @myEvents = []  # Event Panels
       @myProfile = {} # Interest Panels/Tags
+      @interests = [] # Interests Data
       @myMatch = []   # [event_id, profile_id] 2D Array
       @adminsEvents=[]# Events you are leading
       @matchProfile={}# Giftee's Profile
@@ -31,7 +32,7 @@ class GifterCtrl
       @notReady = true# Indicates there is no match for this event
       @participants = []
 
-      @hidden = false
+      @toggleDropdown = false
 
       # SET RESOURCE PATHS
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
@@ -53,7 +54,7 @@ class GifterCtrl
               @myEvents.push(event)
               matches = @myEvents[index].match
               ++index
-              if matches #check for NULL
+              if matches #check against NULL
                 for i of matches
                   if +matches[i][0] == @sessionID
                     @myMatch[pair] = []
@@ -82,10 +83,10 @@ class GifterCtrl
           ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
           ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
         ]
-
     .error ()=>
       location.path("/login")
 
+#FUNCTIONS
   getTags: =>
     @Profile.get (data)=>
       @myProfile = data
@@ -116,6 +117,7 @@ class GifterCtrl
     @getTags()
 
   thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
+    console.log "thisMatchProfile()"
     @matchProfile = {}
     if @myMatch
       for match in @myMatch
@@ -162,73 +164,106 @@ class GifterCtrl
       console.log data
 
 # SPA PAGES **************************
-  chooseEventToEdit: (events)=>
-    @home = false
-    @giftee = false
-    @admin = false
-    @chooseEvent = true
-    @adminsEvents = events
-
   homePage: =>
-    @home = true
+    #Hidden
     @giftee = false
     @admin = false
+    @chooseEvent = false
     @createEvent = false
+    @joinEventVisible = false
+    @toggleDropdown = false
+    #Visible
+    @home = true
 
   gifteePage: =>
+    #Hidden
     @home = false
-    @giftee = true
     @admin = false
+    @chooseEvent = false
+    @createEvent = false
+    @joinEventVisible = false
+    @toggleDropdown = false
+    #Visible
+    @giftee = true
     @eventHeadding = true
 
   adminPage: (event)=>
+    #Hidden
     @home = false
     @giftee = false
-    @admin = true
     @chooseEvent = false
+    @createEvent = false
+    @joinEventVisible = false
+    @toggleDropdown = false
+    #Visible
+    @admin = true
     @eventHeadding = true
     @eventTitle = event.eventName
     console.log event
     @participantsInEvent(event.id)
 
+  chooseEventToEdit: (events)=>
+    #Hidden
+    @home = false
+    @giftee = false
+    @admin = false
+    @createEvent = false
+    @joinEventVisible = false
+    @toggleDropdown = false
+    #Visible
+    @chooseEvent = true
+    @adminsEvents = events
+
   joinEventPage: =>
+    #Hidden
     @home = false
     @giftee = false
     @admin = false
     @chooseEvent = false
+    @createEvent = false
+    @toggleDropdown = false
+    #Visible
     @eventHeadding = true
     @joinEventVisible = true
 
-
-
-# EVENT CREATE/JOIN **************************
-  joinEvent: =>
-    console.log "JOIN EVENT..."
-    console.log @scope.join
-    #find all Events
-
-    Event = @resource("/users/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
-    Event.query (data)=>
-      console.log data
-    #compare eventName
-    #grab id from event
-
-    #error if name isn't found
-
-    #attach user_id to event_id
-    # Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID,id:@scope.join.eventID})
-    # Event.save (data)=>
-    #   console.log data
-
-
   EventCreatePage: =>
-    @newEventShow = true
+    #Hidden
     @home = false
     @giftee = false
     @admin = false
     @chooseEvent = false
     @eventHeadding = false
+    @joinEventVisible = false
+    @toggleDropdown = false
+    #Visible
+    @newEventShow = true
     @createEvent = true
+
+# EVENT JOIN/CREATE **************************
+  joinEvent: =>
+    console.log "JOIN EVENT..."
+    #find all Events
+    Event = @resource("/users/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
+    Event.query (data)=>
+      for event in data
+        if @scope.join.eventName == event.eventName#Find event by eventName to grab its :id
+          if @scope.join.password == event.password
+            thisEvent = event
+            Event = @resource("/users/:user_id/events/:id", {user_id:@sessionID,id:event.id}, {update: {method: 'PUT'}})
+            Event.update (data)=>
+              @myEvents.push(thisEvent)
+              pair = @myMatch.length
+              @myMatch[pair] = []
+              @myMatch[pair].push(thisEvent.id, false)
+              @homePage()
+          else
+            alert "Password is incorrect for this Event"
+            @scope.join.password = ""
+            return
+      alert "We're sorry, but we can't find an Event with that name.\nTry again?"
+      @scope.join = ""
+
+
 
   createNewEvent: =>
     @newEventShow = false

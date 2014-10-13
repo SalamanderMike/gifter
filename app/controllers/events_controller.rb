@@ -39,7 +39,7 @@ class EventsController < ApplicationController
   end
 
   def update # JOIN EVENT
-    event = Event.find_by_eventName(params[:id])
+    event = Event.find_by_id(params[:id])
     @user = User.find_by_id(session[:id])
     @user.events << event
     render json: {}, status: 200
