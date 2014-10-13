@@ -155,6 +155,7 @@ class GifterCtrl
           @adminPage(data[0])
       else
         alert "You aren't leading any events, yet.\nTry creating one, then invite people to join!"
+        @toggleDropdown = false
 
   participantsInEvent: (eventID)=>
     console.log "LIST OF PARTICIPANTS..."
