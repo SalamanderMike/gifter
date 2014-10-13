@@ -4,7 +4,11 @@ class EventsController < ApplicationController
 
   respond_to :json
 
-  def index # Find all Events a user belongs to
+  def index # JOIN EVENT: Look through all Events to find eventName
+    respond_with Event.all
+  end
+
+  def index_user_events# Find all Events a user belongs to
     respond_with UsersEvent.where(user_id: session[:id])
   end
 
@@ -34,8 +38,11 @@ class EventsController < ApplicationController
     respond_with Event.find_by_id(params[:id])
   end
 
-  def update # ADMIN SETTINGS
-
+  def update # JOIN EVENT
+    event = Event.find_by_eventName(params[:id])
+    @user = User.find_by_id(session[:id])
+    @user.events << event
+    render json: {}, status: 200
     # Modal Popup
     # Progress Bar showing participation
     # List of participants who've joined w/delete buttons

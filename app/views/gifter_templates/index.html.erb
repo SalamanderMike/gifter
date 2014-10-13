@@ -20,6 +20,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><a ng-click="gifter.homePage()">My Profile</a></li>
+              <li><a ng-click="gifter.joinEventPage()">Join Event!</a></li>
               <li><a ng-click="gifter.EventCreatePage()">Create New Event</a></li>
               <li><a ng-click="gifter.findAdminsEvents()">Event Settings</a></li>
               <li class="divider"></li>
@@ -101,7 +102,7 @@
     </div>
   </div>
 </div>
-<!-- Event Settings ******************************************************************************-->
+<!-- EVENT SETTINGS ******************************************************************************-->
 <div ng-show="gifter.admin" class="show-hide">
 
 
@@ -113,48 +114,66 @@
 
 
 </div>
-<!-- Create New Event ******************************************************************************-->
-<div ng-show="gifter.createEvent" class="show-hide">
-
-<div id="newEventContainer">
-  <form class="form-horizontal" role="form" ng-submit="gifter.createNewEvent(newEvent)">
-    <div class="form-group">
-      <label for="eventName" class="col-sm-2 control-label">Event Name</label>
-      <div class="col-sm-4">
-        <input autofocus class="form-control" id="eventName" ng-model="newEvent.eventName" placeholder="Big Data Holiday Bash">
+<!-- JOIN EXISTING EVENT ******************************************************************************-->
+<div ng-show="gifter.joinEventVisible" class="show-hide">
+  <div id="newEventContainer">
+    <form class="form-horizontal" role="form" ng-submit="gifter.joinEvent()">
+      <div class="form-group">
+        <label for="joinEventName" class="col-sm-2 control-label">What's the name of the event you're joining?</label>
+        <div class="col-sm-4">
+          <input autofocus class="form-control" id="joinEventName" ng-model="join.eventName" placeholder="Big Data Holiday Bash">
+        </div>
       </div>
-    </div>
-        <div class="form-group">
-      <label for="password" class="col-sm-2 control-label">Group Password</label>
-      <div class="col-sm-4">
-    <input class="form-control" id="password" type="password" ng-model="newEvent.password" placeholder="password">
+      <div class="form-group">
+        <label for="joinPassword" class="col-sm-2 control-label">What's the Group Password?</label>
+        <div class="col-sm-4">
+          <input class="form-control" id="joinPassword" type="password" ng-model="join.password" placeholder="password">
+        </div>
       </div>
-    </div>
-        <div class="form-group">
-      <label for="spendingLimit" class="col-sm-2 control-label">Spending Limit $</label>
-      <div class="col-sm-4">
-    <input class="form-control" id="spendingLimit" type="number" ng-model="newEvent.spendingLimit" placeholder="5 or 50 dollars?">
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" ng-click="joinEvent()" class="btn btn-info">Join This Event!</button>
+        </div>
       </div>
-    </div>
-        <div class="form-group">
-      <label for="participantNum" class="col-sm-2 control-label">Number of Partcipants</label>
-      <div class="col-sm-4">
-    <input class="form-control" id="participantNum" type="number" ng-model="newEvent.participants" placeholder="3 or 30 people?">
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" ng-click="createNewEvent()" class="btn btn-info">Lead This Event!</button>
-      </div>
-    </div>
-
-  </form>
-
-
+    </form>
+  </div>
 </div>
 
+<!-- CREATE NEW EVENT ******************************************************************************-->
+<div ng-show="gifter.createEvent" class="show-hide">
+  <div id="newEventContainer">
+    <form class="form-horizontal" role="form" ng-submit="gifter.createNewEvent()">
+      <div class="form-group">
+        <label for="eventName" class="col-sm-2 control-label">Event Name</label>
+        <div class="col-sm-4">
+          <input autofocus class="form-control" id="eventName" ng-model="newEvent.eventName" placeholder="Big Data Holiday Bash">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Group Password</label>
+        <div class="col-sm-4">
+          <input class="form-control" id="password" type="password" ng-model="newEvent.password" placeholder="password">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="spendingLimit" class="col-sm-2 control-label">Spending Limit $</label>
+        <div class="col-sm-4">
+          <input class="form-control" id="spendingLimit" type="number" ng-model="newEvent.spendingLimit" placeholder="5 or 50 dollars?">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="participantNum" class="col-sm-2 control-label">Number of Partcipants</label>
+        <div class="col-sm-4">
+          <input class="form-control" id="participantNum" type="number" ng-model="newEvent.participants" placeholder="3 or 30 people?">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" ng-click="createNewEvent()" class="btn btn-info">Lead This Event!</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 

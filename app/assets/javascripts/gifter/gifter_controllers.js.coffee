@@ -16,6 +16,7 @@ class GifterCtrl
       @admin = false  # Hide/Show Admin Settings
       @chooseEvent=false#Hide/Show Event Edit Choice
       @eventHeadding=false#Hide/Show Event Title in Navbar
+      @joinEventVisible=false#
       @createEvent=false#Hide/Show Create New Event page
       @newEventShow=false
       @user = {}      # Account Info
@@ -38,7 +39,7 @@ class GifterCtrl
         @user = data
 
       # Find all user's events by event ID through linker table
-      UserEvents = @resource("/users/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
+      UserEvents = @resource("/index_user_events/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
       UserEvents.query (data)=>
         index = 0
         pair = 0
@@ -189,6 +190,36 @@ class GifterCtrl
     @eventTitle = event.eventName
     console.log event
     @participantsInEvent(event.id)
+
+  joinEventPage: =>
+    @home = false
+    @giftee = false
+    @admin = false
+    @chooseEvent = false
+    @eventHeadding = true
+    @joinEventVisible = true
+
+
+
+# EVENT CREATE/JOIN **************************
+  joinEvent: =>
+    console.log "JOIN EVENT..."
+    console.log @scope.join
+    #find all Events
+
+    Event = @resource("/users/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
+    Event.query (data)=>
+      console.log data
+    #compare eventName
+    #grab id from event
+
+    #error if name isn't found
+
+    #attach user_id to event_id
+    # Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID,id:@scope.join.eventID})
+    # Event.save (data)=>
+    #   console.log data
+
 
   EventCreatePage: =>
     @newEventShow = true

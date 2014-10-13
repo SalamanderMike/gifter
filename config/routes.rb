@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get "/signup" => "users#new"
   post "/signup" => "users#create"
 
+  get "/index_user_events/:user_id/events" => "events#index_user_events"
   get "/index_participants/:event_id" => "events#index_participants"
   get "/index_admin_events" => "events#index_admin_events"
 
