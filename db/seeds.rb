@@ -52,8 +52,8 @@ leia.profile = leiaProfile
 darth.profile = darthProfile
 
 # EVENTS
-dailyplanet = Event.create ({eventName: "Daily Planet Gift Exchange", password: "1234", admin_id: 4, participants: [], spendingLimit: 25, match: [[1,2],[2,3],[3,4],[4,5],[5,6],[6,12],[12,1]]})
-starwars = Event.create ({eventName: "Death Star X-mas Party", password: "1234", admin_id: 12, participants: [], spendingLimit: 50, match: [[7,8],[8,9],[9,10],[10,11],[11,12], [12,7]]})
+dailyplanet = Event.create ({eventName: "Daily Planet Gift Exchange", password: "1234", admin_id: 4, participants: 7, spendingLimit: 25, match: [[1,2],[2,3],[3,4],[4,5],[5,6],[6,12],[12,1]]})
+starwars = Event.create ({eventName: "Death Star X-mas Party", password: "1234", admin_id: 12, participants: 6, spendingLimit: 50, match: [[7,8],[8,9],[9,10],[10,11],[11,12], [12,7]]})
 
 
 # ATTACH USERS AND EVENTS TOGETHER

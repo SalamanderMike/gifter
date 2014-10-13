@@ -52,7 +52,7 @@ class GifterCtrl
               @myEvents.push(event)
               matches = @myEvents[index].match
               ++index
-              if matches.length != 0 #Event has a match
+              if matches #check for NULL
                 for i of matches
                   if +matches[i][0] == @sessionID
                     @myMatch[pair] = []
@@ -116,29 +116,31 @@ class GifterCtrl
 
   thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
     @matchProfile = {}
-    for match in @myMatch
-      if match[0] == eventID
-        if match[1] != false
-          @gifteePage()
-          MatchProfile = @resource("users/:user_id/profile.json", {user_id:match[1]})
-          MatchProfile.get (data)=> #Find Giftee's Profile
-            @matchProfile = data
-            @matchInterests = [
-              ["Cuisine",data.cuisine,"cuisine"],
-              ["Stores",data.shops,"shops"],
-              ["Services",data.services,"services"],
-              ["Book Genre",data.bookGenre,"bookGenre"],
-              ["Music Genre",data.musicGenre,"musicGenre"],
-              ["Clothing",data.clothes,"clothes"]
-            ]
-            MatchName = @resource("/users/:id.json", {id:data.user_id})
-            MatchName.get (data)=> # Grab Giftee's Name
-              @matchName = "#{data.firstname} #{data.lastname}"
-            EventTitle = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-            EventTitle.get (title)=> # Grab Event Title
-              @eventTitle = title.eventName
-        else
-          alert "Sorry, your match isn't ready for this Event.\nTry again later!"
+    if @myMatch
+      for match in @myMatch
+        if match[0] == eventID
+          if match[1] != false
+            @gifteePage()
+            MatchProfile = @resource("users/:user_id/profile.json", {user_id:match[1]})
+            MatchProfile.get (data)=> #Find Giftee's Profile
+              @matchProfile = data
+              @matchInterests = [
+                ["Cuisine",data.cuisine,"cuisine"],
+                ["Stores",data.shops,"shops"],
+                ["Services",data.services,"services"],
+                ["Book Genre",data.bookGenre,"bookGenre"],
+                ["Music Genre",data.musicGenre,"musicGenre"],
+                ["Clothing",data.clothes,"clothes"]
+              ]
+              MatchName = @resource("/users/:id.json", {id:data.user_id})
+              MatchName.get (data)=> # Grab Giftee's Name
+                @matchName = "#{data.firstname} #{data.lastname}"
+              EventTitle = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+              EventTitle.get (title)=> # Grab Event Title
+                @eventTitle = title.eventName
+          else
+            alert "Sorry, your match isn't ready for this Event.\nTry again later!"
+
 
   findAdminsEvents: =>
     AdminsEvents = @resource("/index_admin_events.json", {}, {'query': {method: 'GET', isArray: true}})
@@ -170,6 +172,7 @@ class GifterCtrl
     @home = true
     @giftee = false
     @admin = false
+    @createEvent = false
 
   gifteePage: =>
     @home = false
@@ -178,7 +181,6 @@ class GifterCtrl
     @eventHeadding = true
 
   adminPage: (event)=>
-    console.log "EVENT SETTINGS..."
     @home = false
     @giftee = false
     @admin = true
@@ -197,12 +199,13 @@ class GifterCtrl
     @eventHeadding = false
     @createEvent = true
 
-  createNewEvent: (data)=>
+  createNewEvent: =>
     @newEventShow = false
-    console.log "CREATE THIS EVENT..."
-    console.log data
-
-    # @adminPage()
+    Event = @resource("/users/:user_id/events.json", {user_id:@sessionID})
+    @scope.newEvent.admin_id = @sessionID
+    Event.save(@scope.newEvent)
+    @myEvents.push(@scope.newEvent)
+    @homePage()
 
 
 # END OF LINE **************************

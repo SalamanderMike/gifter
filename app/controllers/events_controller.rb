@@ -21,9 +21,13 @@ class EventsController < ApplicationController
   end
 
   def create # POST: New Event
+
     event = Event.create(event_params)
+    @user = User.find_by_id(session[:id])
     @user.events << event
-    redirect_to edit_user_event_path(@user.id, event.id)
+    render json: {}, status: 200
+
+    # redirect_to edit_user_event_path(@user.id, event.id)
   end
 
   def show
@@ -60,6 +64,6 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:eventName, :groupID, :participants, :spendingLimit, :match, :expire)
+    params.require(:event).permit(:eventName, :password, :admin_id, :participants, :spendingLimit, :match, :expire)
   end
 end
