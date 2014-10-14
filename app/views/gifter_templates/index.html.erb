@@ -46,7 +46,6 @@
       <p class="eventName"></p>
       <div class="eventBox"></div>
     </div>
-      <span>click me!</span>
   </div>
 </div>
 <br/><br/><br/><br/><br/>
@@ -80,7 +79,10 @@
   <div id="gifteeName" class="headding">Your Giftee is:  <span style="font-family: 'Spirax', cursive;font-size:1.5em;">{{gifter.matchName}}!</span></div>
 
   <div id="displayPanel">
-    <div style="color:grey;">&nbsp&nbspclick on an item to see where you can buy it</div>
+    <div style="color:grey;text-align:center;">
+    click on an item to see where you can buy it
+    Your spenging limit is ${{gifter.eventLimit}}
+    </div>
     <div id="displayPanelInlay">
       <ul style="list-style-type: none;padding-left:10px;">
         <li class="headding" ng-repeat="catagories in gifter.matchInterests">{{catagories[0]}}
@@ -92,7 +94,6 @@
     </div>
 
   </div>
-  <div>Add Spending Limit</div>
 </div>
 <!-- CHOOSE EVENT TO EDIT ************************************************************************-->
 <div ng-show="gifter.chooseEvent" class="show-hide">
@@ -109,13 +110,29 @@
 </div>
 <!-- EVENT SETTINGS ******************************************************************************-->
 <div ng-show="gifter.admin" class="show-hide">
+  <div id="gifteeName" class="headding">Event Settings</div>
 
+  <div id="displayPanel">
+    <div style="color:grey;text-align:center;">
+    {{gifter.participantNum}} participants have saved a profile!<br>
+    When all members have filled out their profile<br>
+    Gifter will randomly match everyone
+    </div>
+    <div id="displayPanelInlay">
+      <ul style="list-style-type: none;padding-left:10px;">
+        <li class="headding" ng-repeat="participant in gifter.participants track by $index">
+        {{participant}}
+          <!-- <button class="btn btn-danger" ng-click="gifter.removeParticipant($index)">X</button> -->
+        </li>
+      </ul>
+    </div>
+  </div>
 
-<div>progress bar of participants</div>
+<!-- <div>progress bar of participants</div>
 <div>list of participants with add/delete option</div>
 <div>Match Button</div>
 <div>number of participants</div>
-<div>spending limit</div>
+<div>spending limit</div> -->
 
 
 </div>

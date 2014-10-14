@@ -21,6 +21,7 @@ class GifterCtrl
       @newEventShow=false
       @user = {}      # Account Info
       @eventTitle = ""# Event Title
+      @eventLimit = 0
       @myEvents = []  # Event Panels
       @myProfile = {} # Interest Panels/Tags
       @interests = [] # Interests Data
@@ -31,6 +32,7 @@ class GifterCtrl
       @matchName = "" # Giftee's Name
       @notReady = true# Indicates there is no match for this event
       @participants = []
+      @participantNum = 0
 
       @toggleDropdown = false
 
@@ -64,6 +66,11 @@ class GifterCtrl
                 @myMatch[pair] = []
                 @myMatch[pair].push(event.id, false)
                 ++pair
+
+# Move @participants logic into here so that match logic can make matches*************************
+
+
+
 
       @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
       @Profile.get (data)=> #find user's profile
@@ -139,8 +146,9 @@ class GifterCtrl
               MatchName.get (data)=> # Grab Giftee's Name
                 @matchName = "#{data.firstname} #{data.lastname}"
               EventTitle = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-              EventTitle.get (title)=> # Grab Event Title
+              EventTitle.get (title)=> # Grab Event Title & Spending Limit
                 @eventTitle = title.eventName
+                @eventLimit = title.spendingLimit
           else
             alert "Sorry, your match isn't ready for this Event.\nTry again later!"
 
@@ -161,8 +169,22 @@ class GifterCtrl
     console.log "LIST OF PARTICIPANTS..."
     UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
     UsersInEvents.query (data)=>
-      @participants = data
-      console.log data
+      @participantNum = data.length
+      for identity in data
+        User = @resource("/users/:id.json", {id:identity.user_id})
+        User.get (data)=>
+          name = "#{data.firstname} #{data.lastname}"
+          @participants.push(name)
+
+  removeParticipant: (userID)=>#Implement soon
+    # confirm "Are you sure you wish to remove this person from the group?"
+    @participants.splice(userID, 1)
+    @participantNum--
+    # @participants.$update()
+
+
+
+
 
 # SPA PAGES **************************
   homePage: =>
@@ -200,7 +222,6 @@ class GifterCtrl
     @admin = true
     @eventHeadding = true
     @eventTitle = event.eventName
-    console.log event
     @participantsInEvent(event.id)
 
   chooseEventToEdit: (events)=>

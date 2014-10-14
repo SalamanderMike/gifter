@@ -50,6 +50,7 @@ class EventsController < ApplicationController
   end
 
   def destroy # ADMIN - Delete Event
+    respond_with UsersEvent.where(user_id: params[:id])
   end
 
   private
