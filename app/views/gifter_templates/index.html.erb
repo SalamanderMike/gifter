@@ -8,7 +8,8 @@
       <ul class="nav navbar-nav navbar-left">
         <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.home">My Profile</button>
         <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.giftee">Event</button>
-        <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.admin">Event Settings</button>
+        <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.admin">Event Details</button>
+        <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.chooseEvent">Choose Event</button>
       </ul>
       <span id="gifteeEventTitle" ng-show="gifter.eventHeadding">{{gifter.eventTitle}}</span>
       <span id="gifteeEventTitle" ng-show="gifter.newEventShow">{{newEvent.eventName}}</span>
@@ -23,7 +24,7 @@
               <li><a ng-click="gifter.joinEventPage()">Join Event!</a></li>
               <li><a ng-click="gifter.EventCreatePage()">Create New Event</a></li>
 <!-- Delete This Event appears while viewing an event-->
-              <li><a ng-click="gifter.findAdminsEvents()">Event Settings</a></li>
+              <li><a ng-click="gifter.findAdminsEvents()">Event Details</a></li>
               <li class="divider"></li>
               <li><a ng-click="gifter.logout()">Sign Out</a></li>
             </ul>
@@ -43,16 +44,16 @@
   Click On A Green Event To See Who Your 'giftee' is<br>
   Red Events Are Not Ready, Yet
   </h3>
-  <div class="eventPanel" ng-repeat="event in gifter.myEvents track by $index">
+  <div  class="eventPanel" ng-repeat="event in gifter.myEvents track by $index"
+        style="background:{{gifter.thisEventColor(event.match)}};">
     <div class="eventTitles">{{event.eventName}}</div>
-    <div class="eventViewer"  ng-click="gifter.thisMatchProfile(event.id)"
-                              style="background:{{gifter.thisEventColor(event.match)}};">
+    <div class="eventViewer"  ng-click="gifter.thisMatchProfile(event.id)">
       <p class="eventName"></p>
       <div class="eventBox"></div>
     </div>
   </div>
 </div>
-<br/><br/><br/><br/><br/>
+
 <div class="spacer"></div>
 
 <!-- INTERESTS PANELS ****************************************************************************-->
@@ -84,7 +85,8 @@
 
   <div id="displayPanel">
     <div style="color:grey;text-align:center;">
-    click on an item to see where you can buy it
+    <!-- click on an item to see where you can buy it -->
+    {{gifter.matchName}}'s favorite things!<br>
     Your spenging limit is ${{gifter.eventLimit}}
     </div>
     <div id="displayPanelInlay">
@@ -101,19 +103,24 @@
 </div>
 <!-- CHOOSE EVENT TO EDIT ************************************************************************-->
 <div ng-show="gifter.chooseEvent" class="visible">
-  <div class="container">
-    <div class="eventPanel" ng-repeat="event in gifter.adminsEvents track by $index">
+  <div class="eventPanelContainer">
+  <h3 style="font-family: 'Raleway', sans-serif;">
+  Choose which of your Events you'd like to see more details about
+  </h3>
+    <div  class="eventPanel" ng-repeat="event in gifter.adminsEvents track by $index"
+          style="background:{{gifter.thisEventColor(event.match)}};">
       <div class="eventTitles">{{event.eventName}}</div>
       <div class="eventViewer" ng-click="gifter.adminPage(event)">
         <p class="eventName"></p>
         <div class="eventBox"></div>
       </div>
-        <span>click me!</span>
+        <!-- <span>click me!</span> -->
     </div>
   </div>
 </div>
-<!-- EVENT SETTINGS ******************************************************************************-->
+<!-- EVENT DETAILS ******************************************************************************-->
 <div ng-show="gifter.admin" class="visible">
+<div class="bow-background"></div>
   <div id="gifteeName" class="headding">Event Settings</div>
 
   <div id="displayPanel">
@@ -142,6 +149,7 @@
 </div>
 <!-- JOIN EXISTING EVENT ******************************************************************************-->
 <div ng-show="gifter.joinEventVisible" class="visible">
+<div class="bow-background"></div>
   <div id="newEventContainer">
     <form class="form-horizontal" role="form" ng-submit="gifter.joinEvent()">
       <div class="form-group">
@@ -167,6 +175,7 @@
 
 <!-- CREATE NEW EVENT ******************************************************************************-->
 <div ng-show="gifter.createEvent" class="visible">
+<div class="bow-background"></div>
   <div id="newEventContainer">
     <form class="form-horizontal" role="form" ng-submit="gifter.createNewEvent()">
       <div class="form-group">

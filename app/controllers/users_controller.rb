@@ -59,6 +59,12 @@ class UsersController < ApplicationController
 
   private
 
+  # def profile_init
+  #   user_id = session[:id]
+  #   params = ActionController::Parameters.new({:user_id => session[:id], :cuisine => []})
+  #   params.permit(:user_id, :cuisine => ["Wine")
+  # end
+
   def render_main_layout_if_format_html
     if request.format.symbol == :html
       render "users/new"

@@ -18,10 +18,10 @@ body {
 }
 
 .visible.ng-hide-add, .visible.ng-hide-remove {
-  -webkit-transition:all linear 0.15s;
-  -moz-transition:all linear 0.15s;
-  -o-transition:all linear 0.15s;
-  transition:all linear 0.15s;
+  -webkit-transition:all ease-in-out 0.3s;
+  -moz-transition:all ease-in-out 0.3s;
+  -o-transition:all ease-in-out 0.3s;
+  transition:all ease-in-out 0.3s;
   display:block!important;
 }
 
@@ -121,6 +121,24 @@ div.background {
   height: 530px;
   background-image: url('gift_box_backdrop.png');
   z-index: -1;
+}
+
+div.bow-background {
+  position: fixed;
+  top: 200px;
+  left: 20px;
+  width: 620px;
+  height: 360px;
+  background-image: url('bow.png');
+}
+
+div.spacer {
+  position: relative;
+  top: 90px;
+  left: 20px;
+  width: 860px;
+  height: 250px;
+  background-image: url('ribbon.png');
 }
 /*EVENT PANELS***********************************************************************************/
 .eventPanelContainer {
@@ -239,7 +257,7 @@ span {
   width: 97%;
   min-height: 125px;
   border: 1px solid #ccffdb;
-  padding-bottom: 50px;
+  padding: 5px 5px 50px 5px;
   text-align: center;
   border-radius: 30px;
 }

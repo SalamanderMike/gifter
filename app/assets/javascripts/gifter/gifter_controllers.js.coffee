@@ -11,7 +11,7 @@ class GifterCtrl
       @rootScope.sessionID = user.id
       @sessionID = user.id
       console.log "USER ID:#{@sessionID}"
-      @home = true    # Hide/Show Home page
+      @home = false   # Hide/Show Home page
       @giftee = false # Hide/Show Match Profile page
       @admin = false  # Hide/Show Admin Settings
       @chooseEvent=false#Hide/Show Event Edit Choice
@@ -59,9 +59,9 @@ class GifterCtrl
             Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
             Event.get (event)=>
               @myEvents.push(event)
-              console.log "#{event.participants} in Event"
-              if event.participants == @totalParticipants
-                console.log "#{event.eventName} has full participation!"
+              console.log "#{event.participants} in Event"#***** MATCH ALGORITHM
+              if event.participants == @totalParticipants#***** MATCH ALGORITHM
+                console.log "#{event.eventName} has full participation!"#***** MATCH ALGORITHM
               # Keep track of Matches
               matches = @myEvents[index].match
               ++index
@@ -75,21 +75,55 @@ class GifterCtrl
                 @myMatch[pair] = []
                 @myMatch[pair].push(event.id, false)
                 ++pair
+            @home = true# Show Home page after calculation is done
 
-
+# NEXT STEP #1 MATCH ALGORITHM *********************
 
 # Move @participants logic into here so that match logic can make matches*************************
 # Grab all User's Events -UsersEvents
 # data[i].length for each event_id -UsersEvents
 # Grab Event with event_id -Events
 # Compare data[i].length with Event.participants
-# If they're equal, then run Match Algorythm
+# If they're equal, then run Match Algorithm
 
 
 
       @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
       @Profile.get (data)=> #find user's profile
         @myProfile = data
+        # INITIALIZE PROFILE WITH SUGGESTED DATA
+        if !data.cuisine
+          @myProfile.cuisine = ["Wine", "Cookies", "Cheese"]
+          @myProfile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"]
+          @myProfile.services = ["Spotify", "Pandora", "Dropbox"]
+          @myProfile.bookGenre = ["Sci-fi", "Romance", "Mystery"]
+          @myProfile.musicGenre = ["Indie", "Classical", "Pop"]
+          @myProfile.clothes = ["Shirt", "Tie", "Scarf"]
+          @myProfile.animal = ["Wolf", "Cat", "Girraffe"]
+          @myProfile.color = ["blue"]
+          @myProfile.metal = ["silver", "gold"]
+          @myProfile.element = ["Wood", "Stone", "Glass"]
+          @myProfile.art = ["Imports", "Photography", "Figurines"]
+          @myProfile.hobbies = ["Reading", "Cooking", "Movies"]
+          @myProfile.$update()
+          @myProfile = data
+          console.log @myProfile
+          @interests = [
+            ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
+            ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
+            ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
+            ["Book Genre",@myProfile.bookGenre,"bookGenre","Barnes & Noble Membership..."],
+            ["Music Genre",@myProfile.musicGenre,"musicGenre","Barnes & Noble Membership..."],
+            ["Clothing",@myProfile.clothes,"clothes","Barnes & Noble Membership..."],
+            ["Animals",@myProfile.animal,"animal","Barnes & Noble Membership..."],
+            ["Color",@myProfile.color,"color","Barnes & Noble Membership..."],
+            ["Metal",@myProfile.metal,"metal","Barnes & Noble Membership..."],
+            ["Element",@myProfile.element,"element","Barnes & Noble Membership..."],
+            ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
+            ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
+          ]
+          @home = true# Show Home page after calculation is done
+
         # Interests [Title,DB Column,DB Catagory,Placeholders]
         @interests = [
           ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
@@ -105,6 +139,8 @@ class GifterCtrl
           ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
           ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
         ]
+        @home = true# Show Home page after calculation is done
+
     .error ()=>
       location.path("/login")
 
@@ -126,6 +162,7 @@ class GifterCtrl
           ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
           ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
         ]
+
 
   addTag: (newTag, catagory)=>
     @myProfile[catagory].push(newTag)
@@ -169,8 +206,8 @@ class GifterCtrl
 
   thisEventColor: (match)=>
     if match
-      return "#ccfff2"
-    return "#ffcccd"
+      return "-webkit-linear-gradient(-45deg, rgba(189,239,227,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 65%,rgba(169,232,172,1) 100%)"
+    return "-webkit-linear-gradient(-45deg, rgba(252,203,201,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 65%,rgba(249,206,255,1) 100%)"
 
   findAdminsEvents: =>
     AdminsEvents = @resource("/index_admin_events.json", {}, {'query': {method: 'GET', isArray: true}})
@@ -316,7 +353,6 @@ class GifterCtrl
     @myMatch[pair] = []
     @myMatch[pair].push(event.id, false)
     @homePage()
-
 
 # END OF LINE **************************
   logout: ->
