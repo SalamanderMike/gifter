@@ -42,8 +42,8 @@ class GifterCtrl
         @user = data
 
       # Find all user's events by event ID through linker table
-      UserEvents = @resource("/index_user_events/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
-      UserEvents.query (data)=>
+      @UserEvents = @resource("/index_user_events/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
+      @UserEvents.query (data)=>
         index = 0
         pair = 0
         # Grab Events by their discovered IDs, push them into an array [@myEvents]
@@ -51,9 +51,18 @@ class GifterCtrl
         for link of data
           if data[link].event_id
             eventID = data[link].event_id
+            # Get total number of participants for each Event
+            @UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+            @UsersInEvents.query (data)=>
+              @totalParticipants = data.length
+              console.log "#{@totalParticipants} people in this User's Event"
             Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
             Event.get (event)=>
               @myEvents.push(event)
+              console.log "#{event.participants} in Event"
+              if event.participants == @totalParticipants
+                console.log "#{event.eventName} has full participation!"
+              # Keep track of Matches
               matches = @myEvents[index].match
               ++index
               if matches #check against NULL
@@ -67,8 +76,14 @@ class GifterCtrl
                 @myMatch[pair].push(event.id, false)
                 ++pair
 
-# Move @participants logic into here so that match logic can make matches*************************
 
+
+# Move @participants logic into here so that match logic can make matches*************************
+# Grab all User's Events -UsersEvents
+# data[i].length for each event_id -UsersEvents
+# Grab Event with event_id -Events
+# Compare data[i].length with Event.participants
+# If they're equal, then run Match Algorythm
 
 
 
@@ -171,8 +186,8 @@ class GifterCtrl
 
   participantsInEvent: (eventID)=>
     console.log "LIST OF PARTICIPANTS..."
-    UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
-    UsersInEvents.query (data)=>
+    @UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+    @UsersInEvents.query (data)=>
       @participantNum = data.length
       for identity in data
         User = @resource("/users/:id.json", {id:identity.user_id})
