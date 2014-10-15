@@ -152,6 +152,10 @@ class GifterCtrl
           else
             alert "Sorry, your match isn't ready for this Event.\nTry again later!"
 
+  thisEventColor: (match)=>
+    if match
+      return "#ccfff2"
+    return "#ffcccd"
 
   findAdminsEvents: =>
     AdminsEvents = @resource("/index_admin_events.json", {}, {'query': {method: 'GET', isArray: true}})
@@ -293,6 +297,9 @@ class GifterCtrl
     @scope.newEvent.admin_id = @sessionID
     Event.save(@scope.newEvent)
     @myEvents.push(@scope.newEvent)
+    pair = @myMatch.length
+    @myMatch[pair] = []
+    @myMatch[pair].push(event.id, false)
     @homePage()
 
 

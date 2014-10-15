@@ -39,10 +39,14 @@
 <!-- EVENT PANELS ********************************************************************************-->
 <div  ng-show="gifter.home" class="visible">
 <div class="eventPanelContainer">
-<h3 style="font-family: 'Raleway', sans-serif;">Click On An Event To See Who Your 'giftee' is</h3>
+<h3 style="font-family: 'Raleway', sans-serif;">
+  Click On A Green Event To See Who Your 'giftee' is<br>
+  Red Events Are Not Ready, Yet
+  </h3>
   <div class="eventPanel" ng-repeat="event in gifter.myEvents track by $index">
     <div class="eventTitles">{{event.eventName}}</div>
-    <div class="eventViewer" ng-click="gifter.thisMatchProfile(event.id)">
+    <div class="eventViewer"  ng-click="gifter.thisMatchProfile(event.id)"
+                              style="background:{{gifter.thisEventColor(event.match)}};">
       <p class="eventName"></p>
       <div class="eventBox"></div>
     </div>

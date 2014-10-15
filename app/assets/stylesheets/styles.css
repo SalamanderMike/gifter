@@ -148,8 +148,9 @@ div.background {
 
   -webkit-box-shadow: 10px 10px 15px 5px rgba(150,150,150,.6);
   width: 400px;
-  height: 200px;
+  min-height: 200px;
   border: 0px solid #ccffdb;
+  padding: 5px;
   margin: 15px;
   border-radius: 10px;
 }
@@ -162,6 +163,7 @@ div.background {
   left: 10px;
   width: 95%;
   height: 155px;
+
   padding-bottom: 50px;
   border: 1px solid #ccf6ff;
   text-align: center;
