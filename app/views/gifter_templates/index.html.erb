@@ -11,8 +11,8 @@
         <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.admin">Event Details</button>
         <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.chooseEvent">Choose Event</button>
       </ul>
-      <span id="gifteeEventTitle" ng-show="gifter.eventHeadding">{{gifter.eventTitle}}</span>
-      <span id="gifteeEventTitle" ng-show="gifter.newEventShow">{{newEvent.eventName}}</span>
+      <span class="gifteeEventTitle" ng-show="gifter.eventHeadding">{{gifter.eventTitle}}</span>
+      <span class="gifteeEventTitle" ng-show="gifter.newEventShow">{{newEvent.eventName}}</span>
       <ul class="nav navbar-nav navbar-right">
         <div class="navButtonRight">
           <span class="dropdown" is-open="gifter.toggleDropdown">

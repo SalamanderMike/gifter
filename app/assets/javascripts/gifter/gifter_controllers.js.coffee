@@ -251,6 +251,8 @@ class GifterCtrl
     @createEvent = false
     @joinEventVisible = false
     @toggleDropdown = false
+    @newEventShow = false
+    @eventHeadding = false
     #Visible
     @home = true
 
@@ -288,6 +290,8 @@ class GifterCtrl
     @createEvent = false
     @joinEventVisible = false
     @toggleDropdown = false
+    @newEventShow = false
+    @eventHeadding = false
     #Visible
     @chooseEvent = true
     @adminsEvents = events
@@ -300,8 +304,9 @@ class GifterCtrl
     @chooseEvent = false
     @createEvent = false
     @toggleDropdown = false
+    @newEventShow = false
+    @eventHeadding = false
     #Visible
-    @eventHeadding = true
     @joinEventVisible = true
 
   EventCreatePage: =>
@@ -313,6 +318,7 @@ class GifterCtrl
     @eventHeadding = false
     @joinEventVisible = false
     @toggleDropdown = false
+    @eventHeadding = false
     #Visible
     @newEventShow = true
     @createEvent = true
