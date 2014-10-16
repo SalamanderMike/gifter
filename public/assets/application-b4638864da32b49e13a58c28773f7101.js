@@ -42700,10 +42700,11 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       });
       return Event.query((function(_this) {
         return function(data) {
-          var event, thisEvent, _i, _len;
+          var event, eventNameExists, thisEvent, _i, _len;
           for (_i = 0, _len = data.length; _i < _len; _i++) {
             event = data[_i];
             if (_this.scope.join.eventName === event.eventName) {
+              eventNameExists = true;
               if (_this.scope.join.password === event.password) {
                 thisEvent = event;
                 Event = _this.resource("/users/:user_id/events/:id", {
@@ -42729,8 +42730,13 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
               }
             }
           }
-          alert("We're sorry, but we can't find an Event with that name.\nTry again?");
-          return _this.scope.join = "";
+          console.log(eventNameExists);
+          _this.scope.join.eventName = "";
+          _this.scope.join.password = "";
+          if (!eventNameExists) {
+            alert("We're sorry, but we can't find an Event with that name.\nTry again?");
+            _this.scope.join = "";
+          }
         };
       })(this));
     };
@@ -42747,6 +42753,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       pair = this.myMatch.length;
       this.myMatch[pair] = [];
       this.myMatch[pair].push(event.id, false);
+      this.scope.newEvent = {};
       return this.homePage();
     };
 

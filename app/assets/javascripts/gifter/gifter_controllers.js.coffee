@@ -324,7 +324,10 @@ class GifterCtrl
     Event = @resource("/users/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
     Event.query (data)=>
       for event in data
+
+
         if @scope.join.eventName == event.eventName#Find event by eventName to grab its :id
+          eventNameExists = true
           if @scope.join.password == event.password
             thisEvent = event
             Event = @resource("/users/:user_id/events/:id", {user_id:@sessionID,id:event.id}, {update: {method: 'PUT'}})
@@ -338,8 +341,13 @@ class GifterCtrl
             alert "Password is incorrect for this Event"
             @scope.join.password = ""
             return
-      alert "We're sorry, but we can't find an Event with that name.\nTry again?"
-      @scope.join = ""
+      console.log eventNameExists
+      @scope.join.eventName = ""
+      @scope.join.password = ""
+      if !eventNameExists
+        alert "We're sorry, but we can't find an Event with that name.\nTry again?"
+        @scope.join = ""
+        return
 
 
 
@@ -352,6 +360,7 @@ class GifterCtrl
     pair = @myMatch.length
     @myMatch[pair] = []
     @myMatch[pair].push(event.id, false)
+    @scope.newEvent = {}
     @homePage()
 
 # END OF LINE **************************
