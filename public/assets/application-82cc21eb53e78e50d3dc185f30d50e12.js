@@ -42626,6 +42626,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.createEvent = false;
       this.joinEventVisible = false;
       this.toggleDropdown = false;
+      this.newEventShow = false;
+      this.eventHeadding = false;
       return this.home = true;
     };
 
@@ -42660,6 +42662,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.createEvent = false;
       this.joinEventVisible = false;
       this.toggleDropdown = false;
+      this.newEventShow = false;
+      this.eventHeadding = false;
       this.chooseEvent = true;
       return this.adminsEvents = events;
     };
@@ -42671,7 +42675,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.chooseEvent = false;
       this.createEvent = false;
       this.toggleDropdown = false;
-      this.eventHeadding = true;
+      this.newEventShow = false;
+      this.eventHeadding = false;
       return this.joinEventVisible = true;
     };
 
@@ -42683,6 +42688,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.eventHeadding = false;
       this.joinEventVisible = false;
       this.toggleDropdown = false;
+      this.eventHeadding = false;
       this.newEventShow = true;
       return this.createEvent = true;
     };
