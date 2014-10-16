@@ -42742,7 +42742,11 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     };
 
     GifterCtrl.prototype.createNewEvent = function() {
-      var Event, pair;
+      var Event, ok, pair;
+      ok = confirm("Please make sure you write down this Event name and Password and share it with all participants\nEvent: " + this.scope.newEvent.eventName + "\nPassword: " + this.scope.newEvent.password);
+      if (ok === false) {
+        return;
+      }
       this.newEventShow = false;
       Event = this.resource("/users/:user_id/events.json", {
         user_id: this.sessionID

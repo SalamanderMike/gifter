@@ -352,6 +352,9 @@ class GifterCtrl
 
 
   createNewEvent: =>
+    ok = confirm "Please make sure you write down this Event name and Password and share it with all participants\nEvent: #{@scope.newEvent.eventName}\nPassword: #{@scope.newEvent.password}"
+    if ok == false
+      return
     @newEventShow = false
     Event = @resource("/users/:user_id/events.json", {user_id:@sessionID})
     @scope.newEvent.admin_id = @sessionID
