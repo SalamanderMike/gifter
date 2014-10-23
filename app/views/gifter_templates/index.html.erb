@@ -1,9 +1,6 @@
 <!-- NAVBAR ************************************************************************************-->
 <nav class="navbar navbar-default navbar-fixed-top">
   <!-- <div class="container"> -->
-    <div class="navbar-header">
-      <a class="navbar-brand"></a>
-    </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-left">
         <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.home">My Profile</button>
@@ -34,8 +31,15 @@
     </div>
   </div>
 </nav><br/><br/><br/>
-<div class="background" ng-show="gifter.giftee"></div>
+
+<!-- IMAGES ********************************************************************************-->
 <div id="titleSmall">Gifter</div>
+
+<div class="flower-paper" ng-show="gifter.giftee">
+  <!-- <div class="gifter-box"></div> -->
+</div>
+
+<div class="brown-paper" ng-show="gifter.admin"></div>
 
 <!-- EVENT PANELS ********************************************************************************-->
 <div  ng-show="gifter.home" class="visible">
@@ -86,7 +90,7 @@
   <div id="displayPanel">
     <div style="color:grey;text-align:center;">
     <!-- click on an item to see where you can buy it -->
-    {{gifter.matchName}}'s favorite things!<br>
+    These are {{gifter.matchName}}'s favorite things!<br>
     Your spenging limit is ${{gifter.eventLimit}}
     </div>
     <div id="displayPanelInlay">
@@ -120,7 +124,6 @@
 </div>
 <!-- EVENT DETAILS ******************************************************************************-->
 <div ng-show="gifter.admin" class="visible">
-<div class="bow-background"></div>
   <div id="gifteeName" class="headding">Event Settings</div>
 
   <div id="displayPanel">
