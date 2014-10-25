@@ -55,9 +55,9 @@ div.flower-paper {
 /********************************************/
 
 #newEventContainer {
-  position: absolute;
+  position: fixed;
   top: 150px;
-  right: -250px;
+  left: 50%;
   width: 900px;
   height: 300px;
   font-family: 'Raleway', sans-serif;
@@ -327,17 +327,27 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
   padding: .5em;
   margin: 1px;
 }
-.remove {
+
+.deleteButton {
   position: relative;
   background: -webkit-linear-gradient(-45deg, rgba(255,121,114,1) 0%,rgba(255,203,201,1) 21%,rgba(255,238,237,1) 22%,rgba(255,0,0,1) 100%);
   top: -12px;
-  right: -8px;
-  width: 1.2em;
-  height: 1.2em;
+  right: -10px;
+  width: 1em;
+  height: 1em;
   border-color: #e78d8d;
-  border-radius: 100%;
+  border-radius: 3px;
 }
 
+.remove {
+  position: relative;
+  top: -8px;
+  left: -4px;
+  text-align: center;
+  color: #5c5c5c;
+  /*color: white;*/
+
+}
 /*GIFTEE PAGE ********************************************************************************/
 
 .headding {

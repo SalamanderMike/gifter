@@ -112,32 +112,32 @@ class GifterCtrl
             ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
             ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
             ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
-            ["Book Genre",@myProfile.bookGenre,"bookGenre","Barnes & Noble Membership..."],
-            ["Music Genre",@myProfile.musicGenre,"musicGenre","Barnes & Noble Membership..."],
-            ["Clothing",@myProfile.clothes,"clothes","Barnes & Noble Membership..."],
-            ["Animals",@myProfile.animal,"animal","Barnes & Noble Membership..."],
-            ["Color",@myProfile.color,"color","Barnes & Noble Membership..."],
-            ["Metal",@myProfile.metal,"metal","Barnes & Noble Membership..."],
-            ["Element",@myProfile.element,"element","Barnes & Noble Membership..."],
-            ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
-            ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
+            ["Book Genre",@myProfile.bookGenre,"bookGenre","Biography... Audiobook..."],
+            ["Music Genre",@myProfile.musicGenre,"musicGenre","Metal... Holiday..."],
+            ["Clothing",@myProfile.clothes,"clothes","Socks... Sweater..."],
+            ["Animals",@myProfile.animal,"animal","Bird... Bear..."],
+            ["Color",@myProfile.color,"color","Green... Silver..."],
+            ["Metal",@myProfile.metal,"metal","Puter... Titanium..."],
+            ["Element",@myProfile.element,"element","Tourmaline... Crystal..."],
+            ["Art",@myProfile.art,"art","Carving... Ceramic..."],
+            ["Hobbies",@myProfile.hobbies,"hobbies","Sports... Rock Climbing..."]
           ]
           @home = true# Show Home page after calculation is done
 
         # Interests [Title,DB Column,DB Catagory,Placeholders]
         @interests = [
           ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
-          ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
-          ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
-          ["Book Genre",@myProfile.bookGenre,"bookGenre","Barnes & Noble Membership..."],
-          ["Music Genre",@myProfile.musicGenre,"musicGenre","Barnes & Noble Membership..."],
-          ["Clothing",@myProfile.clothes,"clothes","Barnes & Noble Membership..."],
-          ["Animals",@myProfile.animal,"animal","Barnes & Noble Membership..."],
-          ["Color",@myProfile.color,"color","Barnes & Noble Membership..."],
-          ["Metal",@myProfile.metal,"metal","Barnes & Noble Membership..."],
-          ["Element",@myProfile.element,"element","Barnes & Noble Membership..."],
-          ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
-          ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
+            ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
+            ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
+            ["Book Genre",@myProfile.bookGenre,"bookGenre","Biography... Audiobook..."],
+            ["Music Genre",@myProfile.musicGenre,"musicGenre","Metal... Holiday..."],
+            ["Clothing",@myProfile.clothes,"clothes","Socks... Sweater..."],
+            ["Animals",@myProfile.animal,"animal","Bird... Bear..."],
+            ["Color",@myProfile.color,"color","Green... Silver..."],
+            ["Metal",@myProfile.metal,"metal","Puter... Titanium..."],
+            ["Element",@myProfile.element,"element","Tourmaline... Crystal..."],
+            ["Art",@myProfile.art,"art","Carving... Ceramic..."],
+            ["Hobbies",@myProfile.hobbies,"hobbies","Sports... Rock Climbing..."]
         ]
         @home = true# Show Home page after calculation is done
 

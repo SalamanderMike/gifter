@@ -5,13 +5,8 @@
   <%= form_for :user do |f| %>
     <p><%= f.text_field :email, class: "form-control", placeholder: "Enter your email",autofocus: true %> </p>
     <p><%= f.password_field :password, class: "form-control", placeholder: "Enter your password" %> </p>
-    <%= f.submit "Login!", class: "btn btn-sunny text-uppercase" %><br/>
+    <%= f.submit "Login!", class: "btn btn-info" %><br/>
     <%= link_to("Sign up for a new account!", signup_path, :method => :get) %>
   <% end %>
 </div>
-
-
-<!-- <div class="construction">This site is currently under construction...
-  <b>isn't <i>that</i> exciting?</b> Please come back!
-</div> -->
 

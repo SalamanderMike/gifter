@@ -67,9 +67,13 @@
   <div class="interestPanel" ng-repeat="catagory in gifter.interests">
     <div class="interestTitles">{{catagory[0]}}</div>
     <div class="interestViewer">
-        <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
-          <button class="remove"  ng-click="gifter.removeTag($index, catagory[2])"></button>
-        </div>
+
+      <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
+        <button class="deleteButton"  ng-click="gifter.removeTag($index, catagory[2])">
+          <span class="remove">x</span>
+        </button>
+      </div>
+
     </div>
     <form ng-submit="gifter.addTag(newTag, catagory[2])">
       <span>
