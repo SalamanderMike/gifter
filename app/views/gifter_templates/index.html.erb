@@ -4,12 +4,13 @@
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-left">
         <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.home">My Profile</button>
-        <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.giftee">Event</button>
-        <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.admin">Event Details</button>
+        <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.giftee">Event:</button>
+        <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.admin">Event:</button>
         <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.chooseEvent">Choose Event</button>
+      <li class="gifteeEventTitle" ng-show="gifter.eventHeadding">{{gifter.eventTitle}}</li>
+      <li class="gifteeEventTitle" ng-show="gifter.newEventShow">{{newEvent.eventName}}</li>
       </ul>
-      <span class="gifteeEventTitle" ng-show="gifter.eventHeadding">{{gifter.eventTitle}}</span>
-      <span class="gifteeEventTitle" ng-show="gifter.newEventShow">{{newEvent.eventName}}</span>
+
       <ul class="nav navbar-nav navbar-right">
         <div class="navButtonRight">
           <span class="dropdown" is-open="gifter.toggleDropdown">
@@ -89,7 +90,7 @@
 <!-- Giftee's Profile ****************************************************************************-->
 <div  ng-show="gifter.giftee" class="visible">
 
-  <div id="gifteeName" class="headding">Your Giftee is:  <span style="font-family: 'Spirax', cursive;font-size:1.5em;">{{gifter.matchName}}!</span></div>
+  <div id="gifteeName" class="heading">Your Giftee is:  <span style="font-family: 'Spirax', cursive;font-size:1.5em;">{{gifter.matchName}}!</span></div>
 
   <div id="displayPanel">
     <div style="color:grey;text-align:center;">
@@ -98,10 +99,10 @@
     Your spending limit is ${{gifter.eventLimit}}
     </div>
     <div id="displayPanelInlay">
-      <ul style="list-style-type: none;padding-left:10px;">
-        <li class="headding" ng-repeat="catagories in gifter.matchInterests">{{catagories[0]}}
-          <ul>
-            <li class="body" ng-repeat="interests in catagories[1] track by $index">{{interests}}</li>
+      <ul class="heading" style="list-style-type: none;padding-left:10px;">
+        <li ng-repeat="catagories in gifter.matchInterests">{{catagories[0]}}
+          <ul class="body" style="font-size:.7em;">
+            <li class="tags" ng-repeat="interests in catagories[1] track by $index">{{interests}}</li>
           </ul>
         </li>
       </ul>
@@ -128,7 +129,7 @@
 </div>
 <!-- EVENT DETAILS ******************************************************************************-->
 <div ng-show="gifter.admin" class="visible">
-  <div id="gifteeName" class="headding">Event Settings</div>
+  <div id="gifteeName" class="heading">Event Settings</div>
 
   <div id="displayPanel">
     <div style="color:grey;text-align:center;">
@@ -138,7 +139,7 @@
     </div>
     <div id="displayPanelInlay">
       <ul style="list-style-type: none;padding-left:10px;">
-        <li class="headding" ng-repeat="participant in gifter.participants track by $index">
+        <li class="heading" ng-repeat="participant in gifter.participants track by $index">
         {{participant}}
           <!-- <button class="btn btn-danger" ng-click="gifter.removeParticipant($index)">X</button> -->
         </li>
@@ -159,14 +160,18 @@
 <div class="bow-background"></div>
   <div id="newEventContainer">
     <form class="form-horizontal" role="form" ng-submit="gifter.joinEvent()">
-      <div class="form-group">
-        <label for="joinEventName" class="col-sm-2 control-label">What's the name of the event you're joining?</label>
+      <div class="form-group" id="labelBackground">
+        <label for="joinEventName" class="col-sm-2 control-label">
+        What's the name of the event you're joining?
+        </label>
         <div class="col-sm-4">
           <input autofocus class="form-control" id="joinEventName" ng-model="join.eventName" placeholder="Big Data Holiday Bash">
         </div>
       </div>
-      <div class="form-group">
-        <label for="joinPassword" class="col-sm-2 control-label">What's the Group Password?</label>
+      <div class="form-group" id="labelBackground">
+        <label for="joinPassword" class="col-sm-2 control-label">
+        What's the Group Password?
+        </label>
         <div class="col-sm-4">
           <input class="form-control" id="joinPassword" type="password" ng-model="join.password" placeholder="password">
         </div>
@@ -186,25 +191,33 @@
   <div id="newEventContainer">
     <form class="form-horizontal" role="form" ng-submit="gifter.createNewEvent()">
       <div class="form-group">
-        <label for="eventName" class="col-sm-2 control-label">Event Name</label>
+        <label for="eventName" class="col-sm-2 control-label" id="labelBackground">
+        Event Name
+        </label>
         <div class="col-sm-4">
           <input autofocus class="form-control" id="eventName" ng-model="newEvent.eventName" placeholder="Big Data Holiday Bash">
         </div>
       </div>
-      <div class="form-group">
-        <label for="password" class="col-sm-2 control-label">Group Password</label>
+      <div class="form-group" id="labelBackground">
+        <label for="password" class="col-sm-2 control-label">
+        Group Password
+        </label>
         <div class="col-sm-4">
           <input class="form-control" id="password" type="password" ng-model="newEvent.password" placeholder="password">
         </div>
       </div>
-      <div class="form-group">
-        <label for="spendingLimit" class="col-sm-2 control-label">Spending Limit $</label>
+      <div class="form-group" id="labelBackground">
+        <label for="spendingLimit" class="col-sm-2 control-label">
+        Spending Limit $
+        </label>
         <div class="col-sm-4">
           <input class="form-control" id="spendingLimit" type="number" ng-model="newEvent.spendingLimit" placeholder="5 or 50 dollars?">
         </div>
       </div>
-      <div class="form-group">
-        <label for="participantNum" class="col-sm-2 control-label">Number of Partcipants</label>
+      <div class="form-group" id="labelBackground">
+        <label for="participantNum" class="col-sm-2 control-label">
+        Number of Partcipants
+        </label>
         <div class="col-sm-4">
           <input class="form-control" id="participantNum" type="number" ng-model="newEvent.participants" placeholder="3 or 30 people?">
         </div>

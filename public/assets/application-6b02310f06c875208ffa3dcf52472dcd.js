@@ -42665,6 +42665,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.newEventShow = false;
       this.eventHeadding = false;
       this.chooseEvent = true;
+      this.participants = [];
+      this.adminsEvents = [];
       return this.adminsEvents = events;
     };
 

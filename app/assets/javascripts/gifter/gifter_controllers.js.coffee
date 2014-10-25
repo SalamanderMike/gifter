@@ -294,6 +294,8 @@ class GifterCtrl
     @eventHeadding = false
     #Visible
     @chooseEvent = true
+    @participants = []
+    @adminsEvents = []
     @adminsEvents = events
 
   joinEventPage: =>
@@ -371,6 +373,11 @@ class GifterCtrl
     @myMatch[pair].push(event.id, false)
     @scope.newEvent = {}
     @homePage()
+
+
+  # SHUFFLE equation: *******************************************************
+  # but use User.where() instead to limit to groups
+  # User.all.map(&:id).shuffle.zip(User.all.map(&:id).shuffle)
 
 # END OF LINE **************************
   logout: ->

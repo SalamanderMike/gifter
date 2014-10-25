@@ -1,7 +1,4 @@
 class EventsController < ApplicationController
-  # before_action :find_user
-  # before_action :find_user_event, :except => [:index, :new, :create]
-
   respond_to :json
 
   def index # JOIN EVENT: Look through all Events to find eventName
@@ -30,8 +27,6 @@ class EventsController < ApplicationController
     @user = User.find_by_id(session[:id])
     @user.events << event
     render json: {}, status: 200
-
-    # redirect_to edit_user_event_path(@user.id, event.id)
   end
 
   def show
@@ -43,10 +38,6 @@ class EventsController < ApplicationController
     @user = User.find_by_id(session[:id])
     @user.events << event
     render json: {}, status: 200
-    # Modal Popup
-    # Progress Bar showing participation
-    # List of participants who've joined w/delete buttons
-    # Text fields to edit number of participants
   end
 
   def destroy # ADMIN - Delete Event
@@ -54,23 +45,6 @@ class EventsController < ApplicationController
   end
 
   private
-  # SHUFFLE equation:
-  # but use User.where() instead to limit to groups
-  # User.all.map(&:id).shuffle.zip(User.all.map(&:id).shuffle)
-
-
-  def find_user
-    user_id = params[:user_id]
-    @user = User.find_by_id(user_id)
-    # redirect_to users_path unless @user
-  end
-
-  def find_user_event
-    id = params[:id]
-    @event = Event.find_by_id(id)
-    # redirect_to user_events_path(@user.id) unless @event
-  end
-
   def event_params
     params.require(:event).permit(:eventName, :password, :admin_id, :participants, :spendingLimit, :match, :expire)
   end

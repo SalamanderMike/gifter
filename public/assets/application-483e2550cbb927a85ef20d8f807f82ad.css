@@ -6285,6 +6285,11 @@ div.flower-paper {
   font-size: 1em;
 }
 
+#labelBackground {
+  background: rgba(255, 255, 255, .2);
+  border-radius: 10px;
+}
+
 #title {
   position: absolute;
   top: 100px;
@@ -6547,6 +6552,8 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
   -webkit-box-shadow: 3px 3px 0px 0px rgba(214, 214, 214, .8);
   padding: .5em;
   margin: 1px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2em;
 }
 
 .deleteButton {
@@ -6571,7 +6578,7 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
 }
 /*GIFTEE PAGE ********************************************************************************/
 
-.headding {
+.heading {
   color: rgba(105, 105, 105, 1);
   font-family: 'Corben', cursive;
   font-size: 1em;
@@ -6586,7 +6593,8 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
 
 .gifteeEventTitle {
   position: fixed;
-  left: 30%;
+  top: -4px;
+  left: 100px;
   color: rgba(176, 69, 112, .5);
   text-shadow: 4px 4px 10px rgba(150, 150, 150, .6);
   font-family: 'Abril Fatface', cursive;
@@ -6612,9 +6620,9 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
   position: absolute;
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ffffff), color-stop(57%,#f3f3f3), color-stop(71%,#e2e2e2), color-stop(100%,#ffffff));
   top: 200px;
+  bottom: 0px;
   right:100px;
   width:450px;
-  min-height: 100%;
   padding: 5px;
   border-radius: 10px;
   border: solid 1px rgba(76, 128, 154, .2);
