@@ -33,6 +33,7 @@ class GifterCtrl
       @notReady = true# Indicates there is no match for this event
       @participants = []
       @participantNum = 0
+      @regexNum = /^[0-9]+$/
 
       @toggleDropdown = false
 
@@ -366,6 +367,10 @@ class GifterCtrl
     @newEventShow = false
     Event = @resource("/users/:user_id/events.json", {user_id:@sessionID})
     @scope.newEvent.admin_id = @sessionID
+
+
+    @scope.newEvent.spendingLimit = parseInt(@scope.newEvent.spendingLimit)
+    @scope.newEvent.participants = parseInt(@scope.newEvent.participants)
     Event.save(@scope.newEvent)
     @myEvents.push(@scope.newEvent)
     pair = @myMatch.length

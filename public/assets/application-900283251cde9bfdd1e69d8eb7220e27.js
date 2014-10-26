@@ -42366,6 +42366,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
           _this.notReady = true;
           _this.participants = [];
           _this.participantNum = 0;
+          _this.regexNum = /^[0-9]+$/;
           _this.toggleDropdown = false;
           User = _this.resource("/users/:id.json", {
             id: _this.sessionID
@@ -42760,6 +42761,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         user_id: this.sessionID
       });
       this.scope.newEvent.admin_id = this.sessionID;
+      this.scope.newEvent.spendingLimit = parseInt(this.scope.newEvent.spendingLimit);
+      this.scope.newEvent.participants = parseInt(this.scope.newEvent.participants);
       Event.save(this.scope.newEvent);
       this.myEvents.push(this.scope.newEvent);
       pair = this.myMatch.length;

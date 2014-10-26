@@ -3,11 +3,23 @@
 
 <div class="loginSignup">
   <%= form_for :user do |f| %>
-    <p><%= f.text_field :firstname, class: "form-control", placeholder: "First Name",
-    autofocus: true %></p>
-    <p><%= f.text_field :lastname, class: "form-control", placeholder: "Last Name" %></p>
-    <p><%= f.text_field :email, class: "form-control", placeholder: "email" %></p>
-    <p><%= f.password_field :password, class: "form-control", placeholder: "password" %></p>
+    <p><%= f.text_field :firstname, class: "form-control",
+            placeholder: "First Name",
+            autofocus: true,
+            required: true %>
+    </p>
+    <p><%= f.text_field :lastname, class: "form-control",
+            placeholder: "Last Name",
+            required: true %>
+    </p>
+    <p><%= f.text_field :email, class: "form-control",
+            placeholder: "email",
+            required: true %>
+    </p>
+    <p><%= f.password_field :password, class: "form-control",
+            placeholder: "password",
+            required: true %>
+    </p>
     <%= f.submit "Signup!", class: "btn btn-info" %><br>
     <%= link_to("Login to your account!", login_path, :method => :get) %>
   <% end %>

@@ -3,8 +3,15 @@
 
 <div class="loginSignup">
   <%= form_for :user do |f| %>
-    <p><%= f.text_field :email, class: "form-control", placeholder: "Enter your email",autofocus: true %> </p>
-    <p><%= f.password_field :password, class: "form-control", placeholder: "Enter your password" %> </p>
+    <p><%= f.text_field :email, class: "form-control",
+            placeholder: "Enter your email",
+            autofocus: true,
+            required: true %>
+    </p>
+    <p><%= f.password_field :password, class: "form-control",
+            placeholder: "Enter your password",
+            required: true %>
+    </p>
     <%= f.submit "Login!", class: "btn btn-info" %><br/>
     <%= link_to("Sign up for a new account!", signup_path, :method => :get) %>
   <% end %>

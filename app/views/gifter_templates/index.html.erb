@@ -162,23 +162,32 @@
     <form class="form-horizontal" role="form" ng-submit="gifter.joinEvent()">
       <div class="form-group" id="labelBackground">
         <label for="joinEventName" class="col-sm-2 control-label">
-        What's the name of the event you're joining?
+          What's the name of the event you're joining?
         </label>
         <div class="col-sm-4">
-          <input autofocus class="form-control" id="joinEventName" ng-model="join.eventName" placeholder="Big Data Holiday Bash">
+          <input autofocus class="form-control" id="joinEventName"
+                  ng-model="join.eventName"
+                  placeholder="Big Data Holiday Bash"
+                  required>
         </div>
       </div>
       <div class="form-group" id="labelBackground">
         <label for="joinPassword" class="col-sm-2 control-label">
-        What's the Group Password?
+          What's the Group Password?
         </label>
         <div class="col-sm-4">
-          <input class="form-control" id="joinPassword" type="password" ng-model="join.password" placeholder="password">
+          <input class="form-control" id="joinPassword"
+                  type="password"
+                  ng-model="join.password"
+                  placeholder="password"
+                  required>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" ng-click="joinEvent()" class="btn btn-info">Join This Event!</button>
+          <button type="submit" ng-click="joinEvent()" class="btn btn-info">
+            Join This Event!
+          </button>
         </div>
       </div>
     </form>
@@ -189,42 +198,59 @@
 <div ng-show="gifter.createEvent" class="visible">
 <div class="bow-background"></div>
   <div id="newEventContainer">
-    <form class="form-horizontal" role="form" ng-submit="gifter.createNewEvent()">
+    <form class="form-horizontal" name="newEvent" role="form" ng-submit="gifter.createNewEvent()">
       <div class="form-group">
         <label for="eventName" class="col-sm-2 control-label" id="labelBackground">
-        Event Name
+          Event Name
         </label>
         <div class="col-sm-4">
-          <input autofocus class="form-control" id="eventName" ng-model="newEvent.eventName" placeholder="Big Data Holiday Bash">
+          <input autofocus class="form-control" id="eventName"
+                  ng-model="newEvent.eventName"
+                  placeholder="Big Data Holiday Bash"
+                  required>
         </div>
       </div>
       <div class="form-group" id="labelBackground">
         <label for="password" class="col-sm-2 control-label">
-        Group Password
+          Group Password
         </label>
         <div class="col-sm-4">
-          <input class="form-control" id="password" type="password" ng-model="newEvent.password" placeholder="password">
+          <input class="form-control" id="password"
+                  type="password"
+                  ng-model="newEvent.password"
+                  placeholder="password"
+                  required>
         </div>
       </div>
       <div class="form-group" id="labelBackground">
         <label for="spendingLimit" class="col-sm-2 control-label">
-        Spending Limit $
+          Spending Limit $
         </label>
         <div class="col-sm-4">
-          <input class="form-control" id="spendingLimit" type="number" ng-model="newEvent.spendingLimit" placeholder="5 or 50 dollars?">
+          <input class="form-control" id="spendingLimit"
+                  type="text"
+                  ng-pattern="gifter.regexNum"
+                  ng-model="newEvent.spendingLimit"
+                  placeholder="5 or 50 dollars?">
         </div>
       </div>
       <div class="form-group" id="labelBackground">
         <label for="participantNum" class="col-sm-2 control-label">
-        Number of Partcipants
+          Number of Partcipants
         </label>
         <div class="col-sm-4">
-          <input class="form-control" id="participantNum" type="number" ng-model="newEvent.participants" placeholder="3 or 30 people?">
+          <input class="form-control" name="participantNum" id="participantNum"
+                  type="text"
+                  ng-pattern="gifter.regexNum"
+                  ng-model="newEvent.participants"
+                  placeholder="3 or 30 people?">
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" ng-click="createNewEvent()" class="btn btn-info">Lead This Event!</button>
+          <button type="submit" ng-click="createNewEvent()" class="btn btn-info">
+            Lead This Event!
+          </button>
         </div>
       </div>
     </form>
