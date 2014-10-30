@@ -44,53 +44,53 @@
 
 <!-- EVENT PANELS ********************************************************************************-->
 <div  ng-show="gifter.home" class="visible">
-<div class="eventPanelContainer">
-<h3 style="font-family: 'Raleway', sans-serif;">
-  Click On A Green Event To See Who Your 'giftee' is<br>
-  Red Events Are Not Ready, Yet
-  </h3>
-  <div  class="eventPanel" ng-repeat="event in gifter.myEvents track by $index"
-        style="background:{{gifter.thisEventColor(event.match)}};">
-    <div class="eventTitles">{{event.eventName}}</div>
-    <div class="eventViewer"  ng-click="gifter.thisMatchProfile(event.id)">
-      <p class="eventName"></p>
-      <div class="eventBox"></div>
+  <div class="eventPanelContainer">
+  <h3 style="font-family: 'Raleway', sans-serif;">
+    Click On A Green Event To See Who Your 'giftee' is<br>
+    Red Events Are Not Ready, Yet
+    </h3>
+    <div  class="eventPanel" ng-repeat="event in gifter.myEvents track by $index"
+          style="background:{{gifter.thisEventColor(event.match)}};">
+      <div class="eventTitles">{{event.eventName}}</div>
+      <div class="eventViewer"  ng-click="gifter.thisMatchProfile(event.id)">
+        <p class="eventName"></p>
+        <div class="eventBox"></div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="spacer"></div>
+  <div class="spacer"></div>
 
 <!-- INTERESTS PANELS ****************************************************************************-->
-<div class="interestPanelContainer">
-  <h3 style="font-family: 'Raleway', sans-serif;">Add new favorite things for your gifter to see...</h3>
-  <h3 style="font-family: 'Raleway', sans-serif;">or delete them using the red buttons</h3>
-  <div class="interestPanel" ng-repeat="catagory in gifter.interests">
-    <div class="interestTitles">{{catagory[0]}}</div>
-    <div class="interestViewer">
+  <div class="interestPanelContainer">
+    <h3 style="font-family: 'Raleway', sans-serif;">Add new favorite things for your gifter to see...</h3>
+    <h3 style="font-family: 'Raleway', sans-serif;">or delete them using the red buttons</h3>
+    <div class="interestPanel" ng-repeat="catagory in gifter.interests">
+      <div class="interestTitles">{{catagory[0]}}</div>
+      <div class="interestViewer">
 
-      <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
-        <button class="deleteButton"  ng-click="gifter.removeTag($index, catagory[2])">
-          <span class="remove">x</span>
-        </button>
+        <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
+          <button class="deleteButton"  ng-click="gifter.removeTag($index, catagory[2])">
+            <span class="remove">x</span>
+          </button>
+        </div>
+
       </div>
-
+      <form ng-submit="gifter.addTag(newTag, catagory[2])">
+        <span>
+          <input class="inputChoices" type="text" ng-model="newTag" placeholder="{{catagory[3]}}">
+          <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
+          <button type="submit" id="interestSubmit">Add Interest!</button>
+        </span>
+      </form>
     </div>
-    <form ng-submit="gifter.addTag(newTag, catagory[2])">
-      <span>
-        <input class="inputChoices" type="text" ng-model="newTag" placeholder="{{catagory[3]}}">
-        <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
-        <button type="submit" id="interestSubmit">Add Interest!</button>
-      </span>
-    </form>
   </div>
-</div>
 
 </div>
 <!-- Giftee's Profile ****************************************************************************-->
 <div  ng-show="gifter.giftee" class="visible">
 
-  <div id="gifteeName" class="heading">Your Giftee is:  <span style="font-family: 'Spirax', cursive;font-size:1.5em;">{{gifter.matchName}}!</span></div>
+  <div id="gifteeName" class="heading">Your Giftee is:  <span style="font-family:'Spirax',cursive;font-size:1.5em;">{{gifter.matchName}}!</span></div>
 
   <div id="displayPanel">
     <div style="color:grey;text-align:center;">
