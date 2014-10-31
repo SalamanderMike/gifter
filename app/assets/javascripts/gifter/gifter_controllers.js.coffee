@@ -1,7 +1,7 @@
 GifterControllers = angular.module("GifterControllers", ["ngResource", "ngAnimate", "ui.bootstrap"])
 
 class GifterCtrl
-  constructor: (@scope, @http, @resource, @rootScope, @modal, @location, @Suggestions) ->
+  constructor: (@scope, @http, @resource, @rootScope, @modal, @location, @Suggestions)->
     # console.log "HELLO! I'm the Gifter Controller!"
     # if !@rootScope.sessionID
     #   console.log "SESSION DOESN'T EXIST"
@@ -23,7 +23,6 @@ class GifterCtrl
       @eventTitle = ""# Event Title
       @eventLimit = 0
       @myEvents = []  # Event Panels
-      @myProfile = {} # Interest Panels/Tags
       @interests = [] # Interests Data
       @myMatch = []   # [event_id, profile_id] 2D Array
       @adminsEvents=[]# Events you are leading
@@ -33,7 +32,9 @@ class GifterCtrl
       @notReady = true# Indicates there is no match for this event
       @participants = []
       @participantNum = 0
-      @regexNum = /^[0-9]+$/
+      @regexNum = /^[0-9]+$/ # ERROR: returning undefined
+
+      @demoLimits = if @sessionID == 12 then true else false
 
       @toggleDropdown = false
 
@@ -56,13 +57,13 @@ class GifterCtrl
             @UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
             @UsersInEvents.query (data)=>
               @totalParticipants = data.length
-              console.log "#{@totalParticipants} people in this User's Event"
+              # console.log "#{@totalParticipants} people in this User's Event"
             Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
             Event.get (event)=>
               @myEvents.push(event)
-              console.log "#{event.participants} in Event"#***** MATCH ALGORITHM
-              if event.participants == @totalParticipants#***** MATCH ALGORITHM
-                console.log "#{event.eventName} has full participation!"#***** MATCH ALGORITHM
+              # console.log "#{event.participants} in Event"#***** MATCH ALGORITHM
+              # if event.participants == @totalParticipants#***** MATCH ALGORITHM
+                # console.log "#{event.eventName} has full participation!"#***** MATCH ALGORITHM
               # Keep track of Matches
               matches = @myEvents[index].match
               ++index
@@ -90,55 +91,37 @@ class GifterCtrl
 
 
       @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
-      @Profile.get (data)=> #find user's profile
-        @myProfile = data
+      @Profile.get (profile)=> #find user's profile
         # INITIALIZE PROFILE WITH SUGGESTED DATA
-        if !data.cuisine
-          @myProfile.cuisine = ["Wine", "Cookies", "Cheese"]
-          @myProfile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"]
-          @myProfile.services = ["Spotify", "Pandora", "Dropbox"]
-          @myProfile.bookGenre = ["Sci-fi", "Romance", "Mystery"]
-          @myProfile.musicGenre = ["Indie", "Classical", "Pop"]
-          @myProfile.clothes = ["Shirt", "Tie", "Scarf"]
-          @myProfile.animal = ["Wolf", "Cat", "Girraffe"]
-          @myProfile.color = ["blue"]
-          @myProfile.metal = ["silver", "gold"]
-          @myProfile.element = ["Wood", "Stone", "Glass"]
-          @myProfile.art = ["Imports", "Photography", "Figurines"]
-          @myProfile.hobbies = ["Reading", "Cooking", "Movies"]
-          @myProfile.$update()
-          @myProfile = data
-          console.log @myProfile
-          @interests = [
-            ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
-            ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
-            ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
-            ["Book Genre",@myProfile.bookGenre,"bookGenre","Biography... Audiobook..."],
-            ["Music Genre",@myProfile.musicGenre,"musicGenre","Metal... Holiday..."],
-            ["Clothing",@myProfile.clothes,"clothes","Socks... Sweater..."],
-            ["Animals",@myProfile.animal,"animal","Bird... Bear..."],
-            ["Color",@myProfile.color,"color","Green... Silver..."],
-            ["Metal",@myProfile.metal,"metal","Puter... Titanium..."],
-            ["Element",@myProfile.element,"element","Tourmaline... Crystal..."],
-            ["Art",@myProfile.art,"art","Carving... Ceramic..."],
-            ["Hobbies",@myProfile.hobbies,"hobbies","Sports... Rock Climbing..."]
-          ]
-          @home = true# Show Home page after calculation is done
+        if @sessionID == 12 || !profile.cuisine
+          profile.cuisine = ["Wine", "Cookies", "Cheese"]
+          profile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"]
+          profile.services = ["Spotify", "Pandora", "Dropbox"]
+          profile.bookGenre = ["Sci-fi", "Romance", "Mystery"]
+          profile.musicGenre = ["Indie", "Classical", "Pop"]
+          profile.clothes = ["Shirt", "Tie", "Scarf"]
+          profile.animal = ["Wolf", "Cat", "Girraffe"]
+          profile.color = ["blue"]
+          profile.metal = ["silver", "gold"]
+          profile.element = ["Wood", "Stone", "Glass"]
+          profile.art = ["Imports", "Photography", "Figurines"]
+          profile.hobbies = ["Reading", "Cooking", "Movies"]
+          profile.$update()
 
         # Interests [Title,DB Column,DB Catagory,Placeholders]
         @interests = [
-          ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
-            ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
-            ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
-            ["Book Genre",@myProfile.bookGenre,"bookGenre","Biography... Audiobook..."],
-            ["Music Genre",@myProfile.musicGenre,"musicGenre","Metal... Holiday..."],
-            ["Clothing",@myProfile.clothes,"clothes","Socks... Sweater..."],
-            ["Animals",@myProfile.animal,"animal","Bird... Bear..."],
-            ["Color",@myProfile.color,"color","Green... Silver..."],
-            ["Metal",@myProfile.metal,"metal","Puter... Titanium..."],
-            ["Element",@myProfile.element,"element","Tourmaline... Crystal..."],
-            ["Art",@myProfile.art,"art","Carving... Ceramic..."],
-            ["Hobbies",@myProfile.hobbies,"hobbies","Sports... Rock Climbing..."]
+          ["Cuisine",profile.cuisine,"cuisine","Ice Cream... Mexican..."],
+          ["Stores",profile.shops,"shops","J.C. Penny... Hot Topic..."],
+          ["Services",profile.services,"services","Barnes & Noble Membership..."],
+          ["Book Genre",profile.bookGenre,"bookGenre","Biography... Audiobook..."],
+          ["Music Genre",profile.musicGenre,"musicGenre","Metal... Holiday..."],
+          ["Clothing",profile.clothes,"clothes","Socks... Sweater..."],
+          ["Animals",profile.animal,"animal","Bird... Bear..."],
+          ["Color",profile.color,"color","Green... Silver..."],
+          ["Metal",profile.metal,"metal","Puter... Titanium..."],
+          ["Element",profile.element,"element","Tourmaline... Crystal..."],
+          ["Art",profile.art,"art","Carving... Ceramic..."],
+          ["Hobbies",profile.hobbies,"hobbies","Sports... Rock Climbing..."]
         ]
         @home = true# Show Home page after calculation is done
 
@@ -146,35 +129,21 @@ class GifterCtrl
       location.path("/login")
 
 #FUNCTIONS
-  getTags: =>
-    @Profile.get (data)=>
-      @myProfile = data
-      @interests = [
-          ["Cuisine",@myProfile.cuisine,"cuisine","Ice Cream... Mexican..."],
-          ["Stores",@myProfile.shops,"shops","J.C. Penny... Hot Topic..."],
-          ["Services",@myProfile.services,"services","Barnes & Noble Membership..."],
-          ["Book Genre",@myProfile.bookGenre,"bookGenre","Barnes & Noble Membership..."],
-          ["Music Genre",@myProfile.musicGenre,"musicGenre","Barnes & Noble Membership..."],
-          ["Clothing",@myProfile.clothes,"clothes","Barnes & Noble Membership..."],
-          ["Animals",@myProfile.animal,"animal","Barnes & Noble Membership..."],
-          ["Color",@myProfile.color,"color","Barnes & Noble Membership..."],
-          ["Metal",@myProfile.metal,"metal","Barnes & Noble Membership..."],
-          ["Element",@myProfile.element,"element","Barnes & Noble Membership..."],
-          ["Art",@myProfile.art,"art","Barnes & Noble Membership..."],
-          ["Hobbies",@myProfile.hobbies,"hobbies","Barnes & Noble Membership..."]
-        ]
+  # getTags: =>
+  #   @Profile.get (profile)=>
 
+  addTag: (newTag, catagory, catIndex)=>
+    @interests[catIndex][1].push(newTag)
+    @Profile.get (profile)=>
+      profile[catagory].push(newTag)
+      profile.$update()
+      newTag = null #ERROR: Needs to clear input field
 
-  addTag: (newTag, catagory)=>
-    @myProfile[catagory].push(newTag)
-    @myProfile.$update()
-    newTag = null
-    @getTags()
-
-  removeTag: (tag, catagory)=>
-    @myProfile[catagory].splice(tag, 1)
-    @myProfile.$update()
-    @getTags()
+  removeTag: (tag, catagory, catIndex)=>
+    @interests[catIndex][1].splice(tag, 1)
+    @Profile.get (profile)=>
+      profile[catagory].splice(tag, 1)
+      profile.$update()
 
   thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
     console.log "thisMatchProfile()"

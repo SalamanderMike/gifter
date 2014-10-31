@@ -105,6 +105,13 @@ right: 100px;
 width: 250px;
 }
 
+.demo {
+position: fixed;
+top: 400px;
+right: -78px;
+width: 250px;
+}
+
 
 
 .navButtonLeft {
