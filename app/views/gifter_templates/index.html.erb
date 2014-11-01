@@ -23,14 +23,14 @@
                 <li><a  ng-show="gifter.demoLimits"
                         style="color:#e0c8c8;background:transparent;">
                   Join Event!</a></li>
-                <!-- <li><a  ng-show="gifter.demoLimits"
+                <li><a  ng-show="gifter.demoLimits"
                         style="color:#e0c8c8;background:transparent;">
-                  Create New Event</a></li> -->
+                  Create New Event</a></li>
 
                 <li><a  ng-hide="gifter.demoLimits"
                         ng-click="gifter.joinEventPage()">
                   Join Event!</a></li>
-                <li><a  ng-show="gifter.demoLimits"
+                <li><a  ng-hide="gifter.demoLimits"
                         ng-click="gifter.EventCreatePage()">
                   Create New Event</a></li>
 
@@ -240,14 +240,13 @@
                   required>
         </div>
       </div>
-<!--       <div class="form-group" id="labelBackground">
+      <div class="form-group" id="labelBackground">
         <label for="spendingLimit" class="col-sm-2 control-label">
           Spending Limit $
         </label>
         <div class="col-sm-4">
           <input class="form-control" id="spendingLimit"
                   type="text"
-                  ng-pattern="gifter.regexNum"
                   ng-model="newEvent.spendingLimit"
                   placeholder="5 or 50 dollars?">
         </div>
@@ -259,11 +258,10 @@
         <div class="col-sm-4">
           <input class="form-control" name="participantNum" id="participantNum"
                   type="text"
-                  ng-pattern="gifter.regexNum"
                   ng-model="newEvent.participants"
                   placeholder="3 or 30 people?">
         </div>
-      </div> -->
+      </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="submit" ng-click="createNewEvent()" class="btn btn-info">
