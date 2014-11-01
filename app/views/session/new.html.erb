@@ -20,14 +20,14 @@
 <div class="demo">
   <%= form_for :user do |f| %>
     <p><%= f.text_field :email, class: "form-control",
-            value: "darth@deathstar.com",
+            value: "jane@me.com",
             style: "visibility:hidden;" %>
     </p>
     <p><%= f.password_field :password, class: "form-control",
-            value: "1234",
+            value: "192837465",
             style: "visibility:hidden;" %>
     </p>
-    <%= f.submit "DEMO!", class: "btn btn-danger", style: "visibility:hidden;" %><br/>
+    <%= f.submit "DEMO!", class: "btn btn-danger" %><br/>
   <% end %>
 </div>
 

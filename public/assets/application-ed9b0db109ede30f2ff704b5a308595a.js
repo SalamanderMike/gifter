@@ -42365,7 +42365,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
           _this.participants = [];
           _this.participantNum = 0;
           _this.regexNum = /^[0-9]+$/;
-          _this.demoLimits = _this.sessionID === 12 ? true : false;
+          _this.demoLimits = _this.sessionID === 4 ? true : false;
           _this.toggleDropdown = false;
           User = _this.resource("/users/:id.json", {
             id: _this.sessionID

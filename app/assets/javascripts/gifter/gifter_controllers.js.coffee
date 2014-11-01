@@ -34,7 +34,7 @@ class GifterCtrl
       @participantNum = 0
       @regexNum = /^[0-9]+$/ # ERROR: returning undefined
 
-      @demoLimits = if @sessionID == 12 then true else false
+      @demoLimits = if @sessionID == 4 then true else false
 
       @toggleDropdown = false
 
