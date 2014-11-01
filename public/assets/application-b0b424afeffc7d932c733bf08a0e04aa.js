@@ -42337,7 +42337,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.thisMatchProfile = __bind(this.thisMatchProfile, this);
       this.removeTag = __bind(this.removeTag, this);
       this.addTag = __bind(this.addTag, this);
-      this.getTags = __bind(this.getTags, this);
       this.http.get("/authorized.json").success((function(_this) {
         return function(user) {
           var User;
@@ -42356,7 +42355,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
           _this.eventTitle = "";
           _this.eventLimit = 0;
           _this.myEvents = [];
-          _this.myProfile = {};
           _this.interests = [];
           _this.myMatch = [];
           _this.adminsEvents = [];
@@ -42367,6 +42365,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
           _this.participants = [];
           _this.participantNum = 0;
           _this.regexNum = /^[0-9]+$/;
+          _this.demoLimits = _this.sessionID === 12 ? true : false;
           _this.toggleDropdown = false;
           User = _this.resource("/users/:id.json", {
             id: _this.sessionID
@@ -42403,8 +42402,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                   }
                 });
                 _this.UsersInEvents.query(function(data) {
-                  _this.totalParticipants = data.length;
-                  return console.log("" + _this.totalParticipants + " people in this User's Event");
+                  return _this.totalParticipants = data.length;
                 });
                 Event = _this.resource("/users/:user_id/events/:id.json", {
                   user_id: _this.sessionID,
@@ -42413,10 +42411,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                 Event.get(function(event) {
                   var i, matches, _results1;
                   _this.myEvents.push(event);
-                  console.log("" + event.participants + " in Event");
-                  if (event.participants === _this.totalParticipants) {
-                    console.log("" + event.eventName + " has full participation!");
-                  }
                   matches = _this.myEvents[index].match;
                   ++index;
                   if (matches) {
@@ -42452,28 +42446,23 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
               method: 'PUT'
             }
           });
-          return _this.Profile.get(function(data) {
-            _this.myProfile = data;
-            if (!data.cuisine) {
-              _this.myProfile.cuisine = ["Wine", "Cookies", "Cheese"];
-              _this.myProfile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"];
-              _this.myProfile.services = ["Spotify", "Pandora", "Dropbox"];
-              _this.myProfile.bookGenre = ["Sci-fi", "Romance", "Mystery"];
-              _this.myProfile.musicGenre = ["Indie", "Classical", "Pop"];
-              _this.myProfile.clothes = ["Shirt", "Tie", "Scarf"];
-              _this.myProfile.animal = ["Wolf", "Cat", "Girraffe"];
-              _this.myProfile.color = ["blue"];
-              _this.myProfile.metal = ["silver", "gold"];
-              _this.myProfile.element = ["Wood", "Stone", "Glass"];
-              _this.myProfile.art = ["Imports", "Photography", "Figurines"];
-              _this.myProfile.hobbies = ["Reading", "Cooking", "Movies"];
-              _this.myProfile.$update();
-              _this.myProfile = data;
-              console.log(_this.myProfile);
-              _this.interests = [["Cuisine", _this.myProfile.cuisine, "cuisine", "Ice Cream... Mexican..."], ["Stores", _this.myProfile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", _this.myProfile.services, "services", "Barnes & Noble Membership..."], ["Book Genre", _this.myProfile.bookGenre, "bookGenre", "Biography... Audiobook..."], ["Music Genre", _this.myProfile.musicGenre, "musicGenre", "Metal... Holiday..."], ["Clothing", _this.myProfile.clothes, "clothes", "Socks... Sweater..."], ["Animals", _this.myProfile.animal, "animal", "Bird... Bear..."], ["Color", _this.myProfile.color, "color", "Green... Silver..."], ["Metal", _this.myProfile.metal, "metal", "Puter... Titanium..."], ["Element", _this.myProfile.element, "element", "Tourmaline... Crystal..."], ["Art", _this.myProfile.art, "art", "Carving... Ceramic..."], ["Hobbies", _this.myProfile.hobbies, "hobbies", "Sports... Rock Climbing..."]];
-              _this.home = true;
+          return _this.Profile.get(function(profile) {
+            if (_this.sessionID === 12 || !profile.cuisine) {
+              profile.cuisine = ["Wine", "Cookies", "Cheese"];
+              profile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"];
+              profile.services = ["Spotify", "Pandora", "Dropbox"];
+              profile.bookGenre = ["Sci-fi", "Romance", "Mystery"];
+              profile.musicGenre = ["Indie", "Classical", "Pop"];
+              profile.clothes = ["Shirt", "Tie", "Scarf"];
+              profile.animal = ["Wolf", "Cat", "Girraffe"];
+              profile.color = ["blue"];
+              profile.metal = ["silver", "gold"];
+              profile.element = ["Wood", "Stone", "Glass"];
+              profile.art = ["Imports", "Photography", "Figurines"];
+              profile.hobbies = ["Reading", "Cooking", "Movies"];
+              profile.$update();
             }
-            _this.interests = [["Cuisine", _this.myProfile.cuisine, "cuisine", "Ice Cream... Mexican..."], ["Stores", _this.myProfile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", _this.myProfile.services, "services", "Barnes & Noble Membership..."], ["Book Genre", _this.myProfile.bookGenre, "bookGenre", "Biography... Audiobook..."], ["Music Genre", _this.myProfile.musicGenre, "musicGenre", "Metal... Holiday..."], ["Clothing", _this.myProfile.clothes, "clothes", "Socks... Sweater..."], ["Animals", _this.myProfile.animal, "animal", "Bird... Bear..."], ["Color", _this.myProfile.color, "color", "Green... Silver..."], ["Metal", _this.myProfile.metal, "metal", "Puter... Titanium..."], ["Element", _this.myProfile.element, "element", "Tourmaline... Crystal..."], ["Art", _this.myProfile.art, "art", "Carving... Ceramic..."], ["Hobbies", _this.myProfile.hobbies, "hobbies", "Sports... Rock Climbing..."]];
+            _this.interests = [["Cuisine", profile.cuisine, "cuisine", "Ice Cream... Mexican..."], ["Stores", profile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", profile.services, "services", "Barnes & Noble Membership..."], ["Book Genre", profile.bookGenre, "bookGenre", "Biography... Audiobook..."], ["Music Genre", profile.musicGenre, "musicGenre", "Metal... Holiday..."], ["Clothing", profile.clothes, "clothes", "Socks... Sweater..."], ["Animals", profile.animal, "animal", "Bird... Bear..."], ["Color", profile.color, "color", "Green... Silver..."], ["Metal", profile.metal, "metal", "Puter... Titanium..."], ["Element", profile.element, "element", "Tourmaline... Crystal..."], ["Art", profile.art, "art", "Carving... Ceramic..."], ["Hobbies", profile.hobbies, "hobbies", "Sports... Rock Climbing..."]];
             return _this.home = true;
           });
         };
@@ -42484,26 +42473,25 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       })(this));
     }
 
-    GifterCtrl.prototype.getTags = function() {
+    GifterCtrl.prototype.addTag = function(newTag, catagory, catIndex) {
+      this.interests[catIndex][1].push(newTag);
       return this.Profile.get((function(_this) {
-        return function(data) {
-          _this.myProfile = data;
-          return _this.interests = [["Cuisine", _this.myProfile.cuisine, "cuisine", "Ice Cream... Mexican..."], ["Stores", _this.myProfile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", _this.myProfile.services, "services", "Barnes & Noble Membership..."], ["Book Genre", _this.myProfile.bookGenre, "bookGenre", "Barnes & Noble Membership..."], ["Music Genre", _this.myProfile.musicGenre, "musicGenre", "Barnes & Noble Membership..."], ["Clothing", _this.myProfile.clothes, "clothes", "Barnes & Noble Membership..."], ["Animals", _this.myProfile.animal, "animal", "Barnes & Noble Membership..."], ["Color", _this.myProfile.color, "color", "Barnes & Noble Membership..."], ["Metal", _this.myProfile.metal, "metal", "Barnes & Noble Membership..."], ["Element", _this.myProfile.element, "element", "Barnes & Noble Membership..."], ["Art", _this.myProfile.art, "art", "Barnes & Noble Membership..."], ["Hobbies", _this.myProfile.hobbies, "hobbies", "Barnes & Noble Membership..."]];
+        return function(profile) {
+          profile[catagory].push(newTag);
+          profile.$update();
+          return newTag = null;
         };
       })(this));
     };
 
-    GifterCtrl.prototype.addTag = function(newTag, catagory) {
-      this.myProfile[catagory].push(newTag);
-      this.myProfile.$update();
-      newTag = null;
-      return this.getTags();
-    };
-
-    GifterCtrl.prototype.removeTag = function(tag, catagory) {
-      this.myProfile[catagory].splice(tag, 1);
-      this.myProfile.$update();
-      return this.getTags();
+    GifterCtrl.prototype.removeTag = function(tag, catagory, catIndex) {
+      this.interests[catIndex][1].splice(tag, 1);
+      return this.Profile.get((function(_this) {
+        return function(profile) {
+          profile[catagory].splice(tag, 1);
+          return profile.$update();
+        };
+      })(this));
     };
 
     GifterCtrl.prototype.thisMatchProfile = function(eventID) {

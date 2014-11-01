@@ -19,8 +19,21 @@
             </a>
             <ul class="dropdown-menu">
               <li><a ng-click="gifter.homePage()">My Profile</a></li>
-                <li><a ng-hide="gifter.demoLimits" ng-click="gifter.joinEventPage()">Join Event!</a></li>
-                <li><a ng-hide="gifter.demoLimits" ng-click="gifter.EventCreatePage()">Create New Event</a></li>
+
+                <li><a  ng-show="gifter.demoLimits"
+                        style="color:#e0c8c8;background:transparent;">
+                  Join Event!</a></li>
+                <li><a  ng-show="gifter.demoLimits"
+                        style="color:#e0c8c8;background:transparent;">
+                  Create New Event</a></li>
+
+                <li><a  ng-hide="gifter.demoLimits"
+                        ng-click="gifter.joinEventPage()">
+                  Join Event!</a></li>
+                <li><a  ng-hide="gifter.demoLimits"
+                        ng-click="gifter.EventCreatePage()">
+                  Create New Event</a></li>
+
 <!-- Delete This Event appears while viewing an event-->
               <li><a ng-click="gifter.findAdminsEvents()">Event Details</a></li>
               <li class="divider"></li>
@@ -45,9 +58,10 @@
 <!-- EVENT PANELS ********************************************************************************-->
 <div  ng-show="gifter.home" class="visible">
 <div class="eventPanelContainer">
-<h3 style="font-family: 'Raleway', sans-serif;">
-  Click On A Green Event To See Who Your 'giftee' is<br>
-  Red Events Are Not Ready, Yet
+  <h3 style="font-family: 'Raleway', sans-serif;">
+    These are the Events you are participating in...<br>
+    Click On A Green Event To See Who Your 'giftee' is<br>
+    Red Events Are Not Yet Ready For You
   </h3>
   <div  class="eventPanel" ng-repeat="event in gifter.myEvents track by $index"
         style="background:{{gifter.thisEventColor(event.match)}};">
@@ -63,8 +77,11 @@
 
 <!-- INTERESTS PANELS ****************************************************************************-->
 <div class="interestPanelContainer">
-  <h3 style="font-family: 'Raleway', sans-serif;">Add new favorite things for your gifter to see...</h3>
-  <h3 style="font-family: 'Raleway', sans-serif;">or delete them using the red buttons</h3>
+  <h3 style="font-family: 'Raleway', sans-serif;">
+    These are gifts you'd like to receive from your 'gifter'<br>
+    Add new favorite things for your gifter to see...<br>
+    or delete them using the red buttons
+  </h3>
 
   <div class="interestPanel" ng-repeat="catagory in gifter.interests track by $index">
     <div class="interestTitles">{{catagory[0]}}</div>
