@@ -19,8 +19,21 @@
             </a>
             <ul class="dropdown-menu">
               <li><a ng-click="gifter.homePage()">My Profile</a></li>
-              <li><a ng-click="gifter.joinEventPage()">Join Event!</a></li>
-              <li><a ng-click="gifter.EventCreatePage()">Create New Event</a></li>
+
+                <li><a  ng-show="gifter.demoLimits"
+                        style="color:#e0c8c8;background:transparent;">
+                  Join Event!</a></li>
+                <li><a  ng-show="gifter.demoLimits"
+                        style="color:#e0c8c8;background:transparent;">
+                  Create New Event</a></li>
+
+                <li><a  ng-hide="gifter.demoLimits"
+                        ng-click="gifter.joinEventPage()">
+                  Join Event!</a></li>
+                <li><a  ng-hide="gifter.demoLimits"
+                        ng-click="gifter.EventCreatePage()">
+                  Create New Event</a></li>
+
 <!-- Delete This Event appears while viewing an event-->
               <li><a ng-click="gifter.findAdminsEvents()">Event Details</a></li>
               <li class="divider"></li>
@@ -44,36 +57,40 @@
 
 <!-- EVENT PANELS ********************************************************************************-->
 <div  ng-show="gifter.home" class="visible">
-  <div class="eventPanelContainer">
+<div class="eventPanelContainer">
   <h3 style="font-family: 'Raleway', sans-serif;">
+    These are the Events you are participating in...<br>
     Click On A Green Event To See Who Your 'giftee' is<br>
-    Red Events Are Not Ready, Yet
-    </h3>
-    <div  class="eventPanel" ng-repeat="event in gifter.myEvents track by $index"
-          style="background:{{gifter.thisEventColor(event.match)}};">
-      <div class="eventTitles">{{event.eventName}}</div>
-      <div class="eventViewer"  ng-click="gifter.thisMatchProfile(event.id)">
-        <p class="eventName"></p>
-        <div class="eventBox"></div>
-      </div>
+    Red Events Are Not Yet Ready For You
+  </h3>
+  <div  class="eventPanel" ng-repeat="event in gifter.myEvents track by $index"
+        style="background:{{gifter.thisEventColor(event.match)}};">
+    <div class="eventTitles">{{event.eventName}}</div>
+    <div class="eventViewer"  ng-click="gifter.thisMatchProfile(event.id)">
+      <p class="eventName"></p>
+      <div class="eventBox"></div>
     </div>
   </div>
 
   <div class="spacer"></div>
 
 <!-- INTERESTS PANELS ****************************************************************************-->
-  <div class="interestPanelContainer">
-    <h3 style="font-family: 'Raleway', sans-serif;">Add new favorite things for your gifter to see...</h3>
-    <h3 style="font-family: 'Raleway', sans-serif;">or delete them using the red buttons</h3>
-    <div class="interestPanel" ng-repeat="catagory in gifter.interests">
-      <div class="interestTitles">{{catagory[0]}}</div>
-      <div class="interestViewer">
+<div class="interestPanelContainer">
+  <h3 style="font-family: 'Raleway', sans-serif;">
+    These are gifts you'd like to receive from your 'gifter'<br>
+    Add new favorite things for your gifter to see...<br>
+    or delete them using the red buttons
+  </h3>
 
-        <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
-          <button class="deleteButton"  ng-click="gifter.removeTag($index, catagory[2])">
-            <span class="remove">x</span>
-          </button>
-        </div>
+  <div class="interestPanel" ng-repeat="catagory in gifter.interests">
+    <div class="interestTitles">{{catagory[0]}}</div>
+    <div class="interestViewer">
+
+      <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
+        <button class="deleteButton"  ng-click="gifter.removeTag($index, catagory[2], $parent.$index)">
+          <span class="remove">x</span>
+        </button>
+      </div>
 
       </div>
       <form ng-submit="gifter.addTag(newTag, catagory[2])">
@@ -84,6 +101,14 @@
         </span>
       </form>
     </div>
+
+    <form ng-submit="gifter.addTag(newTag, catagory[2], $index)">
+      <span>
+        <input class="inputChoices" type="text" ng-model="newTag" placeholder="{{catagory[3]}}">
+        <button type="submit" id="interestSubmit">Add Interest!</button>
+      </span>
+    </form>
+
   </div>
 
 </div>
@@ -229,7 +254,6 @@
         <div class="col-sm-4">
           <input class="form-control" id="spendingLimit"
                   type="text"
-                  ng-pattern="gifter.regexNum"
                   ng-model="newEvent.spendingLimit"
                   placeholder="5 or 50 dollars?">
         </div>
@@ -241,7 +265,6 @@
         <div class="col-sm-4">
           <input class="form-control" name="participantNum" id="participantNum"
                   type="text"
-                  ng-pattern="gifter.regexNum"
                   ng-model="newEvent.participants"
                   placeholder="3 or 30 people?">
         </div>

@@ -17,3 +17,18 @@
   <% end %>
 </div>
 
+<div class="demo">
+<!-- jane@me.com 192837465 -->
+  <%= form_for :user do |f| %>
+    <p><%= f.text_field :email, class: "form-control",
+            value: "jane@me.com",
+            style: "visibility:hidden;" %>
+    </p>
+    <p><%= f.password_field :password, class: "form-control",
+            value: "192837465",
+            style: "visibility:hidden;" %>
+    </p>
+    <%= f.submit "DEMO!", class: "btn btn-danger" %><br/>
+  <% end %>
+</div>
+
