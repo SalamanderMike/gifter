@@ -10,7 +10,7 @@ class GifterCtrl
     .success (user)=>
       @rootScope.sessionID = user.id
       @sessionID = user.id
-      console.log "USER ID:#{@sessionID}"
+      # console.log "USER ID:#{@sessionID}"
       @home = false   # Hide/Show Home page
       @giftee = false # Hide/Show Match Profile page
       @admin = false  # Hide/Show Admin Settings
@@ -34,6 +34,7 @@ class GifterCtrl
       @participantNum = 0
       @regexNum = /^[0-9]+$/ # ERROR: returning undefined
 
+      #DEMO sessionID == 4
       @demoLimits = if @sessionID == 4 then true else false
 
       @toggleDropdown = false
@@ -93,7 +94,7 @@ class GifterCtrl
       @Profile = @resource("users/:user_id/profile/:id.json", {user_id:@sessionID, id:@sessionID}, {update: {method: 'PUT'}})
       @Profile.get (profile)=> #find user's profile
         # INITIALIZE PROFILE WITH SUGGESTED DATA
-        if @sessionID == 12 || !profile.cuisine
+        if @sessionID == 4 || !profile.cuisine
           profile.cuisine = ["Wine", "Cookies", "Cheese"]
           profile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"]
           profile.services = ["Spotify", "Pandora", "Dropbox"]
@@ -129,15 +130,30 @@ class GifterCtrl
       location.path("/login")
 
 #FUNCTIONS
-  # getTags: =>
-  #   @Profile.get (profile)=>
+  getTags: =>
+    @Profile.get (profile)=>
+      @interests = [
+        ["Cuisine",profile.cuisine,"cuisine","Ice Cream... Mexican..."],
+        ["Stores",profile.shops,"shops","J.C. Penny... Hot Topic..."],
+        ["Services",profile.services,"services","Barnes & Noble Membership..."],
+        ["Book Genre",profile.bookGenre,"bookGenre","Biography... Audiobook..."],
+        ["Music Genre",profile.musicGenre,"musicGenre","Metal... Holiday..."],
+        ["Clothing",profile.clothes,"clothes","Socks... Sweater..."],
+        ["Animals",profile.animal,"animal","Bird... Bear..."],
+        ["Color",profile.color,"color","Green... Silver..."],
+        ["Metal",profile.metal,"metal","Puter... Titanium..."],
+        ["Element",profile.element,"element","Tourmaline... Crystal..."],
+        ["Art",profile.art,"art","Carving... Ceramic..."],
+        ["Hobbies",profile.hobbies,"hobbies","Sports... Rock Climbing..."]
+      ]
 
   addTag: (newTag, catagory, catIndex)=>
     @interests[catIndex][1].push(newTag)
     @Profile.get (profile)=>
       profile[catagory].push(newTag)
       profile.$update()
-      newTag = null #ERROR: Needs to clear input field
+      @getTags()
+
 
   removeTag: (tag, catagory, catIndex)=>
     @interests[catIndex][1].splice(tag, 1)

@@ -83,7 +83,7 @@
     or delete them using the red buttons
   </h3>
 
-  <div class="interestPanel" ng-repeat="catagory in gifter.interests track by $index">
+  <div class="interestPanel" ng-repeat="catagory in gifter.interests">
     <div class="interestTitles">{{catagory[0]}}</div>
     <div class="interestViewer">
 
@@ -97,7 +97,6 @@
     <form ng-submit="gifter.addTag(newTag, catagory[2], $index)">
       <span>
         <input class="inputChoices" type="text" ng-model="newTag" placeholder="{{catagory[3]}}">
-        <!-- <div ng-repeat="word in gifter.suggestions">{{word}}</div> -->
         <button type="submit" id="interestSubmit">Add Interest!</button>
       </span>
     </form>

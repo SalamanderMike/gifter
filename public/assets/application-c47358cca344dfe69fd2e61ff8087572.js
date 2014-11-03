@@ -42337,12 +42337,12 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.thisMatchProfile = __bind(this.thisMatchProfile, this);
       this.removeTag = __bind(this.removeTag, this);
       this.addTag = __bind(this.addTag, this);
+      this.getTags = __bind(this.getTags, this);
       this.http.get("/authorized.json").success((function(_this) {
         return function(user) {
           var User;
           _this.rootScope.sessionID = user.id;
           _this.sessionID = user.id;
-          console.log("USER ID:" + _this.sessionID);
           _this.home = false;
           _this.giftee = false;
           _this.admin = false;
@@ -42447,7 +42447,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
             }
           });
           return _this.Profile.get(function(profile) {
-            if (_this.sessionID === 12 || !profile.cuisine) {
+            if (_this.sessionID === 4 || !profile.cuisine) {
               profile.cuisine = ["Wine", "Cookies", "Cheese"];
               profile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"];
               profile.services = ["Spotify", "Pandora", "Dropbox"];
@@ -42473,13 +42473,21 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       })(this));
     }
 
+    GifterCtrl.prototype.getTags = function() {
+      return this.Profile.get((function(_this) {
+        return function(profile) {
+          return _this.interests = [["Cuisine", profile.cuisine, "cuisine", "Ice Cream... Mexican..."], ["Stores", profile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", profile.services, "services", "Barnes & Noble Membership..."], ["Book Genre", profile.bookGenre, "bookGenre", "Biography... Audiobook..."], ["Music Genre", profile.musicGenre, "musicGenre", "Metal... Holiday..."], ["Clothing", profile.clothes, "clothes", "Socks... Sweater..."], ["Animals", profile.animal, "animal", "Bird... Bear..."], ["Color", profile.color, "color", "Green... Silver..."], ["Metal", profile.metal, "metal", "Puter... Titanium..."], ["Element", profile.element, "element", "Tourmaline... Crystal..."], ["Art", profile.art, "art", "Carving... Ceramic..."], ["Hobbies", profile.hobbies, "hobbies", "Sports... Rock Climbing..."]];
+        };
+      })(this));
+    };
+
     GifterCtrl.prototype.addTag = function(newTag, catagory, catIndex) {
       this.interests[catIndex][1].push(newTag);
       return this.Profile.get((function(_this) {
         return function(profile) {
           profile[catagory].push(newTag);
           profile.$update();
-          return newTag = null;
+          return _this.getTags();
         };
       })(this));
     };
