@@ -74,7 +74,6 @@ class GifterCtrl
                     @myMatch[pair].push(event.id, +matches[i][1])
                     ++pair
               else #Event has no match yet
-                console.log "No Match"
                 @myMatch[pair] = []
                 @myMatch[pair].push(event.id, false)
                 ++pair
@@ -212,6 +211,10 @@ class GifterCtrl
     @UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
     @UsersInEvents.query (data)=>
       @participantNum = data.length
+      console.log @participantNum
+      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+      Event.get (event)=> # Grab Event Title & Spending Limit
+        @eventLimit = event.spendingLimit
       for identity in data
         User = @resource("/users/:id.json", {id:identity.user_id})
         User.get (data)=>
@@ -335,7 +338,6 @@ class GifterCtrl
             alert "Password is incorrect for this Event"
             @scope.join.password = ""
             return
-      console.log eventNameExists
       @scope.join.eventName = ""
       @scope.join.password = ""
       if !eventNameExists
