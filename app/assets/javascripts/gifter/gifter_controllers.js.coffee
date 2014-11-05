@@ -34,7 +34,6 @@ class GifterCtrl
       @participantNum = 0
       @regexNum = /^[0-9]+$/ # ERROR: returning undefined
 
-      #DEMO sessionID == 4
       @demoLimits = if @sessionID == 4 then true else false
 
       @toggleDropdown = false
@@ -75,6 +74,7 @@ class GifterCtrl
                     @myMatch[pair].push(event.id, +matches[i][1])
                     ++pair
               else #Event has no match yet
+                console.log "No Match"
                 @myMatch[pair] = []
                 @myMatch[pair].push(event.id, false)
                 ++pair

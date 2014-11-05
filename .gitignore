@@ -23,3 +23,5 @@ profileObject.json
 # Ignore environment var
 .env
 
+# Ignore Development Seed info
+/db/seeds.rb
