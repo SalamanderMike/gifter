@@ -212,16 +212,23 @@ class GifterCtrl
     @UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
     @UsersInEvents.query (data)=>
       @participantNum = data.length
-      console.log @participantNum
-      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-      Event.get (event)=> # Grab Event Title & Spending Limit
-        @participating = event.participants
-        @eventLimit = event.spendingLimit
       for identity in data
         User = @resource("/users/:id.json", {id:identity.user_id})
         User.get (user)=>
           name = "#{user.firstname} #{user.lastname}"
           @participants.push(name)
+      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+      Event.get (event)=> # Grab Event Title & Spending Limit
+        @participating = event.participants
+        @eventLimit = event.spendingLimit
+        unsignedParticipants = @participating - @participantNum
+        if unsignedParticipants > 0
+          i = 0
+          while i < unsignedParticipants
+            @participants.push("not signed up")
+            i++
+
+
 
   removeParticipant: (userID)=>#Implement soon
     # confirm "Are you sure you wish to remove this person from the group?"

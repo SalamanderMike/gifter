@@ -152,53 +152,38 @@
 
   <div id="displayPanel">
     <div style="color:grey;text-align:center;">
-  <div style="float:left;">
-    <div class="counter" ng-click="gifter.decreaseParticipants(gifter.eventID)" style="color:red;">-</div>
-    <div class="counter">{{gifter.participating}}</div>
-    <div class="counter" ng-click="gifter.increaseParticipants(gifter.eventID)" style="color:green;">+</div>
-  </div>
+      <div class="counter" style="float:left;">
+        <span class="incrementUp" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
+        <span>{{gifter.participating}}</span>
+        <span class="incrementDown" ng-click="gifter.increaseParticipants(gifter.eventID)">+</span>
+      </div>
 
-  <div style="float:right;">
-    <div class="counter" ng-click="gifter.decreaseLimit(gifter.eventID)" style="color:red;">-</div>
-    <div class="counter">${{gifter.eventLimit}}</div>
-    <div class="counter"ng-click="gifter.increaseLimit(gifter.eventID)" style="color:green;">+</div>
-  </div>
+      <div class="counter" style="float:right;">
+        <span class="incrementUp" ng-click="gifter.decreaseLimit(gifter.eventID)">-</span>
+        <span>${{gifter.eventLimit}}</span>
+        <span class="incrementDown" ng-click="gifter.increaseLimit(gifter.eventID)">+</span>
+      </div>
 
-  <div class="counterDirections" style="float:left;">
-    <p>add or subtract</p>
-    <p>participants</p>
-  </div>
-
-  <div class="counterDirections" style="float:right;">
-    <p>add or subtract</p>
-    <p>participants</p>
-  </div>
-
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-
-
-    {{gifter.participantNum}} participants have saved a profile!<br>
-    When all members have filled out their profile<br>
-    Gifter will randomly match everyone
+      <div class="counterDirections">
+        <span style="float:left;">
+          <p>Participants</p>
+        </span>
+        <span style="float:right;">
+          <p>Spending Limit</p>
+        </span>
+      </div>
+      {{gifter.participantNum}} participants have saved a profile!<br>
+      When all members have filled out their profile<br>
+      Gifter will randomly match everyone
     </div>
     <div id="displayPanelInlay">
-      <ul style="list-style-type: none;padding-left:10px;">
-        <li class="heading" ng-repeat="participant in gifter.participants track by $index">
+      <ul style="list-style-type: none;">
+        <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
         {{participant}}
           <!-- <button class="btn btn-danger" ng-click="gifter.removeParticipant($index)">X</button> -->
         </li>
       </ul>
     </div>
-
-
-
   </div>
 
 <!-- <div>progress bar of participants</div>
