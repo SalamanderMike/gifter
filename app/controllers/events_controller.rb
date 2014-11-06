@@ -5,14 +5,6 @@ class EventsController < ApplicationController
     respond_with Event.all
   end
 
-  def index_user_events# Find all Events a user belongs to
-    respond_with UsersEvent.where(user_id: session[:id])
-  end
-
-  def index_participants
-    respond_with UsersEvent.where(event_id: params[:event_id])
-  end
-
   def index_admin_events
     respond_with Event.where(admin_id: session[:id])
   end
@@ -22,7 +14,6 @@ class EventsController < ApplicationController
   end
 
   def create # POST: New Event
-
     event = Event.create(event_params)
     @user = User.find_by_id(session[:id])
     @user.events << event
@@ -33,16 +24,10 @@ class EventsController < ApplicationController
     respond_with Event.find_by_id(params[:id])
   end
 
-  def update # JOIN EVENT
-    event = Event.find_by_id(params[:id])
-    @user = User.find_by_id(session[:id])
-    @user.events << event
-    render json: {}, status: 200
+  def update # UPDATE EVENT PARAMS
+    respond_with Event.find_by_id(params[:id]).update(event_params)
   end
 
-  def destroy # ADMIN - Delete Event
-    respond_with UsersEvent.where(user_id: params[:id])
-  end
 
   private
   def event_params

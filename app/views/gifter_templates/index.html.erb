@@ -153,23 +153,36 @@
   <div id="displayPanel">
     <div style="color:grey;text-align:center;">
   <div style="float:left;">
-    <div class="counter">-</div>
-    <div class="counter">{{gifter.participantNum}}</div>
-    <div class="counter">+</div>
+    <div class="counter" ng-click="gifter.decreaseParticipants(gifter.eventID)" style="color:red;">-</div>
+    <div class="counter">{{gifter.participating}}</div>
+    <div class="counter" ng-click="gifter.increaseParticipants(gifter.eventID)" style="color:green;">+</div>
   </div>
 
   <div style="float:right;">
-    <div class="counter">-</div>
+    <div class="counter" ng-click="gifter.decreaseLimit(gifter.eventID)" style="color:red;">-</div>
     <div class="counter">${{gifter.eventLimit}}</div>
-    <div class="counter">+</div>
+    <div class="counter"ng-click="gifter.increaseLimit(gifter.eventID)" style="color:green;">+</div>
   </div>
 
+  <div class="counterDirections" style="float:left;">
+    <p>add or subtract</p>
+    <p>participants</p>
+  </div>
 
+  <div class="counterDirections" style="float:right;">
+    <p>add or subtract</p>
+    <p>participants</p>
+  </div>
 
   <br>
   <br>
   <br>
   <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
 
     {{gifter.participantNum}} participants have saved a profile!<br>
     When all members have filled out their profile<br>

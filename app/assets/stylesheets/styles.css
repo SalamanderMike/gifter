@@ -415,7 +415,7 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
   -webkit-box-shadow: 5px 5px 20px 0px rgba(0,0,0,.5);
   font-family: 'Raleway', sans-serif;
   font-size: 1.5em;
-
+  cursor: pointer;
 }
 
 #displayPanelInlay {
@@ -436,11 +436,21 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
 .counter {
   position: relative;
   display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   text-align: center;
   font-size: 2em;
+}
+
+.counterDirections {
+  position: relative;
+  display: inline-block;
+  top: 50px;
+  width: 40%;
   border: 1px solid #7ebfd3;
   border-radius: 5px;
-  cursor: pointer;
 }
 
 

@@ -31,6 +31,7 @@ class GifterCtrl
       @matchName = "" # Giftee's Name
       @notReady = true# Indicates there is no match for this event
       @participants = []
+      @participating = 0# Reflects num in Events.participants
       @participantNum = 0
       @regexNum = /^[0-9]+$/ # ERROR: returning undefined
 
@@ -182,10 +183,10 @@ class GifterCtrl
               MatchName = @resource("/users/:id.json", {id:data.user_id})
               MatchName.get (data)=> # Grab Giftee's Name
                 @matchName = "#{data.firstname} #{data.lastname}"
-              EventTitle = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-              EventTitle.get (title)=> # Grab Event Title & Spending Limit
-                @eventTitle = title.eventName
-                @eventLimit = title.spendingLimit
+              Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+              Event.get (event)=> # Grab Event Title & Spending Limit
+                @eventTitle = event.eventName
+                @eventLimit = event.spendingLimit
           else
             alert "Sorry, your match isn't ready for this Event.\nTry again later!"
 
@@ -214,11 +215,12 @@ class GifterCtrl
       console.log @participantNum
       Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
       Event.get (event)=> # Grab Event Title & Spending Limit
+        @participating = event.participants
         @eventLimit = event.spendingLimit
       for identity in data
         User = @resource("/users/:id.json", {id:identity.user_id})
-        User.get (data)=>
-          name = "#{data.firstname} #{data.lastname}"
+        User.get (user)=>
+          name = "#{user.firstname} #{user.lastname}"
           @participants.push(name)
 
   removeParticipant: (userID)=>#Implement soon
@@ -227,6 +229,37 @@ class GifterCtrl
     @participantNum--
     # @participants.$update()
 
+  increaseParticipants: (eventID)=>
+    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+    Event.get (event)=>
+      event.participants += 1
+      @participating = event.participants
+      event.$update()
+
+
+  decreaseParticipants: (eventID)=>
+    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+    Event.get (event)=>
+      event.participants -= 1
+      @participating = event.participants
+      event.$update()
+
+
+  increaseLimit: (eventID)=>
+    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+    Event.get (event)=>
+      event.spendingLimit += 1
+      @eventLimit = event.spendingLimit
+      event.$update()
+
+
+
+  decreaseLimit: (eventID)=>
+    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+    Event.get (event)=>
+      event.spendingLimit -= 1
+      @eventLimit = event.spendingLimit
+      event.$update()
 
 
 
@@ -269,6 +302,7 @@ class GifterCtrl
     @admin = true
     @eventHeadding = true
     @eventTitle = event.eventName
+    @eventID = event.id
     @participantsInEvent(event.id)
 
   chooseEventToEdit: (events)=>
@@ -327,7 +361,7 @@ class GifterCtrl
           eventNameExists = true
           if @scope.join.password == event.password
             thisEvent = event
-            Event = @resource("/users/:user_id/events/:id", {user_id:@sessionID,id:event.id}, {update: {method: 'PUT'}})
+            Event = @resource("/users/:user_id/users_events/:id.json", {user_id:@sessionID, id:event.id}, {update: {method: 'PUT'}})
             Event.update (data)=>
               @myEvents.push(thisEvent)
               pair = @myMatch.length

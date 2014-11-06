@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'users_events/index'
+
   # post "/users/:user_id/profile" => "profile#create", :as => :user_profile_bind
 
   get "/" => "session#new"
@@ -11,8 +13,9 @@ Rails.application.routes.draw do
   get "/signup" => "users#new"
   post "/signup" => "users#create"
 
-  get "/index_user_events/:user_id/events" => "events#index_user_events"
-  get "/index_participants/:event_id" => "events#index_participants"
+  get "/index_user_events/:user_id/events" => "users_events#index_user_events"
+  get "/index_participants/:event_id" => "users_events#index_participants"
+
   get "/index_admin_events" => "events#index_admin_events"
 
   root to: 'session#new'
@@ -24,6 +27,7 @@ Rails.application.routes.draw do
   resources :users do
     resources :events
     resources :profile
+    resources :users_events
   end
   # match "*path", to: "site#index", via: "get"
 end
