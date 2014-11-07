@@ -69,14 +69,14 @@ div.flower-paper {
   border-radius: 10px;
 }
 
-#title {
+/*#title {
   position: absolute;
   top: 100px;
   right: 150px;
   font-family: 'Abril Fatface', cursive;
   color: rgba(76, 128, 154, .7);
   font-size: 8em;
-}
+}*/
 
 #titleSmall {
   position: fixed;
@@ -365,9 +365,13 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
 /*GIFTEE PAGE ********************************************************************************/
 
 .heading {
-  color: rgba(105, 105, 105, 1);
+  position:absolute;
+  top: 60px;
+  right: 25px;
+  color: rgba(76, 128, 154, .7);
   font-family: 'Corben', cursive;
-  font-size: 1em;
+  font-size: 3em;
+  z-index: 100;
 }
 
 .body {
@@ -402,21 +406,29 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
   font-size: 2em;
 }
 
+.panelContainer {
+  position:absolute;
+  top: 150px;
+  bottom: 10px;
+  right: 60px;
+  width:490px;
+}
+
 #displayPanel {
-  position: absolute;
+  position: relative;
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ffffff), color-stop(57%,#f3f3f3), color-stop(71%,#e2e2e2), color-stop(100%,#ffffff));
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  top: 200px;
+/*  top: 200px;
   bottom: 0px;
-  right:100px;
+  right:0px;*/
   width:450px;
-  padding: 5px;
+  padding: 5px 5px 15px 15px;
   border-radius: 10px;
   border: solid 1px rgba(76, 128, 154, .2);
-  -webkit-box-shadow: 5px 5px 20px 0px rgba(0,0,0,.5);
+  -webkit-box-shadow: 5px 5px 25px 0px rgba(0,0,0,.5);
   font-family: 'Raleway', sans-serif;
   font-size: 1.5em;
   cursor: pointer;
