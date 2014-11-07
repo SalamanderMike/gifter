@@ -151,7 +151,6 @@
   <div class="heading">Event Settings</div>
   <div class="panelContainer">
   <div id="displayPanel">
-    <div style="color:grey;text-align:center;">
       <div class="counter" style="float:left;">
         <span class="incrementDown" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
         <span>{{gifter.participating}}</span>
@@ -172,9 +171,10 @@
           <p>Spending Limit</p>
         </span>
       </div>
-      {{gifter.participantNum}} participants have saved a profile!<br>
-      When all members have filled out their profile<br>
-      Gifter will randomly match everyone
+    <div style="position:relative;left:20px;color:grey;text-align:left;">
+      Participants who've signed up: {{gifter.participantNum}}<br>
+      Gifter will randomly match everyone<br>
+      When all members have signed up<br>
     </div>
     <div id="displayPanelInlay">
       <ul style="list-style-type: none;">
