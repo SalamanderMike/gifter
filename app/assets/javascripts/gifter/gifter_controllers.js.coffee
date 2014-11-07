@@ -209,6 +209,7 @@ class GifterCtrl
 
   participantsInEvent: (eventID)=>
     console.log "LIST OF PARTICIPANTS..."
+    @participants = []
     @UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
     @UsersInEvents.query (data)=>
       @participantNum = data.length
@@ -225,7 +226,7 @@ class GifterCtrl
         if unsignedParticipants > 0
           i = 0
           while i < unsignedParticipants
-            @participants.push("not signed up")
+            @participants.push("...")
             i++
 
 
@@ -242,6 +243,7 @@ class GifterCtrl
       event.participants += 1
       @participating = event.participants
       event.$update()
+      @participantsInEvent(eventID)
 
 
   decreaseParticipants: (eventID)=>
@@ -250,6 +252,7 @@ class GifterCtrl
       event.participants -= 1
       @participating = event.participants
       event.$update()
+      @participantsInEvent(eventID)
 
 
   increaseLimit: (eventID)=>

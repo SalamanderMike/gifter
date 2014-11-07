@@ -6626,6 +6626,10 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
 #displayPanel {
   position: absolute;
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ffffff), color-stop(57%,#f3f3f3), color-stop(71%,#e2e2e2), color-stop(100%,#ffffff));
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   top: 200px;
   bottom: 0px;
   right:100px;
@@ -6636,7 +6640,7 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
   -webkit-box-shadow: 5px 5px 20px 0px rgba(0,0,0,.5);
   font-family: 'Raleway', sans-serif;
   font-size: 1.5em;
-
+  cursor: pointer;
 }
 
 #displayPanelInlay {
@@ -6652,10 +6656,49 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
 }
 
 
+/*ADMIN PAGE ********************************************************************************/
 
+.counter {
+  position: relative;
+  display: inline-block;
+  user-select: none;
+  text-align: center;
+  font-size: 2em;
+}
 
+.incrementUp {
+  background: rgba(0,255,0,.05);
+  padding: 0 15px;
+  border: 1px solid #f0f0f0;
+  /*border-radius: 100%*/
+}
 
+.incrementDown {
+  background: rgba(255,0,0,.05);
+  padding: 0 15px;
+  border: 1px solid #f0f0f0;
+  /*border-radius: 100%;*/
+}
 
+.counterDirections {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  padding: 0px 20px;
+}
+
+.counterDirections span p {
+  font-family: 'Corben', cursive;
+  font-size: 1em;
+}
+
+.eventParticipants {
+  background: rgba(255, 255, 255, .6);
+  color: rgba(105, 105, 105, 1);
+  font-family: 'Corben', cursive;
+  font-size: 1em;
+  margin: 10px 10px 10px 0px;
+}
 
 
 

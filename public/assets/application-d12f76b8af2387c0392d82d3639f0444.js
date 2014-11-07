@@ -42330,6 +42330,10 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.adminPage = __bind(this.adminPage, this);
       this.gifteePage = __bind(this.gifteePage, this);
       this.homePage = __bind(this.homePage, this);
+      this.decreaseLimit = __bind(this.decreaseLimit, this);
+      this.increaseLimit = __bind(this.increaseLimit, this);
+      this.decreaseParticipants = __bind(this.decreaseParticipants, this);
+      this.increaseParticipants = __bind(this.increaseParticipants, this);
       this.removeParticipant = __bind(this.removeParticipant, this);
       this.participantsInEvent = __bind(this.participantsInEvent, this);
       this.findAdminsEvents = __bind(this.findAdminsEvents, this);
@@ -42363,6 +42367,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
           _this.matchName = "";
           _this.notReady = true;
           _this.participants = [];
+          _this.participating = 0;
           _this.participantNum = 0;
           _this.regexNum = /^[0-9]+$/;
           _this.demoLimits = _this.sessionID === 4 ? true : false;
@@ -42426,7 +42431,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                     }
                     return _results1;
                   } else {
-                    console.log("No Match");
                     _this.myMatch[pair] = [];
                     _this.myMatch[pair].push(event.id, false);
                     return ++pair;
@@ -42520,7 +42524,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
               });
               _results.push(MatchProfile.get((function(_this) {
                 return function(data) {
-                  var EventTitle, MatchName;
+                  var Event, MatchName;
                   _this.matchProfile = data;
                   _this.matchInterests = [["Cuisine", data.cuisine, "cuisine"], ["Stores", data.shops, "shops"], ["Services", data.services, "services"], ["Book Genre", data.bookGenre, "bookGenre"], ["Music Genre", data.musicGenre, "musicGenre"], ["Clothing", data.clothes, "clothes"]];
                   MatchName = _this.resource("/users/:id.json", {
@@ -42529,13 +42533,13 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                   MatchName.get(function(data) {
                     return _this.matchName = "" + data.firstname + " " + data.lastname;
                   });
-                  EventTitle = _this.resource("/users/:user_id/events/:id.json", {
+                  Event = _this.resource("/users/:user_id/events/:id.json", {
                     user_id: _this.sessionID,
                     id: eventID
                   });
-                  return EventTitle.get(function(title) {
-                    _this.eventTitle = title.eventName;
-                    return _this.eventLimit = title.spendingLimit;
+                  return Event.get(function(event) {
+                    _this.eventTitle = event.eventName;
+                    return _this.eventLimit = event.spendingLimit;
                   });
                 };
               })(this)));
@@ -42583,6 +42587,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
     GifterCtrl.prototype.participantsInEvent = function(eventID) {
       console.log("LIST OF PARTICIPANTS...");
+      this.participants = [];
       this.UsersInEvents = this.resource("/index_participants/:event_id.json", {
         event_id: eventID
       }, {
@@ -42593,21 +42598,38 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       });
       return this.UsersInEvents.query((function(_this) {
         return function(data) {
-          var User, identity, _i, _len, _results;
+          var Event, User, identity, _i, _len;
           _this.participantNum = data.length;
-          _results = [];
           for (_i = 0, _len = data.length; _i < _len; _i++) {
             identity = data[_i];
             User = _this.resource("/users/:id.json", {
               id: identity.user_id
             });
-            _results.push(User.get(function(data) {
+            User.get(function(user) {
               var name;
-              name = "" + data.firstname + " " + data.lastname;
+              name = "" + user.firstname + " " + user.lastname;
               return _this.participants.push(name);
-            }));
+            });
           }
-          return _results;
+          Event = _this.resource("/users/:user_id/events/:id.json", {
+            user_id: _this.sessionID,
+            id: eventID
+          });
+          return Event.get(function(event) {
+            var i, unsignedParticipants, _results;
+            _this.participating = event.participants;
+            _this.eventLimit = event.spendingLimit;
+            unsignedParticipants = _this.participating - _this.participantNum;
+            if (unsignedParticipants > 0) {
+              i = 0;
+              _results = [];
+              while (i < unsignedParticipants) {
+                _this.participants.push("...");
+                _results.push(i++);
+              }
+              return _results;
+            }
+          });
         };
       })(this));
     };
@@ -42615,6 +42637,84 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     GifterCtrl.prototype.removeParticipant = function(userID) {
       this.participants.splice(userID, 1);
       return this.participantNum--;
+    };
+
+    GifterCtrl.prototype.increaseParticipants = function(eventID) {
+      var Event;
+      Event = this.resource("/users/:user_id/events/:id.json", {
+        user_id: this.sessionID,
+        id: eventID
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+      return Event.get((function(_this) {
+        return function(event) {
+          event.participants += 1;
+          _this.participating = event.participants;
+          event.$update();
+          return _this.participantsInEvent(eventID);
+        };
+      })(this));
+    };
+
+    GifterCtrl.prototype.decreaseParticipants = function(eventID) {
+      var Event;
+      Event = this.resource("/users/:user_id/events/:id.json", {
+        user_id: this.sessionID,
+        id: eventID
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+      return Event.get((function(_this) {
+        return function(event) {
+          event.participants -= 1;
+          _this.participating = event.participants;
+          event.$update();
+          return _this.participantsInEvent(eventID);
+        };
+      })(this));
+    };
+
+    GifterCtrl.prototype.increaseLimit = function(eventID) {
+      var Event;
+      Event = this.resource("/users/:user_id/events/:id.json", {
+        user_id: this.sessionID,
+        id: eventID
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+      return Event.get((function(_this) {
+        return function(event) {
+          event.spendingLimit += 1;
+          _this.eventLimit = event.spendingLimit;
+          return event.$update();
+        };
+      })(this));
+    };
+
+    GifterCtrl.prototype.decreaseLimit = function(eventID) {
+      var Event;
+      Event = this.resource("/users/:user_id/events/:id.json", {
+        user_id: this.sessionID,
+        id: eventID
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+      return Event.get((function(_this) {
+        return function(event) {
+          event.spendingLimit -= 1;
+          _this.eventLimit = event.spendingLimit;
+          return event.$update();
+        };
+      })(this));
     };
 
     GifterCtrl.prototype.homePage = function() {
@@ -42650,6 +42750,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.admin = true;
       this.eventHeadding = true;
       this.eventTitle = event.eventName;
+      this.eventID = event.id;
       return this.participantsInEvent(event.id);
     };
 
@@ -42713,7 +42814,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
               eventNameExists = true;
               if (_this.scope.join.password === event.password) {
                 thisEvent = event;
-                Event = _this.resource("/users/:user_id/events/:id", {
+                Event = _this.resource("/users/:user_id/users_events/:id.json", {
                   user_id: _this.sessionID,
                   id: event.id
                 }, {
@@ -42736,7 +42837,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
               }
             }
           }
-          console.log(eventNameExists);
           _this.scope.join.eventName = "";
           _this.scope.join.password = "";
           if (!eventNameExists) {
@@ -42888,6 +42988,10 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 }).call(this);
 (function() {
   angular.module("GifterApp", ["GifterRouter", "GifterControllers", "GifterFactories"]);
+
+}).call(this);
+(function() {
+
 
 }).call(this);
 (function() {

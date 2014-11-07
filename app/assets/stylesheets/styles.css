@@ -449,14 +449,14 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
   background: rgba(0,255,0,.05);
   padding: 0 15px;
   border: 1px solid #f0f0f0;
-  border-radius: 100%
+  /*border-radius: 100%*/
 }
 
 .incrementDown {
   background: rgba(255,0,0,.05);
   padding: 0 15px;
   border: 1px solid #f0f0f0;
-  border-radius: 100%;
+  /*border-radius: 100%;*/
 }
 
 .counterDirections {

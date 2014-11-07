@@ -153,15 +153,15 @@
   <div id="displayPanel">
     <div style="color:grey;text-align:center;">
       <div class="counter" style="float:left;">
-        <span class="incrementUp" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
+        <span class="incrementDown" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
         <span>{{gifter.participating}}</span>
-        <span class="incrementDown" ng-click="gifter.increaseParticipants(gifter.eventID)">+</span>
+        <span class="incrementUp" ng-click="gifter.increaseParticipants(gifter.eventID)">+</span>
       </div>
 
       <div class="counter" style="float:right;">
-        <span class="incrementUp" ng-click="gifter.decreaseLimit(gifter.eventID)">-</span>
+        <span class="incrementDown" ng-click="gifter.decreaseLimit(gifter.eventID)">-</span>
         <span>${{gifter.eventLimit}}</span>
-        <span class="incrementDown" ng-click="gifter.increaseLimit(gifter.eventID)">+</span>
+        <span class="incrementUp" ng-click="gifter.increaseLimit(gifter.eventID)">+</span>
       </div>
 
       <div class="counterDirections">
