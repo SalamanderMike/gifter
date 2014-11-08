@@ -226,7 +226,7 @@ class GifterCtrl
         if unsignedParticipants > 0
           i = 0
           while i < unsignedParticipants
-            @participants.push("...")
+            @participants.push(". . .")
             i++
 
 

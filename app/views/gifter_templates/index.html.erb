@@ -61,13 +61,13 @@
   <div class="eventPanelContainer">
     <h3 style="font-family: 'Raleway', sans-serif;">
       These are the Events you are participating in...<br>
-      Click On A Green Event To See Who Your 'giftee' is<br>
-      Red Events Are Not Yet Ready For You
+      Click on a Green Event to see who your 'Giftee' is<br>
+      Red Events are not yet ready to view
     </h3>
     <div  class="eventPanel" ng-repeat="event in gifter.myEvents track by $index"
           style="background:{{gifter.thisEventColor(event.match)}};">
       <div class="eventTitles">{{event.eventName}}</div>
-      <div class="eventViewer"  ng-click="gifter.thisMatchProfile(event.id)">
+      <div class="eventPanelInlay"  ng-click="gifter.thisMatchProfile(event.id)">
         <p class="eventName"></p>
         <div class="eventBox"></div>
       </div>
@@ -80,13 +80,14 @@
   <div class="interestPanelContainer">
     <h3 style="font-family: 'Raleway', sans-serif;">
       These are gifts you'd like to receive from your 'gifter'<br>
-      Add new favorite things for your gifter to see...<br>
-      or delete them using the red buttons
+      Add new favorite things for your gifter to see...
+      or delete them using the red buttons<br>
+      Being SPECIFIC, brings better results! Instead of asking for 'wine', say 'Merlot'
     </h3>
 
     <div class="interestPanel" ng-repeat="catagory in gifter.interests">
       <div class="interestTitles">{{catagory[0]}}</div>
-      <div class="interestViewer">
+      <div class="interestPanelInlay">
 
         <div class="tags" ng-repeat="tag in catagory[1] track by $index">{{tag}}
           <button class="deleteButton"  ng-click="gifter.removeTag($index, catagory[2], $parent.$index)">
@@ -111,23 +112,27 @@
 
   <div id="gifteeName" class="heading">Your Giftee is:  <span style="font-family:'Spirax',cursive;font-size:1.5em;">{{gifter.matchName}}!</span></div>
 
-  <div id="displayPanel">
-    <div style="color:grey;text-align:center;">
-    <!-- click on an item to see where you can buy it -->
-    These are {{gifter.matchName}}'s favorite things!<br>
-    Your spending limit is ${{gifter.eventLimit}}
-    </div>
-    <div id="displayPanelInlay">
-      <ul class="heading" style="list-style-type: none;padding-left:10px;">
-        <li ng-repeat="catagories in gifter.matchInterests">{{catagories[0]}}
-          <ul class="body" style="font-size:.7em;">
-            <li class="tags" ng-repeat="interests in catagories[1] track by $index">{{interests}}</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+  <div class="panelContainer">
+    <div class="displayPanel">
+      <div style="color:grey;text-align:center;">
+      <!-- click on an item to see where you can buy it -->
+      These are {{gifter.matchName}}'s favorite things!<br>
+      Your spending limit is ${{gifter.eventLimit}}
+      </div>
 
+      <div class="displayPanelInlay">
+        <ul class="heading" style="list-style-type: none;padding-left:10px;">
+          <li ng-repeat="catagories in gifter.matchInterests">{{catagories[0]}}
+            <ul class="body" style="font-size:.5em;">
+              <li class="tags" ng-repeat="interests in catagories[1] track by $index">{{interests}}</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+    </div>
   </div>
+
 </div>
 <!-- CHOOSE EVENT TO EDIT ************************************************************************-->
 <div ng-show="gifter.chooseEvent" class="visible">
@@ -138,7 +143,7 @@
     <div  class="eventPanel" ng-repeat="event in gifter.adminsEvents track by $index"
           style="background:{{gifter.thisEventColor(event.match)}};">
       <div class="eventTitles">{{event.eventName}}</div>
-      <div class="eventViewer" ng-click="gifter.adminPage(event)">
+      <div class="eventPanelInlay" style="left:175px" ng-click="gifter.adminPage(event)">
         <p class="eventName"></p>
         <div class="eventBox"></div>
       </div>
@@ -148,9 +153,9 @@
 </div>
 <!-- EVENT DETAILS ******************************************************************************-->
 <div ng-show="gifter.admin" class="visible">
-  <div class="heading">Event Settings</div>
+  <div id="eventSettingsHeading">Event Settings</div>
   <div class="panelContainer">
-  <div id="displayPanel">
+  <div class="displayPanel" style="opacity:1;">
       <div class="counter" style="float:left;">
         <span class="incrementDown" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
         <span>{{gifter.participating}}</span>
@@ -176,7 +181,7 @@
       Gifter will randomly match everyone<br>
       When all members have signed up<br>
     </div>
-    <div id="displayPanelInlay">
+    <div class="displayPanelInlay">
       <ul style="list-style-type: none;">
         <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
         {{participant}}

@@ -42624,7 +42624,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
               i = 0;
               _results = [];
               while (i < unsignedParticipants) {
-                _this.participants.push("...");
+                _this.participants.push(". . .");
                 _results.push(i++);
               }
               return _results;

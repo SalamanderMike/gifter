@@ -6395,7 +6395,7 @@ div.bow-background {
 
 div.spacer {
   position: relative;
-  top: 90px;
+  top: 100px;
   left: 20px;
   width: 860px;
   height: 250px;
@@ -6434,15 +6434,14 @@ div.spacer {
   border-radius: 10px;
 }
 
-.eventViewer {
+.eventPanelInlay {
   position: relative;
-  /*background: -webkit-linear-gradient(-45deg, #848484 0%,#cecece 8%,#e8e8e8 15%,#ffffff 74%);*/
   background: white;
   top: 0px;
   left: 10px;
-  width: 95%;
+  width: 55%;
   height: 155px;
-
+  -webkit-box-shadow: inset 3px 3px 10px 0px #ABABAB;
   padding-bottom: 50px;
   border: 1px solid #ccf6ff;
   text-align: center;
@@ -6459,6 +6458,7 @@ div.spacer {
 
 div.eventBox {
   position: relative;
+  top: 15px;
   display: inline-block;
   width: 125px;
   height: 127px;
@@ -6509,28 +6509,27 @@ span {
   font-family: 'Corben', cursive;
 }
 
-.interestViewer {
+.interestPanelInlay {
   position: relative;
-  background: -webkit-linear-gradient(-45deg, #848484 0%,#cecece 8%,#e8e8e8 15%,#ffffff 74%);
   top: 0px;
   left: 10px;
   width: 97%;
   min-height: 125px;
   border: 1px solid #ccffdb;
   padding: 5px 5px 50px 5px;
+  -webkit-box-shadow: inset 3px 3px 10px 0px #ABABAB;
   text-align: center;
-  border-radius: 30px;
+  border-radius: 10px;
 }
 
 .inputChoices {
   position: relative;
-  background: -webkit-linear-gradient(-45deg,#cecece 0%,#e8e8e8 15%,#ffffff 74%);
   display: inline;
-
   bottom: 30px;
   left: 80px;
   width: 190px;
-  border-color: #f2f2f2;
+  -webkit-box-shadow: inset 1px 1px 8px 0px #ABABAB;
+  border-color: white;
   border-radius: 5px;
 }
 
@@ -6538,7 +6537,9 @@ span {
   position: relative;
   bottom: 30px;
   left: 80px;
-background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffffff), color-stop(8%,#ffffff), color-stop(37%,#d8f0ff), color-stop(100%,#f3f3f3));
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffffff), color-stop(8%,#ffffff), color-stop(37%,#d8f0ff), color-stop(100%,#f3f3f3));
+  -webkit-box-shadow: 3px 1px 3px 0px #DDDDDD;
+  border-color: white;
   border-radius: 5px;
 }
 
@@ -6586,6 +6587,13 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
 /*GIFTEE PAGE ********************************************************************************/
 
 .heading {
+  position:relative;
+  color: rgba(76, 128, 154, .9);
+  font-family: 'Corben', cursive;
+  font-size: 1.5em;
+}
+
+#eventSettingsHeading {
   position:absolute;
   top: 60px;
   right: 25px;
@@ -6614,8 +6622,8 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
 
 #gifteeName {
   position: absolute;
-  top: 125px;
-  right:200px;
+  top: 60px;
+  right:100px;
   color: rgba(19, 109, 154, 1);
   text-shadow: 4px 4px 8px rgba(150, 150, 150, 1);
   font-family: 'Corben', cursive;
@@ -6635,36 +6643,34 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(8%,#ffff
   width:490px;
 }
 
-#displayPanel {
+.displayPanel {
   position: relative;
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ffffff), color-stop(57%,#f3f3f3), color-stop(71%,#e2e2e2), color-stop(100%,#ffffff));
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-/*  top: 200px;
-  bottom: 0px;
-  right:0px;*/
   width:450px;
-  padding: 5px 5px 15px 15px;
+  padding: 5px 5px 25px 15px;
   border-radius: 10px;
   border: solid 1px rgba(76, 128, 154, .2);
   -webkit-box-shadow: 5px 5px 25px 0px rgba(0,0,0,.5);
   font-family: 'Raleway', sans-serif;
   font-size: 1.5em;
   cursor: pointer;
+  opacity: .9;
 }
 
-#displayPanelInlay {
+.displayPanelInlay {
   position: relative;
   background: -webkit-linear-gradient(-45deg, #FFFEF2 0%,#cbebff 60%,#82D1FF 100%);
+  -webkit-box-shadow: inset 3px 3px 10px 0px #ABABAB;
   top: 10px;
   left:10px;
   width:400px;
   padding: 5px;
   border-radius: 10px;
   border: solid 1px rgba(76, 128, 154, .05);
-
 }
 
 
