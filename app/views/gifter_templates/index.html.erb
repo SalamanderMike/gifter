@@ -65,9 +65,10 @@
       Red Events are not yet ready to view
     </h3>
     <div  class="eventPanel" ng-repeat="event in gifter.myEvents track by $index"
-          style="background:{{gifter.thisEventColor(event.match)}};">
+          style="background:{{gifter.thisEventColor(event.match)}};"
+          ng-click="gifter.thisMatchProfile(event.id)">
       <div class="eventTitles">{{event.eventName}}</div>
-      <div class="eventPanelInlay"  ng-click="gifter.thisMatchProfile(event.id)">
+      <div class="eventPanelInlay">
         <p class="eventName"></p>
         <div class="eventBox"></div>
       </div>
