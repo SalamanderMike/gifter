@@ -142,9 +142,10 @@
   Choose which of your Events you'd like to see more details about
   </h3>
     <div  class="eventPanel" ng-repeat="event in gifter.adminsEvents track by $index"
-          style="background:{{gifter.thisEventColor(event.match)}};">
+          style="background:{{gifter.thisEventColor(event.match)}};"
+          ng-click="gifter.adminPage(event)">
       <div class="eventTitles">{{event.eventName}}</div>
-      <div class="eventPanelInlay" style="left:175px" ng-click="gifter.adminPage(event)">
+      <div class="eventPanelInlay" style="left:175px">
         <p class="eventName"></p>
         <div class="eventBox"></div>
       </div>

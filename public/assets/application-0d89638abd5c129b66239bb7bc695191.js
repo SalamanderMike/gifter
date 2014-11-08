@@ -42453,13 +42453,13 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
           });
           return _this.Profile.get(function(profile) {
             if (_this.sessionID === 4 || !profile.cuisine) {
-              profile.cuisine = ["Wine", "Cookies", "Cheese"];
+              profile.cuisine = ["Gewurztraminer", "Shortbread", "Gourmet Cheddar"];
               profile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"];
               profile.services = ["Spotify", "Pandora", "Dropbox"];
-              profile.bookGenre = ["Sci-fi", "Romance", "Mystery"];
-              profile.musicGenre = ["Indie", "Classical", "Pop"];
-              profile.clothes = ["Shirt", "Tie", "Scarf"];
-              profile.animal = ["Wolf", "Cat", "Girraffe"];
+              profile.bookGenre = ["Sci-fi", "Isaac Asimov", "Pride and Prejudice"];
+              profile.musicGenre = ["Indie", "Mozart", "The Supremes"];
+              profile.clothes = ["Shirt", "Red Holiday Sweater", "Scarf"];
+              profile.animal = ["Grey Wolf", "Kittens", "Girraffe"];
               profile.color = ["blue"];
               profile.metal = ["silver", "gold"];
               profile.element = ["Wood", "Stone", "Glass"];
@@ -42467,7 +42467,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
               profile.hobbies = ["Reading", "Cooking", "Movies"];
               profile.$update();
             }
-            _this.interests = [["Cuisine", profile.cuisine, "cuisine", "Ice Cream... Mexican..."], ["Stores", profile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", profile.services, "services", "Barnes & Noble Membership..."], ["Book Genre", profile.bookGenre, "bookGenre", "Biography... Audiobook..."], ["Music Genre", profile.musicGenre, "musicGenre", "Metal... Holiday..."], ["Clothing", profile.clothes, "clothes", "Socks... Sweater..."], ["Animals", profile.animal, "animal", "Bird... Bear..."], ["Color", profile.color, "color", "Green... Silver..."], ["Metal", profile.metal, "metal", "Puter... Titanium..."], ["Element", profile.element, "element", "Tourmaline... Crystal..."], ["Art", profile.art, "art", "Carving... Ceramic..."], ["Hobbies", profile.hobbies, "hobbies", "Sports... Rock Climbing..."]];
+            _this.interests = [["Cuisine", profile.cuisine, "cuisine", "Dark Chocolate Ice Cream..."], ["Stores", profile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", profile.services, "services", "Barnes & Noble Membership..."], ["Book Genre, Title, or Author", profile.bookGenre, "bookGenre", "J.K. Rowling... Audiobook..."], ["Music Genre, Artist, or Album", profile.musicGenre, "musicGenre", "Green Day... Holiday..."], ["Clothing", profile.clothes, "clothes", "Socks... Tie... Slippers"], ["Animals", profile.animal, "animal", "Blue Jay... Polar Bear..."], ["Color", profile.color, "color", "Green... Silver..."], ["Metal", profile.metal, "metal", "Puter... Titanium..."], ["Element", profile.element, "element", "Tourmaline... Crystal..."], ["Art", profile.art, "art", "Carving... Ceramic..."], ["Hobbies", profile.hobbies, "hobbies", "Sports... Drawing..."]];
             return _this.home = true;
           });
         };
