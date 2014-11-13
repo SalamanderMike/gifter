@@ -5,7 +5,7 @@ class GifterCtrl
     # console.log "HELLO! I'm the Gifter Controller!"
     # if !@rootScope.sessionID
     #   console.log "SESSION DOESN'T EXIST"
-
+    console.log "CONSTRUCTOR"
     @http.get("/authorized.json")
     .success (user)=>
       @rootScope.sessionID = user.id
@@ -38,7 +38,6 @@ class GifterCtrl
       @demoLimits = if @sessionID == 4 then true else false
 
       @toggleDropdown = false
-      @counter = 0
 
 
 
@@ -46,90 +45,47 @@ class GifterCtrl
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
       User.get (data)=> #find current user data
         @user = data
-
-
-
-      # UserEvents = @resource("/index_user_events/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
-      # UserEvents.query (data)=>
-      #   index = 0
-      #   pair = 0
-      #   # Grab Events by their discovered IDs, push them into an array [@myEvents]
-      #   # and log all the matches [@myMatch]
-      #   for link of data
-      #     if data[link].event_id
-      #       eventID = data[link].event_id
-      #       # Get total number of participants for each Event
-      #       UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
-      #       UsersInEvents.query (data)=>
-      #         @totalParticipants = data.length
-      #         # console.log "#{@totalParticipants} people in this User's Event"
-      #       Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-      #       Event.get (event)=>
-      #         @myEvents.push(event)
-      #         # console.log "#{event.participants} in Event"#***** MATCH ALGORITHM
-      #         # if event.participants == @totalParticipants#***** MATCH ALGORITHM
-      #           # console.log "#{event.eventName} has full participation!"#***** MATCH ALGORITHM
-      #         # Keep track of Matches
-      #         matches = @myEvents[index].match
-      #         ++index
-      #         if matches #check against NULL
-      #           for i of matches
-      #             if +matches[i][0] == @sessionID
-      #               @myMatch[pair] = []
-      #               @myMatch[pair].push(event.id, +matches[i][1])
-      #               ++pair
-      #         else #Event has no match yet
-      #           @myMatch[pair] = []
-      #           @myMatch[pair].push(event.id, false)
-      #           ++pair
-      #       @home = true# Show Home page after calculation is done
-
-
-
-
-
-
-
-
-
-
-
+        console.log "USERS"
 
       # Find all user's events by event ID through linker table
       UserEvents = @resource("/index_user_events/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
       UserEvents.query (data)=>
+        console.log data.length
         index = 0
         pair = 0
         # Grab Events by their discovered IDs, push them into an array [@myEvents]
         # and log all the matches [@myMatch]
+
         for link of data
-          if data[link].event_id
-            eventID = data[link].event_id
-            # Get total number of participants for each Event
-            UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
-            UsersInEvents.query (data)=>
-              @totalParticipants = data.length
-              # console.log "#{@totalParticipants} people in this User's Event"
-            Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-            Event.get (event)=>
-              @myEvents.push(event)
-              # console.log "#{event.participants} in Event"#***** MATCH ALGORITHM
-              # if event.participants == @totalParticipants#***** MATCH ALGORITHM
-                # console.log "#{event.eventName} has full participation!"#***** MATCH ALGORITHM
-              # Keep track of Matches
-              matches = @myEvents[index].match
-              ++index
-              if matches #check against NULL
-                for i of matches
-                  if +matches[i][0] == @sessionID
-                    @myMatch[pair] = []
-                    @myMatch[pair].push(event.id, +matches[i][1])
-                    ++pair
-              else #Event has no match yet
-                @myMatch[pair] = []
-                @myMatch[pair].push(event.id, false)
-                ++pair
-            @home = true# Show Home page after calculation is done
+          do (link)=>
+            if data[link].event_id
+              eventID = data[link].event_id
+              # Get total number of participants for each Event
+              UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+              UsersInEvents.query (data)=>
+                @totalParticipants = data.length
+                console.log "1) #{@totalParticipants} people signed up for event: #{eventID}"
+              Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+              Event.get (event)=>
+                @myEvents.push(event)
+                console.log "2) #{event.participants} people should be in Event: #{eventID}"#***** MATCH ALGORITHM
+                # if event.participants == @totalParticipants#***** MATCH ALGORITHM
+                  # console.log "#{event.eventName} has full participation!"#***** MATCH ALGORITHM
+                # Keep track of Matches
+                matches = @myEvents[index].match
+                ++index
+                if matches #check against NULL
+                  for i of matches
+                    if +matches[i][0] == @sessionID
+                      @myMatch[pair] = []
+                      @myMatch[pair].push(event.id, +matches[i][1])
+                      ++pair
+                else #Event has no match yet
+                  @myMatch[pair] = []
+                  @myMatch[pair].push(event.id, false)
+                  ++pair
+              @home = true# Show Home page after calculation is done
+
 
 # NEXT STEP #1 MATCH ALGORITHM *********************
 
@@ -273,12 +229,18 @@ class GifterCtrl
           i++
 
   listPeople: (data)=>
-    while @counter < data.length
-      User = @resource("/users/:id.json", {id:data[@counter].user_id})
+    i = 0
+    while i < data.length
+
+      User = @resource("/users/:id.json", {id:data[i].user_id})
       User.get (user)=>
         name = "#{user.firstname} #{user.lastname}"
         @participants.push(name)
-      ++@counter
+
+      do (i)->
+        console.log "test", i
+
+      ++i
 
   participantsInEvent: (eventID)=>
     # console.log "LIST OF PARTICIPANTS..."
@@ -291,7 +253,6 @@ class GifterCtrl
       , 0)
 
       @timeout(()=>
-        @counter = 0
         @listSpaces(eventID, data.length)
       , 300)
 
