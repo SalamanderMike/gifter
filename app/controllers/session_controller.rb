@@ -35,7 +35,3 @@ class SessionController < ApplicationController
   end
 end
 
-private
-def demo_params
-  params.require(:user).permit(email:"darth@deathstar.com", password:"1234")
-end

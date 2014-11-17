@@ -5,12 +5,9 @@ class GifterCtrl
     # console.log "HELLO! I'm the Gifter Controller!"
     # if !@rootScope.sessionID
     #   console.log "SESSION DOESN'T EXIST"
-    console.log "CONSTRUCTOR"
     @http.get("/authorized.json")
     .success (user)=>
-      @rootScope.sessionID = user.id
       @sessionID = user.id
-      # console.log "USER ID:#{@sessionID}"
       @home = false   # Hide/Show Home page
       @giftee = false # Hide/Show Match Profile page
       @admin = false  # Hide/Show Admin Settings
@@ -33,6 +30,7 @@ class GifterCtrl
       @participants = []
       @participating = 0# Reflects num in Events.participants
       @participantNum = 0
+      @userIdArray = []
       @regexNum = /^[0-9]+$/ # ERROR: returning undefined
 
       @demoLimits = if @sessionID == 4 then true else false
@@ -45,14 +43,13 @@ class GifterCtrl
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
       User.get (data)=> #find current user data
         @user = data
-        console.log "USERS"
 
       # Find all user's events by event ID through linker table
       UserEvents = @resource("/index_user_events/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
       UserEvents.query (data)=>
-        console.log data.length
         index = 0
         pair = 0
+        userIdArray = []
         # Grab Events by their discovered IDs, push them into an array [@myEvents]
         # and log all the matches [@myMatch]
 
@@ -60,30 +57,75 @@ class GifterCtrl
           do (link)=>
             if data[link].event_id
               eventID = data[link].event_id
-              # Get total number of participants for each Event
-              UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
-              UsersInEvents.query (data)=>
-                @totalParticipants = data.length
-                console.log "1) #{@totalParticipants} people signed up for event: #{eventID}"
-              Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-              Event.get (event)=>
-                @myEvents.push(event)
-                console.log "2) #{event.participants} people should be in Event: #{eventID}"#***** MATCH ALGORITHM
-                # if event.participants == @totalParticipants#***** MATCH ALGORITHM
-                  # console.log "#{event.eventName} has full participation!"#***** MATCH ALGORITHM
-                # Keep track of Matches
-                matches = @myEvents[index].match
-                ++index
-                if matches #check against NULL
-                  for i of matches
-                    if +matches[i][0] == @sessionID
-                      @myMatch[pair] = []
-                      @myMatch[pair].push(event.id, +matches[i][1])
-                      ++pair
-                else #Event has no match yet
-                  @myMatch[pair] = []
-                  @myMatch[pair].push(event.id, false)
-                  ++pair
+              userIdArray = []
+              usersArray = []
+              do (usersArray)=>
+
+                # Get total number of participants for each Event
+                UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:data[link].event_id}, {'query': {method: 'GET', isArray: true}})
+                UsersInEvents.query (users)=>
+                  @totalParticipants = users.length
+                  usersArray = users.slice(-users.length) #slice off promises
+
+                  do (usersArray)=>
+                    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+                    Event.get (thisEvent)=>
+                      console.log "Begin factory..."
+
+                      @timeout(()=>
+                        @myEvents.push(thisEvent)
+                        # Keep track of Matches
+                        matches = @myEvents[index].match
+                        ++index
+                        if matches #check against NULL
+                          for i of matches
+                            if +matches[i][0] == @sessionID
+                              @myMatch[pair] = []
+                              @myMatch[pair].push(thisEvent.id, +matches[i][1])
+                              ++pair
+                        else #Event has no match yet
+                          @myMatch[pair] = []
+                          @myMatch[pair].push(thisEvent.id, false)
+                          ++pair
+                          console.log @myMatch, "Display function"
+                      , 0)
+
+                      do (thisEvent)=>
+                        # MATCHING ALGORITHM
+                        currentIndex = usersArray.length - 1
+                        lastUser = currentIndex
+                        # if !thisEvent.match
+                        console.log usersArray.length, "usersArray"
+                        console.log thisEvent.participants, "participants"
+                        if usersArray.length == thisEvent.participants
+                          console.log "usersArray == total participants"
+                          # Randomize usersArray
+                          while currentIndex != 0
+                            do (currentIndex)=>
+                              # Pick random index...
+                              randomIndex = Math.floor(Math.random() * currentIndex)
+                              # Hold & Swap...
+                              temporaryValue = usersArray[currentIndex]
+                              usersArray[currentIndex] = usersArray[randomIndex]
+                              usersArray[randomIndex] = temporaryValue
+                            currentIndex -= 1
+                          matchArray = [[usersArray[0], usersArray[lastUser]]]
+                          currentIndex = lastUser
+
+                          # SAVE MATCHES TO DATABASE
+                          while currentIndex != 0
+                            do (currentIndex)=>
+                              matchArray[currentIndex] = []
+                              matchArray[currentIndex].push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
+                            currentIndex -= 1
+                          console.log matchArray, "save to database"
+                          # Update Database
+                          thisEvent.match = matchArray
+                          # thisEvent.$update()
+                          # console.log thisEvent.match
+
+
+
               @home = true# Show Home page after calculation is done
 
 
@@ -171,6 +213,7 @@ class GifterCtrl
 
   thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
     console.log "thisMatchProfile()"
+    console.log @userIdArray
     @matchProfile = {}
     if @myMatch
       for match in @myMatch
@@ -231,15 +274,10 @@ class GifterCtrl
   listPeople: (data)=>
     i = 0
     while i < data.length
-
       User = @resource("/users/:id.json", {id:data[i].user_id})
       User.get (user)=>
         name = "#{user.firstname} #{user.lastname}"
         @participants.push(name)
-
-      do (i)->
-        console.log "test", i
-
       ++i
 
   participantsInEvent: (eventID)=>
@@ -265,37 +303,37 @@ class GifterCtrl
 
   increaseParticipants: (eventID)=>
     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    Event.get (event)=>
-      event.participants += 1
-      @participating = event.participants
-      event.$update()
+    Event.get (thisEvent)=>
+      thisEvent.participants += 1
+      @participating = thisEvent.participants
+      thisEvent.$update()
       @participantsInEvent(eventID)
 
 
   decreaseParticipants: (eventID)=>
     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    Event.get (event)=>
-      event.participants -= 1
-      @participating = event.participants
-      event.$update()
+    Event.get (thisEvent)=>
+      thisEvent.participants -= 1
+      @participating = thisEvent.participants
+      thisEvent.$update()
       @participantsInEvent(eventID)
 
 
   increaseLimit: (eventID)=>
     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    Event.get (event)=>
-      event.spendingLimit += 1
-      @eventLimit = event.spendingLimit
-      event.$update()
+    Event.get (thisEvent)=>
+      thisEvent.spendingLimit += 1
+      @eventLimit = thisEvent.spendingLimit
+      thisEvent.$update()
 
 
 
   decreaseLimit: (eventID)=>
     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    Event.get (event)=>
-      event.spendingLimit -= 1
-      @eventLimit = event.spendingLimit
-      event.$update()
+    Event.get (thisEvent)=>
+      thisEvent.spendingLimit -= 1
+      @eventLimit = thisEvent.spendingLimit
+      thisEvent.$update()
 
 
 

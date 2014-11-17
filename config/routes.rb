@@ -29,5 +29,5 @@ Rails.application.routes.draw do
     resources :profile
     resources :users_events
   end
-  # match "*path", to: "site#index", via: "get"
+  match "*path", to: "site#index", via: "get"
 end
