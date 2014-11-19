@@ -31,6 +31,6 @@ class EventsController < ApplicationController
 
   private
   def event_params
-    params.require(:event).permit(:eventName, :password, :admin_id, :participants, :spendingLimit, {match: [[]]}, :expire)
+    params.require(:event).permit(:eventName, :password, :admin_id, :participants, :spendingLimit, {match: []}, :expire)
   end
 end

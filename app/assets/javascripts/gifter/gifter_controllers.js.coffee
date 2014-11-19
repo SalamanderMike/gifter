@@ -30,7 +30,6 @@ class GifterCtrl
       @participants = []
       @participating = 0# Reflects num in Events.participants
       @participantNum = 0
-      @userIdArray = []
       @regexNum = /^[0-9]+$/ # ERROR: returning undefined
 
       @demoLimits = if @sessionID == 4 then true else false
@@ -41,102 +40,87 @@ class GifterCtrl
 
       # SET RESOURCE PATHS
       User = @resource("/users/:id.json", {id:@sessionID}, {update: {method: 'PUT'}})
-      User.get (data)=> #find current user data
-        @user = data
+      User.get (session)=> #find current user data
+        @user = session
 
+      # FACTORY - SETUP EVENTS & MATCHES
       # Find all user's events by event ID through linker table
       UserEvents = @resource("/index_user_events/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
       UserEvents.query (data)=>
-        index = 0
-        pair = 0
-        userIdArray = []
+        link = data.slice(-data.length)
         # Grab Events by their discovered IDs, push them into an array [@myEvents]
-        # and log all the matches [@myMatch]
-
-        for link of data
-          do (link)=>
-            if data[link].event_id
-              eventID = data[link].event_id
-              userIdArray = []
+        #   and log all the matches [@myMatch]
+        for eventLink of link # eventLink = Event.id
+          do (eventLink)=>
+            console.log eventLink
+            if data[eventLink].event_id
               usersArray = []
               do (usersArray)=>
-
-                # Get total number of participants for each Event
-                UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:data[link].event_id}, {'query': {method: 'GET', isArray: true}})
+                # Get total number of participants signed up for this Event
+                UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:data[eventLink].event_id}, {'query': {method: 'GET', isArray: true}})
                 UsersInEvents.query (users)=>
                   @totalParticipants = users.length
                   usersArray = users.slice(-users.length) #slice off promises
 
-                  do (usersArray)=>
-                    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-                    Event.get (thisEvent)=>
-                      console.log "Begin factory..."
 
-                      @timeout(()=>
-                        @myEvents.push(thisEvent)
-                        # Keep track of Matches
-                        matches = @myEvents[index].match
-                        ++index
-                        if matches #check against NULL
-                          for i of matches
-                            if +matches[i][0] == @sessionID
-                              @myMatch[pair] = []
-                              @myMatch[pair].push(thisEvent.id, +matches[i][1])
-                              ++pair
-                        else #Event has no match yet
-                          @myMatch[pair] = []
-                          @myMatch[pair].push(thisEvent.id, false)
-                          ++pair
-                          console.log @myMatch, "Display function"
-                      , 0)
-
-                      do (thisEvent)=>
-                        # MATCHING ALGORITHM
-                        currentIndex = usersArray.length - 1
-                        lastUser = currentIndex
-                        # if !thisEvent.match
-                        console.log usersArray.length, "usersArray"
-                        console.log thisEvent.participants, "participants"
+                  # Find matches in Event
+                  Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:data[eventLink].event_id}, {update: {method: 'PUT'}})
+                  Event.get (thisEvent)=>
+                    do (thisEvent)=>
+                      # MATCHING ALGORITHM
+                      currentIndex = usersArray.length - 1
+                      lastUser = currentIndex
+                      if !thisEvent.match and users.length > 2
+                        console.log users.length
                         if usersArray.length == thisEvent.participants
-                          console.log "usersArray == total participants"
                           # Randomize usersArray
-                          while currentIndex != 0
-                            do (currentIndex)=>
-                              # Pick random index...
-                              randomIndex = Math.floor(Math.random() * currentIndex)
-                              # Hold & Swap...
-                              temporaryValue = usersArray[currentIndex]
-                              usersArray[currentIndex] = usersArray[randomIndex]
-                              usersArray[randomIndex] = temporaryValue
-                            currentIndex -= 1
-                          matchArray = [[usersArray[0], usersArray[lastUser]]]
-                          currentIndex = lastUser
+                          do (usersArray)=>
+                            while currentIndex != 0
+                              do (currentIndex)=>
+                                # Pick random index...
+                                randomIndex = Math.floor(Math.random() * currentIndex)
+                                # Hold & Swap...
+                                temporaryValue = usersArray[currentIndex]
+                                usersArray[currentIndex] = usersArray[randomIndex]
+                                usersArray[randomIndex] = temporaryValue
+                              currentIndex -= 1
+                            matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id]
+                            currentIndex = lastUser
+                            # SAVE MATCHES TO DATABASE
+                            while currentIndex != 0
+                              do (currentIndex)=>
+                                matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
+                              currentIndex -= 1
+                            thisEvent.match = matchArray
+                            thisEvent.$update()
 
-                          # SAVE MATCHES TO DATABASE
-                          while currentIndex != 0
-                            do (currentIndex)=>
-                              matchArray[currentIndex] = []
-                              matchArray[currentIndex].push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
-                            currentIndex -= 1
-                          console.log matchArray, "save to database"
-                          # Update Database
-                          thisEvent.match = matchArray
-                          # thisEvent.$update()
-                          # console.log thisEvent.match
-
-
-
-              @home = true# Show Home page after calculation is done
-
-
-# NEXT STEP #1 MATCH ALGORITHM *********************
-
-# Move @participants logic into here so that match logic can make matches*************************
-# Grab all User's Events -UsersEvents
-# data[i].length for each event_id -UsersEvents
-# Grab Event with event_id -Events
-# Compare data[i].length with Event.participants
-# If they're equal, then run Match Algorithm
+                    # Display to screen - timeout ensures this happens last
+                    @timeout(()=>
+                      pair = eventLink
+                      @myEvents.push(thisEvent)
+                      # Keep track of Matches
+                      if thisEvent.match #check against NULL
+                        userID = thisEvent.match.length - 2
+                        #push into 2D array
+                        # console.log eventLink
+                        while userID != 0
+                          do (userID)=>
+                            if +thisEvent.match[userID] == @sessionID
+                              @myMatch[pair] = []
+                              @myMatch[pair].push(thisEvent.id, +thisEvent.match[userID + 1])
+                              console.log @myMatch[pair]
+                              --pair
+                          # console.log userID
+                          userID = userID - 2
+                      # Or if Event has no match yet...
+                      else
+                        @myMatch[pair] = []
+                        @myMatch[pair].push(thisEvent.id, false)
+                        console.log @myMatch[pair]
+                        --pair
+                      @home = true# Show Home page after calculation is done
+                      # console.log @myMatch, "myMatch"
+                    , 50)
 
 
 
@@ -173,7 +157,6 @@ class GifterCtrl
           ["Art",profile.art,"art","Carving... Ceramic..."],
           ["Hobbies",profile.hobbies,"hobbies","Sports... Drawing..."]
         ]
-        @home = true# Show Home page after calculation is done
 
     .error ()=>
       location.path("/login")
@@ -213,10 +196,12 @@ class GifterCtrl
 
   thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
     console.log "thisMatchProfile()"
-    console.log @userIdArray
-    @matchProfile = {}
+    console.log eventID
+    @matchProfile = []
     if @myMatch
+      console.log @myMatch
       for match in @myMatch
+        console.log match
         if match[0] == eventID
           if match[1] != false
             @gifteePage()
@@ -467,11 +452,6 @@ class GifterCtrl
     @myMatch[pair].push(event.id, false)
     @scope.newEvent = {}
     @homePage()
-
-
-  # SHUFFLE equation: *******************************************************
-  # but use User.where() instead to limit to groups
-  # User.all.map(&:id).shuffle.zip(User.all.map(&:id).shuffle)
 
 # END OF LINE **************************
   logout: ->

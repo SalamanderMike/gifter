@@ -73,12 +73,12 @@ joey.profile = joeyProfile
 jasper.profile = jasperProfile
 
 # EVENTS
-dailyplanet = Event.create ({eventName: "Daily Planet Gift Exchange", password: "1234", admin_id: 8, participants: 7, spendingLimit: 25, match: [[1,2],[2,3],[3,8],[8,9],[9,10],[10,16], [16,1]]})
-starwars = Event.create ({eventName: "Death Star X-mas Party", password: "1234", admin_id: 16, participants: 6, spendingLimit: 50, match: [[11,12],[12,13],[13,14],[14,15],[15,16],[16,11]]})
+dailyplanet = Event.create ({eventName: "Daily Planet Gift Exchange", password: "1234", admin_id: 8, participants: 7, spendingLimit: 25})
+starwars = Event.create ({eventName: "Death Star X-mas Party", password: "1234", admin_id: 16, participants: 6, spendingLimit: 50})
 
 # DEMO EVENTS
 office = Event.create ({eventName: "Office Holiday Party 2014", password: "192837465", admin_id: 4, participants: 16, spendingLimit: 10})
-family = Event.create ({eventName: "Family 2014 Holiday Bash!", password: "192837465", admin_id: 4, participants: 4, spendingLimit: 50, match: [[4,5],[6,7],[5,6],[7,4]]})
+family = Event.create ({eventName: "Family 2014 Holiday Bash!", password: "192837465", admin_id: 4, participants: 4, spendingLimit: 50})
 
 
 # ATTACH USERS AND EVENTS TOGETHER
