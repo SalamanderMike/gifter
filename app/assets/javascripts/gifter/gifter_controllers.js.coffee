@@ -52,7 +52,7 @@ class GifterCtrl
         #   and log all the matches [@myMatch]
         for eventLink of link # eventLink = Event.id
           do (eventLink)=>
-            console.log eventLink
+            # console.log eventLink
             if data[eventLink].event_id
               usersArray = []
               do (usersArray)=>
@@ -62,7 +62,6 @@ class GifterCtrl
                   @totalParticipants = users.length
                   usersArray = users.slice(-users.length) #slice off promises
 
-
                   # Find matches in Event
                   Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:data[eventLink].event_id}, {update: {method: 'PUT'}})
                   Event.get (thisEvent)=>
@@ -71,8 +70,8 @@ class GifterCtrl
                       currentIndex = usersArray.length - 1
                       lastUser = currentIndex
                       if !thisEvent.match and users.length > 2
-                        console.log users.length
                         if usersArray.length == thisEvent.participants
+                          console.log "MATCH EVENT:", thisEvent.id
                           # Randomize usersArray
                           do (usersArray)=>
                             while currentIndex != 0
@@ -93,6 +92,7 @@ class GifterCtrl
                               currentIndex -= 1
                             thisEvent.match = matchArray
                             thisEvent.$update()
+                            console.log matchArray
 
                     # Display to screen - timeout ensures this happens last
                     @timeout(()=>
@@ -101,25 +101,16 @@ class GifterCtrl
                       # Keep track of Matches
                       if thisEvent.match #check against NULL
                         userID = thisEvent.match.length - 2
-                        #push into 2D array
-                        # console.log eventLink
-                        while userID != 0
+                        # Push into 2D array
+                        while userID > -1
                           do (userID)=>
                             if +thisEvent.match[userID] == @sessionID
-                              @myMatch[pair] = []
-                              @myMatch[pair].push(thisEvent.id, +thisEvent.match[userID + 1])
-                              console.log @myMatch[pair]
-                              --pair
-                          # console.log userID
+                              @myMatch.push(+thisEvent.match[userID + 1], thisEvent.id)
                           userID = userID - 2
                       # Or if Event has no match yet...
                       else
-                        @myMatch[pair] = []
-                        @myMatch[pair].push(thisEvent.id, false)
-                        console.log @myMatch[pair]
-                        --pair
+                        @myMatch.push(false, thisEvent.id)
                       @home = true# Show Home page after calculation is done
-                      # console.log @myMatch, "myMatch"
                     , 50)
 
 
@@ -196,16 +187,14 @@ class GifterCtrl
 
   thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
     console.log "thisMatchProfile()"
-    console.log eventID
     @matchProfile = []
     if @myMatch
-      console.log @myMatch
-      for match in @myMatch
-        console.log match
-        if match[0] == eventID
-          if match[1] != false
+      index = @myMatch.length - 2
+      while index > -1
+        if @myMatch[index + 1] == eventID
+          if @myMatch[index] != false
             @gifteePage()
-            MatchProfile = @resource("users/:user_id/profile.json", {user_id:match[1]})
+            MatchProfile = @resource("users/:user_id/profile.json", {user_id:@myMatch[index]})
             MatchProfile.get (data)=> #Find Giftee's Profile
               @matchProfile = data
               @matchInterests = [
@@ -225,6 +214,7 @@ class GifterCtrl
                 @eventLimit = event.spendingLimit
           else
             alert "Sorry, your match isn't ready for this Event.\nTry again later!"
+        index = index - 2
 
   thisEventColor: (match)=>
     if match
@@ -243,41 +233,36 @@ class GifterCtrl
         alert "You aren't leading any events, yet.\nTry creating one, then invite people to join!"
         @toggleDropdown = false
 
-  listSpaces: (eventID, participantNum)=>
-    # console.log "LIST OF EMPTY SPACES..."
-    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-    Event.get (thisEvent)=> # Grab Event Title & Spending Limit
-      @participating = thisEvent.participants
-      @eventLimit = thisEvent.spendingLimit
-      unsignedParticipants = @participating - participantNum
-      if unsignedParticipants > 0
-        i = 0
-        while i < unsignedParticipants
-          @participants.push(". . .")
-          i++
-
-  listPeople: (data)=>
-    i = 0
-    while i < data.length
-      User = @resource("/users/:id.json", {id:data[i].user_id})
-      User.get (user)=>
-        name = "#{user.firstname} #{user.lastname}"
-        @participants.push(name)
-      ++i
-
   participantsInEvent: (eventID)=>
     # console.log "LIST OF PARTICIPANTS..."
+      # With a little forced synchonicity to keep list orderly
     @participants = []
-    UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
-    UsersInEvents.query (data)=>
-      #Add a little forced synchonicity to keep list orderly
-      @timeout(()=>
-        @listPeople(data)
-      , 0)
+    participantNum = 0
+    i = 0
+    do (i)=>
+      UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+      UsersInEvents.query (data)=>
+        @participantNum = data.length
+        participantNum = data.length
+        while i < data.length
+          User = @resource("/users/:id.json", {id:data[i].user_id})
+          User.get (user)=>
+            name = "#{user.firstname} #{user.lastname}"
+            @participants.push(name)
+          i += 1
 
-      @timeout(()=>
-        @listSpaces(eventID, data.length)
-      , 300)
+    @timeout(()=>
+      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+      Event.get (thisEvent)=> # Grab Event Title & Spending Limit
+        @participating = thisEvent.participants
+        @eventLimit = thisEvent.spendingLimit
+        unsignedParticipants = @participating - participantNum
+        if unsignedParticipants > 0
+          i = 0
+          while i < unsignedParticipants
+            @participants.push(". . .")
+            i += 1
+    , 100)
 
 
   removeParticipant: (userID)=>#Implement soon
