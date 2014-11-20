@@ -239,17 +239,20 @@ class GifterCtrl
     @participants = []
     participantNum = 0
     i = 0
-    do (i)=>
-      UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
-      UsersInEvents.query (data)=>
-        @participantNum = data.length
-        participantNum = data.length
-        while i < data.length
+    UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+    UsersInEvents.query (data)=>
+      @participantNum = data.length
+      participantNum = data.length
+      while i < data.length
+        do (i)=>
           User = @resource("/users/:id.json", {id:data[i].user_id})
           User.get (user)=>
             name = "#{user.firstname} #{user.lastname}"
-            @participants.push(name)
-          i += 1
+            @participants[i] = []
+            @participants[i].push(user.id, name)
+            console.log i
+            console.log @participants
+        i += 1
 
     @timeout(()=>
       Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
@@ -260,16 +263,22 @@ class GifterCtrl
         if unsignedParticipants > 0
           i = 0
           while i < unsignedParticipants
-            @participants.push(". . .")
+            @participants[i] = []
+            @participants[i].push(false, ". . .")
             i += 1
-    , 100)
+    , 150)
 
-
-  removeParticipant: (userID)=>#Implement soon
+# FIX DISPLAY THAT THIS BROKE***********************
+  removeParticipant: (userID, eventID)=>
     # confirm "Are you sure you wish to remove this person from the group?"
+    console.log eventID
+    console.log userID
     @participants.splice(userID, 1)
     @participantNum--
-    # @participants.$update()
+    @participating--
+    # UserInEvent = @resource("/users/:user_id/users_events/:id.json", {user_id:userID, id:eventID})
+    # UserInEvent.get (participant)=>
+    #   participant.$destroy()
 
   increaseParticipants: (eventID)=>
     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})

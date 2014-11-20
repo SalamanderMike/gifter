@@ -19,8 +19,8 @@ class UsersEventsController < ApplicationController
     render json: {}, status: 200
   end
 
-  def destroy # ADMIN - Delete Event
-    respond_with UsersEvent.where(user_id: params[:id])
+  def destroy # ADMIN - Delete User from Event
+    respond_with UsersEvent.where(user_id: params[:user_id], event_id: params[:id])
   end
 
 end

@@ -12,7 +12,8 @@
             placeholder: "Enter your password",
             required: true %>
     </p>
-    <%= f.submit "Login!", class: "btn btn-info" %><br/>
+    <%= f.submit "Login!", class: "btn btn-info",
+            style: "font-size:1.2em;padding:20px;opacity:.8;" %><br/>
     <%= link_to("Sign up for a new account!", signup_path, :method => :get) %>
   <% end %>
 </div>
@@ -27,7 +28,8 @@
             value: "192837465",
             style: "visibility:hidden;" %>
     </p>
-    <%= f.submit "DEMO!", class: "btn btn-danger" %><br/>
+    <%= f.submit "DEMO!", class: "btn btn-danger",
+            style: "font-size:1.2em;padding:20px;opacity:.8;" %><br/>
   <% end %>
 </div>
 

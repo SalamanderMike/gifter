@@ -157,15 +157,15 @@
   <div class="panelContainer">
   <div class="displayPanel" style="opacity:1;">
       <div class="counter" style="float:left;">
-        <span class="incrementDown" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
+        <span class="btn btn-danger" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
         <span>{{gifter.participating}}</span>
-        <span class="incrementUp" ng-click="gifter.increaseParticipants(gifter.eventID)">+</span>
+        <span class="btn btn-success" ng-click="gifter.increaseParticipants(gifter.eventID)">+</span>
       </div>
 
       <div class="counter" style="float:right;">
-        <span class="incrementDown" ng-click="gifter.decreaseLimit(gifter.eventID)">-</span>
+        <span class="btn btn-danger" ng-click="gifter.decreaseLimit(gifter.eventID)">-</span>
         <span>${{gifter.eventLimit}}</span>
-        <span class="incrementUp" ng-click="gifter.increaseLimit(gifter.eventID)">+</span>
+        <span class="btn btn-success" ng-click="gifter.increaseLimit(gifter.eventID)">+</span>
       </div>
 
       <div class="counterDirections">
@@ -184,18 +184,17 @@
     <div class="displayPanelInlay">
       <ul style="list-style-type: none;">
         <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
-        {{participant}}
-          <!-- <button class="btn btn-danger" ng-click="gifter.removeParticipant($index)">X</button> -->
+        {{participant[1]}}
+          <button class="btn btn-danger" style="float:right;"
+                  ng-click="gifter.removeParticipant(participant[0], gifter.eventID)">X</button>
         </li>
       </ul>
     </div>
   </div>
   </div>
 <!-- <div>progress bar of participants</div>
-<div>list of participants with add/delete option</div>
-<div>Match Button</div>
-<div>number of participants</div>
-<div>spending limit</div> -->
+<div>Match Button</div> -->
+
 
 
 </div>
@@ -229,7 +228,8 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" ng-click="joinEvent()" class="btn btn-info">
+          <button type="submit" ng-click="joinEvent()" class="btn btn-info"
+          style="font-size:1.5em;padding:0 59px;opacity:.8;">
             Join This Event!
           </button>
         </div>
@@ -290,7 +290,8 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" ng-click="createNewEvent()" class="btn btn-info">
+          <button type="submit" ng-click="createNewEvent()" class="btn btn-info"
+          style="font-size:1.5em;padding:0 59px;opacity:.8;">
             Lead This Event!
           </button>
         </div>

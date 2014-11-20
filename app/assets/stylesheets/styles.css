@@ -108,7 +108,7 @@ width: 250px;
 .demo {
 position: fixed;
 top: 400px;
-right: -78px;
+right: -54px;
 width: 250px;
 }
 
@@ -454,6 +454,11 @@ span {
 
 /*ADMIN PAGE ********************************************************************************/
 
+.btn {
+  font-size: .53em;
+  opacity: .5;
+}
+
 .counter {
   position: relative;
   display: inline-block;
@@ -462,24 +467,11 @@ span {
   font-size: 2em;
 }
 
-.incrementUp {
-  background: rgba(0,255,0,.05);
-  padding: 0 15px;
-  border: 1px solid #f0f0f0;
-  /*border-radius: 100%*/
-}
-
-.incrementDown {
-  background: rgba(255,0,0,.05);
-  padding: 0 15px;
-  border: 1px solid #f0f0f0;
-  /*border-radius: 100%;*/
-}
-
 .counterDirections {
   position: relative;
+  left: -20px;
   display: inline-block;
-  width: 100%;
+  width: 107%;
   padding: 0px 20px;
 }
 
