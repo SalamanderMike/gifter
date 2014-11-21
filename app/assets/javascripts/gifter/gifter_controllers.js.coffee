@@ -250,27 +250,26 @@ class GifterCtrl
             name = "#{user.firstname} #{user.lastname}"
             @participants[i] = []
             @participants[i].push(user.id, name)
-            console.log i
-            console.log @participants
         i += 1
 
-    @timeout(()=>
-      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-      Event.get (thisEvent)=> # Grab Event Title & Spending Limit
-        @participating = thisEvent.participants
-        @eventLimit = thisEvent.spendingLimit
-        unsignedParticipants = @participating - participantNum
-        if unsignedParticipants > 0
-          i = 0
-          while i < unsignedParticipants
-            @participants[i] = []
-            @participants[i].push(false, ". . .")
-            i += 1
-    , 150)
 
-# FIX DISPLAY THAT THIS BROKE***********************
+      @timeout(()=>
+        Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+        Event.get (thisEvent)=> # Grab Event Title & Spending Limit
+          @participating = thisEvent.participants
+          @eventLimit = thisEvent.spendingLimit
+          unsignedParticipants = @participating - participantNum
+          if unsignedParticipants > 0
+            while i < @participating
+              do (i)=>
+                @participants[i] = []
+                @participants[i].push(false, ". . .")
+              i += 1
+      , 150)
+
+# FIX THIS ***********************
   removeParticipant: (userID, eventID)=>
-    # confirm "Are you sure you wish to remove this person from the group?"
+    # confirm "Are you sure you wish to remove this person from the Event?"
     console.log eventID
     console.log userID
     @participants.splice(userID, 1)
@@ -281,22 +280,25 @@ class GifterCtrl
     #   participant.$destroy()
 
   increaseParticipants: (eventID)=>
+    index = @participants.length
+    @participants[index] = []
+    @participants[index].push(false, ". . .")
     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
     Event.get (thisEvent)=>
       thisEvent.participants += 1
       @participating = thisEvent.participants
       thisEvent.$update()
-      @participantsInEvent(eventID)
-
 
   decreaseParticipants: (eventID)=>
-    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    Event.get (thisEvent)=>
-      thisEvent.participants -= 1
-      @participating = thisEvent.participants
-      thisEvent.$update()
-      @participantsInEvent(eventID)
-
+    if @participants.length > @participantNum
+      @participants.splice(-1, 1)
+      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+      Event.get (thisEvent)=>
+        thisEvent.participants -= 1
+        @participating = thisEvent.participants
+        thisEvent.$update()
+    else
+      alert "Use the delete buttons next to the name you want to REMOVE from the Event"
 
   increaseLimit: (eventID)=>
     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
@@ -304,8 +306,6 @@ class GifterCtrl
       thisEvent.spendingLimit += 1
       @eventLimit = thisEvent.spendingLimit
       thisEvent.$update()
-
-
 
   decreaseLimit: (eventID)=>
     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
