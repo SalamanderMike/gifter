@@ -186,7 +186,7 @@
         <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
         {{participant[1]}}
           <button class="btn btn-danger" style="float:right;"
-                  ng-click="gifter.removeParticipant(participant[0], gifter.eventID)">X</button>
+                  ng-click="gifter.removeParticipant($index, participant[0], gifter.eventID)">X</button>
         </li>
       </ul>
     </div>
@@ -265,28 +265,6 @@
                   ng-model="newEvent.password"
                   placeholder="password"
                   required>
-        </div>
-      </div>
-      <div class="form-group" id="labelBackground">
-        <label for="spendingLimit" class="col-sm-2 control-label">
-          Spending Limit $
-        </label>
-        <div class="col-sm-4">
-          <input class="form-control" id="spendingLimit"
-                  type="text"
-                  ng-model="newEvent.spendingLimit"
-                  placeholder="5 or 50 dollars?">
-        </div>
-      </div>
-      <div class="form-group" id="labelBackground">
-        <label for="participantNum" class="col-sm-2 control-label">
-          Number of Partcipants
-        </label>
-        <div class="col-sm-4">
-          <input class="form-control" name="participantNum" id="participantNum"
-                  type="text"
-                  ng-model="newEvent.participants"
-                  placeholder="3 or 30 people?">
         </div>
       </div>
       <div class="form-group">

@@ -96,7 +96,6 @@ class GifterCtrl
 
                     # Display to screen - timeout ensures this happens last
                     @timeout(()=>
-                      pair = eventLink
                       @myEvents.push(thisEvent)
                       # Keep track of Matches
                       if thisEvent.match #check against NULL
@@ -265,54 +264,61 @@ class GifterCtrl
                 @participants[i] = []
                 @participants[i].push(false, ". . .")
               i += 1
-      , 150)
+      , 0)
 
 # FIX THIS ***********************
-  removeParticipant: (userID, eventID)=>
-    # confirm "Are you sure you wish to remove this person from the Event?"
-    console.log eventID
-    console.log userID
-    @participants.splice(userID, 1)
-    @participantNum--
-    @participating--
-    # UserInEvent = @resource("/users/:user_id/users_events/:id.json", {user_id:userID, id:eventID})
-    # UserInEvent.get (participant)=>
-    #   participant.$destroy()
+  removeParticipant: (user, userID, eventID)=>
+    result = confirm "Are you sure you wish to remove this person from the Event?"
+    if result
+      @participants.splice(user, 1)
+      @participantNum--
+      @participating--
+      if @sessionID != 4
+        UserInEvent = @resource("/users/:user_id/users_events/:id.json", {user_id:userID, id:eventID}, {'delete': {method: 'DELETE'}})
+        UserInEvent.delete()
+        Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+        Event.get (thisEvent)=>
+          thisEvent.participants -= 1
+          thisEvent.$update()
 
   increaseParticipants: (eventID)=>
     index = @participants.length
     @participants[index] = []
     @participants[index].push(false, ". . .")
-    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    Event.get (thisEvent)=>
-      thisEvent.participants += 1
-      @participating = thisEvent.participants
-      thisEvent.$update()
+    @participating++
+    if @sessionID != 4 # LIMIT DEMO
+      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+      Event.get (thisEvent)=>
+        thisEvent.participants += 1
+        thisEvent.$update()
 
   decreaseParticipants: (eventID)=>
     if @participants.length > @participantNum
       @participants.splice(-1, 1)
-      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-      Event.get (thisEvent)=>
-        thisEvent.participants -= 1
-        @participating = thisEvent.participants
-        thisEvent.$update()
+      @participating--
+      if @sessionID != 4 # LIMIT DEMO
+        Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+        Event.get (thisEvent)=>
+          thisEvent.participants -= 1
+          thisEvent.$update()
     else
-      alert "Use the delete buttons next to the name you want to REMOVE from the Event"
+      alert "Use the DELETE BUTTONS next to the name of the person you want to REMOVE from the Event"
 
   increaseLimit: (eventID)=>
-    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    Event.get (thisEvent)=>
-      thisEvent.spendingLimit += 1
-      @eventLimit = thisEvent.spendingLimit
-      thisEvent.$update()
+    @eventLimit++
+    if @sessionID != 4 # LIMIT DEMO
+      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+      Event.get (thisEvent)=>
+        thisEvent.spendingLimit += 1
+        thisEvent.$update()
 
   decreaseLimit: (eventID)=>
-    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    Event.get (thisEvent)=>
-      thisEvent.spendingLimit -= 1
-      @eventLimit = thisEvent.spendingLimit
-      thisEvent.$update()
+    @eventLimit--
+    if @sessionID != 4 # LIMIT DEMO
+      Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+      Event.get (thisEvent)=>
+        thisEvent.spendingLimit -= 1
+        thisEvent.$update()
 
 
 
@@ -415,9 +421,7 @@ class GifterCtrl
             Event = @resource("/users/:user_id/users_events/:id.json", {user_id:@sessionID, id:event.id}, {update: {method: 'PUT'}})
             Event.update (data)=>
               @myEvents.push(thisEvent)
-              pair = @myMatch.length
-              @myMatch[pair] = []
-              @myMatch[pair].push(thisEvent.id, false)
+              @myMatch.push(false, thisEvent.id)
               @homePage()
           else
             alert "Password is incorrect for this Event"
@@ -431,21 +435,27 @@ class GifterCtrl
         return
 
   createNewEvent: =>
-    ok = confirm "Please make sure you write down this Event name and Password and share it with all participants\nEvent: #{@scope.newEvent.eventName}\nPassword: #{@scope.newEvent.password}"
-    if ok == false
-      return
-    @newEventShow = false
-    Event = @resource("/users/:user_id/events.json", {user_id:@sessionID})
-    @scope.newEvent.admin_id = @sessionID
-    @scope.newEvent.spendingLimit = parseInt(@scope.newEvent.spendingLimit)
-    @scope.newEvent.participants = parseInt(@scope.newEvent.participants)
-    Event.save(@scope.newEvent)
-    @myEvents.push(@scope.newEvent)
-    pair = @myMatch.length
-    @myMatch[pair] = []
-    @myMatch[pair].push(event.id, false)
-    @scope.newEvent = {}
-    @homePage()
+    result = confirm "Please make sure you write down this Event name and Password and share it with all participants\nEvent: #{@scope.newEvent.eventName}\nPassword: #{@scope.newEvent.password}"
+    if result
+      @newEventShow = false
+      Event = @resource("/users/:user_id/events.json", {user_id:@sessionID})
+      @scope.newEvent.admin_id = @sessionID
+      @scope.newEvent.spendingLimit = 5
+      @scope.newEvent.participants = 10
+      Event.save(@scope.newEvent)
+      @scope.newEvent = {}
+      @myEvents = []
+      @myMatch.push(false, true)
+
+      UserEvents = @resource("/index_user_events/:user_id/events.json", {user_id:@sessionID}, {'query': {method: 'GET', isArray: true}})
+      UserEvents.query (data)=>
+        for link in data
+          Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:link.event_id})
+          Event.get (thisEvent)=>
+            @myEvents.push(thisEvent)
+
+      @findAdminsEvents()
+
 
 # END OF LINE **************************
   logout: ->

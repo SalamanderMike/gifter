@@ -20,7 +20,7 @@ class UsersEventsController < ApplicationController
   end
 
   def destroy # ADMIN - Delete User from Event
-    respond_with UsersEvent.where(user_id: params[:user_id], event_id: params[:id])
+    respond_with UsersEvent.where(user_id: params[:user_id], event_id: params[:id]).destroy_all
   end
 
 end

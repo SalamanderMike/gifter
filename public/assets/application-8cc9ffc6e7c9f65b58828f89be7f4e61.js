@@ -42457,8 +42457,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                           }
                         })(thisEvent);
                         return _this.timeout(function() {
-                          var pair, userID;
-                          pair = eventLink;
+                          var userID;
                           _this.myEvents.push(thisEvent);
                           if (thisEvent.match) {
                             userID = thisEvent.match.length - 2;
@@ -42623,148 +42622,190 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     };
 
     GifterCtrl.prototype.participantsInEvent = function(eventID) {
-      var i, participantNum;
+      var UsersInEvents, i, participantNum;
       this.participants = [];
       participantNum = 0;
       i = 0;
-      (function(_this) {
-        return (function(i) {
-          var UsersInEvents;
-          UsersInEvents = _this.resource("/index_participants/:event_id.json", {
-            event_id: eventID
-          }, {
-            'query': {
-              method: 'GET',
-              isArray: true
-            }
-          });
-          return UsersInEvents.query(function(data) {
-            var User, _results;
-            _this.participantNum = data.length;
-            participantNum = data.length;
-            _results = [];
-            while (i < data.length) {
+      UsersInEvents = this.resource("/index_participants/:event_id.json", {
+        event_id: eventID
+      }, {
+        'query': {
+          method: 'GET',
+          isArray: true
+        }
+      });
+      return UsersInEvents.query((function(_this) {
+        return function(data) {
+          _this.participantNum = data.length;
+          participantNum = data.length;
+          while (i < data.length) {
+            (function(i) {
+              var User;
               User = _this.resource("/users/:id.json", {
                 id: data[i].user_id
               });
-              User.get(function(user) {
+              return User.get(function(user) {
                 var name;
                 name = "" + user.firstname + " " + user.lastname;
-                return _this.participants.push(name);
+                _this.participants[i] = [];
+                return _this.participants[i].push(user.id, name);
               });
-              _results.push(i += 1);
-            }
-            return _results;
-          });
-        });
-      })(this)(i);
-      return this.timeout((function(_this) {
-        return function() {
-          var Event;
-          Event = _this.resource("/users/:user_id/events/:id.json", {
-            user_id: _this.sessionID,
-            id: eventID
-          });
-          return Event.get(function(thisEvent) {
-            var unsignedParticipants, _results;
-            _this.participating = thisEvent.participants;
-            _this.eventLimit = thisEvent.spendingLimit;
-            unsignedParticipants = _this.participating - participantNum;
-            if (unsignedParticipants > 0) {
-              i = 0;
-              _results = [];
-              while (i < unsignedParticipants) {
-                _this.participants.push(". . .");
-                _results.push(i += 1);
+            })(i);
+            i += 1;
+          }
+          return _this.timeout(function() {
+            var Event;
+            Event = _this.resource("/users/:user_id/events/:id.json", {
+              user_id: _this.sessionID,
+              id: eventID
+            });
+            return Event.get(function(thisEvent) {
+              var unsignedParticipants, _results;
+              _this.participating = thisEvent.participants;
+              _this.eventLimit = thisEvent.spendingLimit;
+              unsignedParticipants = _this.participating - participantNum;
+              if (unsignedParticipants > 0) {
+                _results = [];
+                while (i < _this.participating) {
+                  (function(i) {
+                    _this.participants[i] = [];
+                    return _this.participants[i].push(false, ". . .");
+                  })(i);
+                  _results.push(i += 1);
+                }
+                return _results;
               }
-              return _results;
-            }
-          });
+            });
+          }, 0);
         };
-      })(this), 100);
+      })(this));
     };
 
-    GifterCtrl.prototype.removeParticipant = function(userID) {
-      this.participants.splice(userID, 1);
-      return this.participantNum--;
+    GifterCtrl.prototype.removeParticipant = function(user, userID, eventID) {
+      var Event, UserInEvent, result;
+      result = confirm("Are you sure you wish to remove this person from the Event?");
+      if (result) {
+        this.participants.splice(user, 1);
+        this.participantNum--;
+        this.participating--;
+        if (this.sessionID !== 4) {
+          UserInEvent = this.resource("/users/:user_id/users_events/:id.json", {
+            user_id: userID,
+            id: eventID
+          }, {
+            'delete': {
+              method: 'DELETE'
+            }
+          });
+          UserInEvent["delete"]();
+          Event = this.resource("/users/:user_id/events/:id.json", {
+            user_id: this.sessionID,
+            id: eventID
+          }, {
+            update: {
+              method: 'PUT'
+            }
+          });
+          return Event.get((function(_this) {
+            return function(thisEvent) {
+              thisEvent.participants -= 1;
+              return thisEvent.$update();
+            };
+          })(this));
+        }
+      }
     };
 
     GifterCtrl.prototype.increaseParticipants = function(eventID) {
-      var Event;
-      Event = this.resource("/users/:user_id/events/:id.json", {
-        user_id: this.sessionID,
-        id: eventID
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      });
-      return Event.get((function(_this) {
-        return function(thisEvent) {
-          thisEvent.participants += 1;
-          _this.participating = thisEvent.participants;
-          thisEvent.$update();
-          return _this.participantsInEvent(eventID);
-        };
-      })(this));
+      var Event, index;
+      index = this.participants.length;
+      this.participants[index] = [];
+      this.participants[index].push(false, ". . .");
+      this.participating++;
+      if (this.sessionID !== 4) {
+        Event = this.resource("/users/:user_id/events/:id.json", {
+          user_id: this.sessionID,
+          id: eventID
+        }, {
+          update: {
+            method: 'PUT'
+          }
+        });
+        return Event.get((function(_this) {
+          return function(thisEvent) {
+            thisEvent.participants += 1;
+            return thisEvent.$update();
+          };
+        })(this));
+      }
     };
 
     GifterCtrl.prototype.decreaseParticipants = function(eventID) {
       var Event;
-      Event = this.resource("/users/:user_id/events/:id.json", {
-        user_id: this.sessionID,
-        id: eventID
-      }, {
-        update: {
-          method: 'PUT'
+      if (this.participants.length > this.participantNum) {
+        this.participants.splice(-1, 1);
+        this.participating--;
+        if (this.sessionID !== 4) {
+          Event = this.resource("/users/:user_id/events/:id.json", {
+            user_id: this.sessionID,
+            id: eventID
+          }, {
+            update: {
+              method: 'PUT'
+            }
+          });
+          return Event.get((function(_this) {
+            return function(thisEvent) {
+              thisEvent.participants -= 1;
+              return thisEvent.$update();
+            };
+          })(this));
         }
-      });
-      return Event.get((function(_this) {
-        return function(thisEvent) {
-          thisEvent.participants -= 1;
-          _this.participating = thisEvent.participants;
-          thisEvent.$update();
-          return _this.participantsInEvent(eventID);
-        };
-      })(this));
+      } else {
+        return alert("Use the DELETE BUTTONS next to the name of the person you want to REMOVE from the Event");
+      }
     };
 
     GifterCtrl.prototype.increaseLimit = function(eventID) {
       var Event;
-      Event = this.resource("/users/:user_id/events/:id.json", {
-        user_id: this.sessionID,
-        id: eventID
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      });
-      return Event.get((function(_this) {
-        return function(thisEvent) {
-          thisEvent.spendingLimit += 1;
-          _this.eventLimit = thisEvent.spendingLimit;
-          return thisEvent.$update();
-        };
-      })(this));
+      this.eventLimit++;
+      if (this.sessionID !== 4) {
+        Event = this.resource("/users/:user_id/events/:id.json", {
+          user_id: this.sessionID,
+          id: eventID
+        }, {
+          update: {
+            method: 'PUT'
+          }
+        });
+        return Event.get((function(_this) {
+          return function(thisEvent) {
+            thisEvent.spendingLimit += 1;
+            return thisEvent.$update();
+          };
+        })(this));
+      }
     };
 
     GifterCtrl.prototype.decreaseLimit = function(eventID) {
       var Event;
-      Event = this.resource("/users/:user_id/events/:id.json", {
-        user_id: this.sessionID,
-        id: eventID
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      });
-      return Event.get((function(_this) {
-        return function(thisEvent) {
-          thisEvent.spendingLimit -= 1;
-          _this.eventLimit = thisEvent.spendingLimit;
-          return thisEvent.$update();
-        };
-      })(this));
+      this.eventLimit--;
+      if (this.sessionID !== 4) {
+        Event = this.resource("/users/:user_id/events/:id.json", {
+          user_id: this.sessionID,
+          id: eventID
+        }, {
+          update: {
+            method: 'PUT'
+          }
+        });
+        return Event.get((function(_this) {
+          return function(thisEvent) {
+            thisEvent.spendingLimit -= 1;
+            return thisEvent.$update();
+          };
+        })(this));
+      }
     };
 
     GifterCtrl.prototype.homePage = function() {
@@ -42873,11 +42914,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                   }
                 });
                 Event.update(function(data) {
-                  var pair;
                   _this.myEvents.push(thisEvent);
-                  pair = _this.myMatch.length;
-                  _this.myMatch[pair] = [];
-                  _this.myMatch[pair].push(thisEvent.id, false);
+                  _this.myMatch.push(false, thisEvent.id);
                   return _this.homePage();
                 });
               } else {
@@ -42898,25 +42936,47 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     };
 
     GifterCtrl.prototype.createNewEvent = function() {
-      var Event, ok, pair;
-      ok = confirm("Please make sure you write down this Event name and Password and share it with all participants\nEvent: " + this.scope.newEvent.eventName + "\nPassword: " + this.scope.newEvent.password);
-      if (ok === false) {
-        return;
+      var Event, UserEvents, result;
+      result = confirm("Please make sure you write down this Event name and Password and share it with all participants\nEvent: " + this.scope.newEvent.eventName + "\nPassword: " + this.scope.newEvent.password);
+      if (result) {
+        this.newEventShow = false;
+        Event = this.resource("/users/:user_id/events.json", {
+          user_id: this.sessionID
+        });
+        this.scope.newEvent.admin_id = this.sessionID;
+        this.scope.newEvent.spendingLimit = 5;
+        this.scope.newEvent.participants = 10;
+        Event.save(this.scope.newEvent);
+        this.scope.newEvent = {};
+        this.myEvents = [];
+        this.myMatch.push(false, true);
+        UserEvents = this.resource("/index_user_events/:user_id/events.json", {
+          user_id: this.sessionID
+        }, {
+          'query': {
+            method: 'GET',
+            isArray: true
+          }
+        });
+        UserEvents.query((function(_this) {
+          return function(data) {
+            var link, _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+              link = data[_i];
+              Event = _this.resource("/users/:user_id/events/:id.json", {
+                user_id: _this.sessionID,
+                id: link.event_id
+              });
+              _results.push(Event.get(function(thisEvent) {
+                return _this.myEvents.push(thisEvent);
+              }));
+            }
+            return _results;
+          };
+        })(this));
+        return this.findAdminsEvents();
       }
-      this.newEventShow = false;
-      Event = this.resource("/users/:user_id/events.json", {
-        user_id: this.sessionID
-      });
-      this.scope.newEvent.admin_id = this.sessionID;
-      this.scope.newEvent.spendingLimit = parseInt(this.scope.newEvent.spendingLimit);
-      this.scope.newEvent.participants = parseInt(this.scope.newEvent.participants);
-      Event.save(this.scope.newEvent);
-      this.myEvents.push(this.scope.newEvent);
-      pair = this.myMatch.length;
-      this.myMatch[pair] = [];
-      this.myMatch[pair].push(event.id, false);
-      this.scope.newEvent = {};
-      return this.homePage();
     };
 
     GifterCtrl.prototype.logout = function() {
