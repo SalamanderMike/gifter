@@ -66,33 +66,33 @@ class GifterCtrl
                   Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:data[eventLink].event_id}, {update: {method: 'PUT'}})
                   Event.get (thisEvent)=>
                     do (thisEvent)=>
-                      # MATCHING ALGORITHM
-                      currentIndex = usersArray.length - 1
-                      lastUser = currentIndex
-                      if !thisEvent.match and users.length > 2
-                        if usersArray.length == thisEvent.participants
-                          console.log "MATCH EVENT:", thisEvent.id
-                          # Randomize usersArray
-                          do (usersArray)=>
-                            while currentIndex != 0
-                              do (currentIndex)=>
-                                # Pick random index...
-                                randomIndex = Math.floor(Math.random() * currentIndex)
-                                # Hold & Swap...
-                                temporaryValue = usersArray[currentIndex]
-                                usersArray[currentIndex] = usersArray[randomIndex]
-                                usersArray[randomIndex] = temporaryValue
-                              currentIndex -= 1
-                            matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id]
-                            currentIndex = lastUser
-                            # SAVE MATCHES TO DATABASE
-                            while currentIndex != 0
-                              do (currentIndex)=>
-                                matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
-                              currentIndex -= 1
-                            thisEvent.match = matchArray
-                            thisEvent.$update()
-                            console.log matchArray
+                      # # MATCHING ALGORITHM
+                      # currentIndex = usersArray.length - 1
+                      # lastUser = currentIndex
+                      # if !thisEvent.match and users.length > 2
+                      #   if usersArray.length == thisEvent.participants
+                      #     console.log "MATCH EVENT:", thisEvent.id
+                      #     # Randomize usersArray
+                      #     do (usersArray)=>
+                      #       while currentIndex != 0
+                      #         do (currentIndex)=>
+                      #           # Pick random index...
+                      #           randomIndex = Math.floor(Math.random() * currentIndex)
+                      #           # Hold & Swap...
+                      #           temporaryValue = usersArray[currentIndex]
+                      #           usersArray[currentIndex] = usersArray[randomIndex]
+                      #           usersArray[randomIndex] = temporaryValue
+                      #         currentIndex -= 1
+                      #       matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id]
+                      #       currentIndex = lastUser
+                      #       # SAVE MATCHES TO DATABASE
+                      #       while currentIndex != 0
+                      #         do (currentIndex)=>
+                      #           matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
+                      #         currentIndex -= 1
+                      #       thisEvent.match = matchArray
+                      #       thisEvent.$update()
+                      #       console.log matchArray
 
                     # Display to screen - timeout ensures this happens last
                     @timeout(()=>
@@ -119,7 +119,7 @@ class GifterCtrl
         # INITIALIZE PROFILE WITH SUGGESTED DATA
         if @sessionID == 4 || !profile.cuisine
           profile.cuisine = ["Gewurztraminer", "Shortbread", "Gourmet Cheddar"]
-          profile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"]
+          profile.shops = ["iTunes", "Best Buy", "Starbucks"]
           profile.services = ["Spotify", "Pandora", "Dropbox"]
           profile.bookGenre = ["Sci-fi", "Isaac Asimov", "Pride and Prejudice"]
           profile.musicGenre = ["Indie", "Mozart", "The Supremes"]
@@ -153,6 +153,51 @@ class GifterCtrl
 
 
 #FUNCTIONS
+  matchEveryoneNow: (eventID)=>
+    confirm "This feature is temporarily disabled. It will be working within a few days"
+
+    # result = confirm "WARNING: Matching everyone now will close the goup. You will not be able to add any more participants. Are you sure?"
+    # if result
+    #   # Get total number of participants signed up for this Event
+    #   UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+    #   UsersInEvents.query (usersArray)=>
+    #     console.log usersArray
+
+    #     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+    #     Event.get (thisEvent)=>
+    #       do (thisEvent)=>
+    #         console.log thisEvent
+    #         # MATCHING ALGORITHM
+    #         currentIndex = usersArray.length - 1
+    #         lastUser = currentIndex
+    #         if !thisEvent.match and users.length > 2
+    #           if usersArray.length == thisEvent.participants
+    #             console.log "MATCH EVENT:", thisEvent.id
+    #             # Randomize usersArray
+    #             do (usersArray)=>
+    #               while currentIndex != 0
+    #                 do (currentIndex)=>
+    #                   # Pick random index...
+    #                   randomIndex = Math.floor(Math.random() * currentIndex)
+    #                   # Hold & Swap...
+    #                   temporaryValue = usersArray[currentIndex]
+    #                   usersArray[currentIndex] = usersArray[randomIndex]
+    #                   usersArray[randomIndex] = temporaryValue
+    #                 currentIndex -= 1
+    #               matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id]
+    #               currentIndex = lastUser
+    #               # SAVE MATCHES TO DATABASE
+    #               while currentIndex != 0
+    #                 do (currentIndex)=>
+    #                   matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
+    #                 currentIndex -= 1
+    #               thisEvent.match = matchArray
+    #               # thisEvent.$update()
+    #               console.log matchArray
+
+
+
+
   getTags: =>
     @Profile.get (profile)=>
       @interests = [
@@ -202,7 +247,13 @@ class GifterCtrl
                 ["Services",data.services,"services"],
                 ["Book Genre",data.bookGenre,"bookGenre"],
                 ["Music Genre",data.musicGenre,"musicGenre"],
-                ["Clothing",data.clothes,"clothes"]
+                ["Clothing",data.clothes,"clothes"],
+                ["Animals",data.animal,"animal"],
+                ["Color",data.color,"color"],
+                ["Metal",data.metal,"metal"],
+                ["Element",data.element,"element"],
+                ["Art",data.art,"art"],
+                ["Hobbies",data.hobbies,"hobbies"]
               ]
               MatchName = @resource("/users/:id.json", {id:data.user_id})
               MatchName.get (data)=> # Grab Giftee's Name

@@ -42343,6 +42343,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       this.removeTag = __bind(this.removeTag, this);
       this.addTag = __bind(this.addTag, this);
       this.getTags = __bind(this.getTags, this);
+      this.matchEveryoneNow = __bind(this.matchEveryoneNow, this);
       this.http.get("/authorized.json").success((function(_this) {
         return function(user) {
           var User, UserEvents;
@@ -42422,40 +42423,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                         }
                       });
                       return Event.get(function(thisEvent) {
-                        (function(thisEvent) {
-                          var currentIndex, lastUser;
-                          currentIndex = usersArray.length - 1;
-                          lastUser = currentIndex;
-                          if (!thisEvent.match && users.length > 2) {
-                            if (usersArray.length === thisEvent.participants) {
-                              console.log("MATCH EVENT:", thisEvent.id);
-                              return (function(usersArray) {
-                                var matchArray;
-                                while (currentIndex !== 0) {
-                                  (function(currentIndex) {
-                                    var randomIndex, temporaryValue;
-                                    randomIndex = Math.floor(Math.random() * currentIndex);
-                                    temporaryValue = usersArray[currentIndex];
-                                    usersArray[currentIndex] = usersArray[randomIndex];
-                                    return usersArray[randomIndex] = temporaryValue;
-                                  })(currentIndex);
-                                  currentIndex -= 1;
-                                }
-                                matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id];
-                                currentIndex = lastUser;
-                                while (currentIndex !== 0) {
-                                  (function(currentIndex) {
-                                    return matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id);
-                                  })(currentIndex);
-                                  currentIndex -= 1;
-                                }
-                                thisEvent.match = matchArray;
-                                thisEvent.$update();
-                                return console.log(matchArray);
-                              })(usersArray);
-                            }
-                          }
-                        })(thisEvent);
+                        (function(thisEvent) {})(thisEvent);
                         return _this.timeout(function() {
                           var userID;
                           _this.myEvents.push(thisEvent);
@@ -42493,7 +42461,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
           return _this.Profile.get(function(profile) {
             if (_this.sessionID === 4 || !profile.cuisine) {
               profile.cuisine = ["Gewurztraminer", "Shortbread", "Gourmet Cheddar"];
-              profile.shops = ["iTunes", "Best Buy", "Bed Bath & Beyond"];
+              profile.shops = ["iTunes", "Best Buy", "Starbucks"];
               profile.services = ["Spotify", "Pandora", "Dropbox"];
               profile.bookGenre = ["Sci-fi", "Isaac Asimov", "Pride and Prejudice"];
               profile.musicGenre = ["Indie", "Mozart", "The Supremes"];
@@ -42515,6 +42483,10 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         };
       })(this));
     }
+
+    GifterCtrl.prototype.matchEveryoneNow = function(eventID) {
+      return confirm("This feature is temporarily disabled. It will be working within a few days");
+    };
 
     GifterCtrl.prototype.getTags = function() {
       return this.Profile.get((function(_this) {
@@ -42563,7 +42535,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                 return function(data) {
                   var Event, MatchName;
                   _this.matchProfile = data;
-                  _this.matchInterests = [["Cuisine", data.cuisine, "cuisine"], ["Stores", data.shops, "shops"], ["Services", data.services, "services"], ["Book Genre", data.bookGenre, "bookGenre"], ["Music Genre", data.musicGenre, "musicGenre"], ["Clothing", data.clothes, "clothes"]];
+                  _this.matchInterests = [["Cuisine", data.cuisine, "cuisine"], ["Stores", data.shops, "shops"], ["Services", data.services, "services"], ["Book Genre", data.bookGenre, "bookGenre"], ["Music Genre", data.musicGenre, "musicGenre"], ["Clothing", data.clothes, "clothes"], ["Animals", data.animal, "animal"], ["Color", data.color, "color"], ["Metal", data.metal, "metal"], ["Element", data.element, "element"], ["Art", data.art, "art"], ["Hobbies", data.hobbies, "hobbies"]];
                   MatchName = _this.resource("/users/:id.json", {
                     id: data.user_id
                   });
