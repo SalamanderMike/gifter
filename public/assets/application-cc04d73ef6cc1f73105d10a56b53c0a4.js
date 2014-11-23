@@ -42392,63 +42392,66 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
             }
           });
           UserEvents.query(function(data) {
-            var eventLink, link, _results;
+            var eventLink, link, _fn;
             link = data.slice(-data.length);
-            _results = [];
-            for (eventLink in link) {
-              _results.push((function(eventLink) {
-                var usersArray;
-                if (data[eventLink].event_id) {
-                  usersArray = [];
-                  return (function(usersArray) {
-                    var UsersInEvents;
-                    UsersInEvents = _this.resource("/index_participants/:event_id.json", {
-                      event_id: data[eventLink].event_id
+            _fn = function(eventLink) {
+              var usersArray;
+              if (data[eventLink].event_id) {
+                usersArray = [];
+                return (function(usersArray) {
+                  var UsersInEvents;
+                  UsersInEvents = _this.resource("/index_participants/:event_id.json", {
+                    event_id: data[eventLink].event_id
+                  }, {
+                    'query': {
+                      method: 'GET',
+                      isArray: true
+                    }
+                  });
+                  return UsersInEvents.query(function(users) {
+                    var Event;
+                    _this.totalParticipants = users.length;
+                    usersArray = users.slice(-users.length);
+                    Event = _this.resource("/users/:user_id/events/:id.json", {
+                      user_id: _this.sessionID,
+                      id: data[eventLink].event_id
                     }, {
-                      'query': {
-                        method: 'GET',
-                        isArray: true
+                      update: {
+                        method: 'PUT'
                       }
                     });
-                    return UsersInEvents.query(function(users) {
-                      var Event;
-                      _this.totalParticipants = users.length;
-                      usersArray = users.slice(-users.length);
-                      Event = _this.resource("/users/:user_id/events/:id.json", {
-                        user_id: _this.sessionID,
-                        id: data[eventLink].event_id
-                      }, {
-                        update: {
-                          method: 'PUT'
-                        }
-                      });
-                      return Event.get(function(thisEvent) {
-                        (function(thisEvent) {})(thisEvent);
-                        return _this.timeout(function() {
-                          var userID;
-                          _this.myEvents.push(thisEvent);
-                          if (thisEvent.match) {
-                            userID = thisEvent.match.length - 2;
-                            while (userID > -1) {
-                              (function(userID) {
-                                if (+thisEvent.match[userID] === _this.sessionID) {
-                                  return _this.myMatch.push(+thisEvent.match[userID + 1], thisEvent.id);
-                                }
-                              })(userID);
-                              userID = userID - 2;
-                            }
-                          } else {
-                            _this.myMatch.push(false, thisEvent.id);
+                    return Event.get(function(thisEvent) {
+                      (function(thisEvent) {})(thisEvent);
+                      return _this.timeout(function() {
+                        var userID, _results;
+                        _this.myEvents.push(thisEvent);
+                        if (thisEvent.match) {
+                          userID = thisEvent.match.length - 2;
+                          _results = [];
+                          while (userID > -1) {
+                            (function(userID) {
+                              if (+thisEvent.match[userID] === _this.sessionID) {
+                                return _this.myMatch.push(+thisEvent.match[userID + 1], thisEvent.id);
+                              }
+                            })(userID);
+                            _results.push(userID = userID - 2);
                           }
-                          return _this.home = true;
-                        }, 50);
-                      });
+                          return _results;
+                        } else {
+                          return _this.myMatch.push(false, thisEvent.id);
+                        }
+                      }, 50);
                     });
-                  })(usersArray);
-                }
-              })(eventLink));
+                  });
+                })(usersArray);
+              }
+            };
+            for (eventLink in link) {
+              _fn(eventLink);
             }
-            return _results;
+            return _this.timeout(function() {
+              return _this.home = true;
+            }, 300);
           });
           _this.Profile = _this.resource("users/:user_id/profile/:id.json", {
             user_id: _this.sessionID,

@@ -109,8 +109,11 @@ class GifterCtrl
                       # Or if Event has no match yet...
                       else
                         @myMatch.push(false, thisEvent.id)
-                      @home = true# Show Home page after calculation is done
+                      # @home = true# Show Home page after calculation is done
                     , 50)
+        @timeout(()=>
+          @home = true# Show Home page after calculation is done
+        , 300)
 
 
 
