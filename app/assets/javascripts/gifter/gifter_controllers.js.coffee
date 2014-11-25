@@ -66,34 +66,6 @@ class GifterCtrl
                   Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:data[eventLink].event_id}, {update: {method: 'PUT'}})
                   Event.get (thisEvent)=>
                     do (thisEvent)=>
-                      # # MATCHING ALGORITHM
-                      # currentIndex = usersArray.length - 1
-                      # lastUser = currentIndex
-                      # if !thisEvent.match and users.length > 2
-                      #   if usersArray.length == thisEvent.participants
-                      #     console.log "MATCH EVENT:", thisEvent.id
-                      #     # Randomize usersArray
-                      #     do (usersArray)=>
-                      #       while currentIndex != 0
-                      #         do (currentIndex)=>
-                      #           # Pick random index...
-                      #           randomIndex = Math.floor(Math.random() * currentIndex)
-                      #           # Hold & Swap...
-                      #           temporaryValue = usersArray[currentIndex]
-                      #           usersArray[currentIndex] = usersArray[randomIndex]
-                      #           usersArray[randomIndex] = temporaryValue
-                      #         currentIndex -= 1
-                      #       matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id]
-                      #       currentIndex = lastUser
-                      #       # SAVE MATCHES TO DATABASE
-                      #       while currentIndex != 0
-                      #         do (currentIndex)=>
-                      #           matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
-                      #         currentIndex -= 1
-                      #       thisEvent.match = matchArray
-                      #       thisEvent.$update()
-                      #       console.log matchArray
-
                     # Display to screen - timeout ensures this happens last
                     @timeout(()=>
                       @myEvents.push(thisEvent)
