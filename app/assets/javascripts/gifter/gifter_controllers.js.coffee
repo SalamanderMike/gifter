@@ -157,47 +157,48 @@ class GifterCtrl
 
 #FUNCTIONS
   matchEveryoneNow: (eventID)=>
-    confirm "This feature is temporarily disabled. It will be working within a few days"
-
-    # result = confirm "WARNING: Matching everyone now will close the goup. You will not be able to add any more participants. Are you sure?"
-    # if result
-    #   # Get total number of participants signed up for this Event
-    #   UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
-    #   UsersInEvents.query (usersArray)=>
-    #     console.log usersArray
-
-    #     Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
-    #     Event.get (thisEvent)=>
-    #       do (thisEvent)=>
-    #         console.log thisEvent
-    #         # MATCHING ALGORITHM
-    #         currentIndex = usersArray.length - 1
-    #         lastUser = currentIndex
-    #         if !thisEvent.match and users.length > 2
-    #           if usersArray.length == thisEvent.participants
-    #             console.log "MATCH EVENT:", thisEvent.id
-    #             # Randomize usersArray
-    #             do (usersArray)=>
-    #               while currentIndex != 0
-    #                 do (currentIndex)=>
-    #                   # Pick random index...
-    #                   randomIndex = Math.floor(Math.random() * currentIndex)
-    #                   # Hold & Swap...
-    #                   temporaryValue = usersArray[currentIndex]
-    #                   usersArray[currentIndex] = usersArray[randomIndex]
-    #                   usersArray[randomIndex] = temporaryValue
-    #                 currentIndex -= 1
-    #               matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id]
-    #               currentIndex = lastUser
-    #               # SAVE MATCHES TO DATABASE
-    #               while currentIndex != 0
-    #                 do (currentIndex)=>
-    #                   matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
-    #                 currentIndex -= 1
-    #               thisEvent.match = matchArray
-    #               # thisEvent.$update()
-    #               console.log matchArray
-
+    usersArray = []
+    do (usersArray)=>
+      # Get total number of participants signed up for this Event
+      UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+      UsersInEvents.query (usersArray)=>
+        if usersArray.length > 2
+          Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID}, {update: {method: 'PUT'}})
+          Event.get (thisEvent)=>
+            if !thisEvent.match
+              result = confirm "WARNING: Matching everyone now will close the goup. You will not be able to add any more participants or rematch. Are you sure?"
+              if result
+                do (thisEvent)=>
+                  # MATCHING ALGORITHM
+                  console.log "MATCH EVENT:", thisEvent.id
+                  currentIndex = usersArray.length - 1
+                  lastUser = currentIndex
+                  # Randomize usersArray
+                  do (usersArray)=>
+                    while currentIndex != 0
+                      do (currentIndex)=>
+                        # Pick random index...
+                        randomIndex = Math.floor(Math.random() * currentIndex)
+                        # Hold & Swap...
+                        temporaryValue = usersArray[currentIndex]
+                        usersArray[currentIndex] = usersArray[randomIndex]
+                        usersArray[randomIndex] = temporaryValue
+                      currentIndex -= 1
+                    matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id]
+                    currentIndex = lastUser
+                    # SAVE MATCHES TO DATABASE
+                    while currentIndex != 0
+                      do (currentIndex)=>
+                        matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id)
+                      currentIndex -= 1
+                    thisEvent.match = matchArray
+                    thisEvent.participants = usersArray.length
+                    thisEvent.$update()
+                    console.log matchArray
+            else
+              alert "This Event has ALREADY BEEN MATCHED! You will need to create a new Event to rematch. This is to prevent gifters from having to take back gifts they have already gotten for their giftee."
+        else
+          alert "You need a minimum of THREE participants to Match"
 
 
 

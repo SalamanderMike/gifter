@@ -42488,7 +42488,77 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     }
 
     GifterCtrl.prototype.matchEveryoneNow = function(eventID) {
-      return confirm("This feature is temporarily disabled. It will be working within a few days");
+      var usersArray;
+      usersArray = [];
+      return (function(_this) {
+        return function(usersArray) {
+          var UsersInEvents;
+          UsersInEvents = _this.resource("/index_participants/:event_id.json", {
+            event_id: eventID
+          }, {
+            'query': {
+              method: 'GET',
+              isArray: true
+            }
+          });
+          return UsersInEvents.query(function(usersArray) {
+            var Event;
+            if (usersArray.length > 2) {
+              Event = _this.resource("/users/:user_id/events/:id.json", {
+                user_id: _this.sessionID,
+                id: eventID
+              }, {
+                update: {
+                  method: 'PUT'
+                }
+              });
+              return Event.get(function(thisEvent) {
+                var result;
+                if (!thisEvent.match) {
+                  result = confirm("WARNING: Matching everyone now will close the goup. You will not be able to add any more participants or rematch. Are you sure?");
+                  if (result) {
+                    return (function(thisEvent) {
+                      var currentIndex, lastUser;
+                      console.log("MATCH EVENT:", thisEvent.id);
+                      currentIndex = usersArray.length - 1;
+                      lastUser = currentIndex;
+                      return (function(usersArray) {
+                        var matchArray;
+                        while (currentIndex !== 0) {
+                          (function(currentIndex) {
+                            var randomIndex, temporaryValue;
+                            randomIndex = Math.floor(Math.random() * currentIndex);
+                            temporaryValue = usersArray[currentIndex];
+                            usersArray[currentIndex] = usersArray[randomIndex];
+                            return usersArray[randomIndex] = temporaryValue;
+                          })(currentIndex);
+                          currentIndex -= 1;
+                        }
+                        matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id];
+                        currentIndex = lastUser;
+                        while (currentIndex !== 0) {
+                          (function(currentIndex) {
+                            return matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id);
+                          })(currentIndex);
+                          currentIndex -= 1;
+                        }
+                        thisEvent.match = matchArray;
+                        thisEvent.participants = usersArray.length;
+                        thisEvent.$update();
+                        return console.log(matchArray);
+                      })(usersArray);
+                    })(thisEvent);
+                  }
+                } else {
+                  return alert("This Event has ALREADY BEEN MATCHED! You will need to create a new Event to rematch. This is to prevent gifters from having to take back gifts they have already gotten for their giftee.");
+                }
+              });
+            } else {
+              return alert("You need a minimum of THREE participants to Match");
+            }
+          });
+        };
+      })(this)(usersArray);
     };
 
     GifterCtrl.prototype.getTags = function() {

@@ -6591,7 +6591,6 @@ span {
   color: rgba(76, 128, 154, .7);
   font-family: 'Corben', cursive;
   font-size: 3em;
-  z-index: 100;
 }
 
 .body {
@@ -6701,12 +6700,17 @@ span {
   margin: 10px 10px 10px 0px;
 }
 
-.btn-hot {
+#matchButton {
   position: relative;
-  top: -15px;
+  top: 10px;
+  left: 40%;
+  z-index: 10;
+}
+
+.btn-hot {
   color: #fff;
   background-color: #db5566;
-  border-bottom:2px solid #af4451;
+  border-bottom: 5px solid #af4451;
   font-family: 'Raleway', sans-serif;
   font-size: 2em;
   opacity: .9;
@@ -6715,7 +6719,7 @@ span {
 .btn-hot:hover, .btn-sky.active:focus, .btn-hot:focus, .open>.dropdown-toggle.btn-hot {
   color: #fff;
   background-color: #df6a78;
-  border-bottom:2px solid #b25560;
+  border-bottom: 5px solid #b25560;
   outline: none;
 }
 
@@ -6723,7 +6727,7 @@ span {
 .btn-hot:active, .btn-hot.active {
   color: #fff;
   background-color: #c04b59;
-  border-top:2px solid #9a3c47;
+  border-top: 2px solid #9a3c47;
   margin-top: 2px;
 }
 
