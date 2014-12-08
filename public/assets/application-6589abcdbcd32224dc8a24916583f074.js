@@ -42564,7 +42564,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     GifterCtrl.prototype.getTags = function() {
       return this.Profile.get((function(_this) {
         return function(profile) {
-          return _this.interests = [["Cuisine", profile.cuisine, "cuisine", "Ice Cream... Mexican..."], ["Stores", profile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", profile.services, "services", "Barnes & Noble Membership..."], ["Book Genre", profile.bookGenre, "bookGenre", "Biography... Audiobook..."], ["Music Genre", profile.musicGenre, "musicGenre", "Metal... Holiday..."], ["Clothing", profile.clothes, "clothes", "Socks... Sweater..."], ["Animals", profile.animal, "animal", "Bird... Bear..."], ["Color", profile.color, "color", "Green... Silver..."], ["Metal", profile.metal, "metal", "Puter... Titanium..."], ["Element", profile.element, "element", "Tourmaline... Crystal..."], ["Art", profile.art, "art", "Carving... Ceramic..."], ["Hobbies", profile.hobbies, "hobbies", "Sports... Rock Climbing..."]];
+          return _this.interests = [["Cuisine", profile.cuisine, "cuisine", "Dark Chocolate Ice Cream..."], ["Stores", profile.shops, "shops", "J.C. Penny... Hot Topic..."], ["Services", profile.services, "services", "Barnes & Noble Membership..."], ["Book Genre, Title, or Author", profile.bookGenre, "bookGenre", "J.K. Rowling... Audiobook..."], ["Music Genre, Artist, or Album", profile.musicGenre, "musicGenre", "Green Day... Holiday..."], ["Clothing", profile.clothes, "clothes", "Socks... Tie... Slippers"], ["Animals", profile.animal, "animal", "Blue Jay... Polar Bear..."], ["Color", profile.color, "color", "Green... Silver..."], ["Metal", profile.metal, "metal", "Puter... Titanium..."], ["Element", profile.element, "element", "Tourmaline... Crystal..."], ["Art", profile.art, "art", "Carving... Ceramic..."], ["Hobbies", profile.hobbies, "hobbies", "Sports... Drawing..."]];
         };
       })(this));
     };
@@ -42594,6 +42594,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       var MatchProfile, index, _results;
       console.log("thisMatchProfile()");
       this.matchProfile = [];
+      console.log(this.myMatch);
       if (this.myMatch) {
         index = this.myMatch.length - 2;
         _results = [];

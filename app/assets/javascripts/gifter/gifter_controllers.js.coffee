@@ -177,18 +177,18 @@ class GifterCtrl
   getTags: =>
     @Profile.get (profile)=>
       @interests = [
-        ["Cuisine",profile.cuisine,"cuisine","Ice Cream... Mexican..."],
+        ["Cuisine",profile.cuisine,"cuisine","Dark Chocolate Ice Cream..."],
         ["Stores",profile.shops,"shops","J.C. Penny... Hot Topic..."],
         ["Services",profile.services,"services","Barnes & Noble Membership..."],
-        ["Book Genre",profile.bookGenre,"bookGenre","Biography... Audiobook..."],
-        ["Music Genre",profile.musicGenre,"musicGenre","Metal... Holiday..."],
-        ["Clothing",profile.clothes,"clothes","Socks... Sweater..."],
-        ["Animals",profile.animal,"animal","Bird... Bear..."],
+        ["Book Genre, Title, or Author",profile.bookGenre,"bookGenre","J.K. Rowling... Audiobook..."],
+        ["Music Genre, Artist, or Album",profile.musicGenre,"musicGenre","Green Day... Holiday..."],
+        ["Clothing",profile.clothes,"clothes","Socks... Tie... Slippers"],
+        ["Animals",profile.animal,"animal","Blue Jay... Polar Bear..."],
         ["Color",profile.color,"color","Green... Silver..."],
         ["Metal",profile.metal,"metal","Puter... Titanium..."],
         ["Element",profile.element,"element","Tourmaline... Crystal..."],
         ["Art",profile.art,"art","Carving... Ceramic..."],
-        ["Hobbies",profile.hobbies,"hobbies","Sports... Rock Climbing..."]
+        ["Hobbies",profile.hobbies,"hobbies","Sports... Drawing..."]
       ]
 
   addTag: (newTag, catagory, catIndex)=>
@@ -208,6 +208,7 @@ class GifterCtrl
   thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
     console.log "thisMatchProfile()"
     @matchProfile = []
+    console.log @myMatch
     if @myMatch
       index = @myMatch.length - 2
       while index > -1
