@@ -60,6 +60,11 @@
           ng-click="gifter.matchEveryoneNow(gifter.eventID)">Match Everyone NOW</button>
 </div>
 
+<!-- <div id="matchButton" ng-show="gifter.admin" class="visible">
+  <button type="button" class="btn btn-hot"
+          ng-click="gifter.matchEveryoneNow(gifter.eventID)">Match Unchecked People</button>
+</div> -->
+
 <!-- USER HOME ***********************************************************************************-->
 <div  ng-show="gifter.home" class="visible">
   <!-- EVENT PANELS ********************************************************************************-->
@@ -187,6 +192,7 @@
       Gifter will randomly match everyone<br>
       When all members have signed up<br>
     </div>
+
     <div class="displayPanelInlay">
       <ul style="list-style-type: none;">
         <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
@@ -196,6 +202,7 @@
         </li>
       </ul>
     </div>
+
   </div>
   </div>
   <!-- <div>{{gifter.test}}</div> -->

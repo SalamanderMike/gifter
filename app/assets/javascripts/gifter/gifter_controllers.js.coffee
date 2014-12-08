@@ -205,7 +205,7 @@ class GifterCtrl
       profile[catagory].splice(tag, 1)
       profile.$update()
 
-  thisMatchProfile: (eventID)=> # matchID = myMatch[event,matchID]
+  thisMatchProfile: (eventID)=> # matchID = myMatch[matchID,eventID]
     console.log "thisMatchProfile()"
     @matchProfile = []
     console.log @myMatch
@@ -216,32 +216,32 @@ class GifterCtrl
           if @myMatch[index] != false
             @gifteePage()
             MatchProfile = @resource("users/:user_id/profile.json", {user_id:@myMatch[index]})
-            MatchProfile.get (data)=> #Find Giftee's Profile
-              @matchProfile = data
+            MatchProfile.get (profile)=> #Find Giftee's Profile
+              @matchProfile = profile
               @matchInterests = [
-                ["Cuisine",data.cuisine,"cuisine"],
-                ["Stores",data.shops,"shops"],
-                ["Services",data.services,"services"],
-                ["Book Genre",data.bookGenre,"bookGenre"],
-                ["Music Genre",data.musicGenre,"musicGenre"],
-                ["Clothing",data.clothes,"clothes"],
-                ["Animals",data.animal,"animal"],
-                ["Color",data.color,"color"],
-                ["Metal",data.metal,"metal"],
-                ["Element",data.element,"element"],
-                ["Art",data.art,"art"],
-                ["Hobbies",data.hobbies,"hobbies"]
+                ["Cuisine",profile.cuisine,"cuisine"],
+                ["Stores",profile.shops,"shops"],
+                ["Services",profile.services,"services"],
+                ["Book Genre, Title, or Author",profile.bookGenre,"bookGenre"],
+                ["Music Genre, Artist, or Album",profile.musicGenre,"musicGenre"],
+                ["Clothing",profile.clothes,"clothes"],
+                ["Animals",profile.animal,"animal"],
+                ["Color",profile.color,"color"],
+                ["Metal",profile.metal,"metal"],
+                ["Element",profile.element,"element"],
+                ["Art",profile.art,"art"],
+                ["Hobbies",profile.hobbies,"hobbies"]
               ]
-              MatchName = @resource("/users/:id.json", {id:data.user_id})
-              MatchName.get (data)=> # Grab Giftee's Name
-                @matchName = "#{data.firstname} #{data.lastname}"
+              MatchName = @resource("/users/:id.json", {id:profile.user_id})
+              MatchName.get (profile)=> # Grab Giftee's Name
+                @matchName = "#{profile.firstname} #{profile.lastname}"
               Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-              Event.get (event)=> # Grab Event Title & Spending Limit
-                @eventTitle = event.eventName
-                @eventLimit = event.spendingLimit
+              Event.get (thisEvent)=> # Grab Event Title & Spending Limit
+                @eventTitle = thisEvent.eventName
+                @eventLimit = thisEvent.spendingLimit
           else
             alert "Sorry, your match isn't ready for this Event.\nTry again later!"
-        index = index - 2
+        index -= 2
 
   thisEventColor: (match)=>
     if match
@@ -262,39 +262,64 @@ class GifterCtrl
 
   participantsInEvent: (eventID)=>
     # console.log "LIST OF PARTICIPANTS..."
-      # With a little forced synchonicity to keep list orderly
-    @participants = []
-    participantNum = 0
-    i = 0
-    UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
-    UsersInEvents.query (data)=>
-      @participantNum = data.length
-      participantNum = data.length
-      while i < data.length
-        do (i)=>
-          User = @resource("/users/:id.json", {id:data[i].user_id})
-          User.get (user)=>
-            name = "#{user.firstname} #{user.lastname}"
-            @participants[i] = []
-            @participants[i].push(user.id, name)
-        i += 1
+    # With a little forced synchonicity to keep list orderly
+    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+    Event.get (thisEvent)=> # Grab Event Title & Spending Limit
+      @participating = thisEvent.participants
+      @eventLimit = thisEvent.spendingLimit
+      matches = thisEvent.match
+      console.log matches
+      @participants = []
+      participant = []
+      i = 0
+      # Get all users in event by id
+      UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+      UsersInEvents.query (participants)=>
+        @participantNum = participants.length
+        unsignedParticipants = @participating - participants.length
+
+        # Find each user's id & name
+        while i < participants.length
+          do (i)=>
+            User = @resource("/users/:id.json", {id:participants[i].user_id})
+            User.get (user)=>
+
+            # index = matches.length
+            # while index > -1
+            #   do (index)=>
+            #     console.log index, "index"
+            #     for person of matches
+            #       console.log matches[person]
+
+            #   index -= 2
 
 
-      @timeout(()=>
-        Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
-        Event.get (thisEvent)=> # Grab Event Title & Spending Limit
-          @participating = thisEvent.participants
-          @eventLimit = thisEvent.spendingLimit
-          unsignedParticipants = @participating - participantNum
-          if unsignedParticipants > 0
-            while i < @participating
-              do (i)=>
-                @participants[i] = []
-                @participants[i].push(false, ". . .")
-              i += 1
-      , 0)
+              name = "#{user.firstname} #{user.lastname}"
+              # Push to 2D array
+              @participants[i] = []
+              @participants[i].push(user.id, name)
+          i += 1
 
-# FIX THIS ***********************
+
+          #iterate through matches down by 2
+          #compare user.id with match
+          #grab match+1
+          #interate through @participants
+          #match user.id with match+1
+          #matchName = "name"
+          #push(user.id, name, matchName)
+
+        # Blank slots for participants not yet signed up
+        @timeout(()=>
+            if unsignedParticipants > 0
+              while i < @participating
+                do (i)=>
+                  # Push to 2D array
+                  @participants[i] = []
+                  @participants[i].push(false, ". . .")
+                i += 1
+        , 0)
+
   removeParticipant: (user, userID, eventID)=>
     result = confirm "Are you sure you wish to remove this person from the Event?"
     if result
