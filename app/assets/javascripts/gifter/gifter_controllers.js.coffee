@@ -245,8 +245,16 @@ class GifterCtrl
 
   thisEventColor: (match)=>
     if match
-      return "-webkit-linear-gradient(-45deg, rgba(189,239,227,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 65%,rgba(169,232,172,1) 100%)"
-    return "-webkit-linear-gradient(-45deg, rgba(252,203,201,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 65%,rgba(249,206,255,1) 100%)"
+      return "background: -webkit-linear-gradient(-45deg, #bef0aa 0%,#f0f0f0 48%,#ffffff 65%,#bdf0e1 100%); /* Chrome10+,Safari5.1+ */
+              background: -moz-linear-gradient(-45deg, #bef0aa 0%, #f0f0f0 48%, #ffffff 65%, #bdf0e1 100%); /* FF3.6+ */
+              background: -ms-linear-gradient(-45deg, #bef0aa 0%,#f0f0f0 48%,#ffffff 65%,#bdf0e1 100%); /* IE10+ */
+              background: -o-linear-gradient(-45deg, #bef0aa 0%,#f0f0f0 48%,#ffffff 65%,#bdf0e1 100%); /* Opera 11.10+ */
+              background: linear-gradient(135deg, #bef0aa 0%,#f0f0f0 48%,#ffffff 65%,#bdf0e1 100%); /* W3C */"
+    return "background: -moz-linear-gradient(-45deg, #ffc8c8 0%, #f0f0f0 48%, #ffffff 65%, #ffcdff 100%); /* FF3.6+ */
+            background: -webkit-linear-gradient(-45deg, #ffc8c8 0%,#f0f0f0 48%,#ffffff 65%,#ffcdff 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(-45deg, #ffc8c8 0%,#f0f0f0 48%,#ffffff 65%,#ffcdff 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(-45deg, #ffc8c8 0%,#f0f0f0 48%,#ffffff 65%,#ffcdff 100%); /* IE10+ */
+            background: linear-gradient(135deg, #ffc8c8 0%,#f0f0f0 48%,#ffffff 65%,#ffcdff 100%); /* W3C */"
 
   findAdminsEvents: =>
     AdminsEvents = @resource("/index_admin_events.json", {}, {'query': {method: 'GET', isArray: true}})
