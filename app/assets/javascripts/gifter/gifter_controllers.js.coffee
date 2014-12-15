@@ -1,7 +1,7 @@
-GifterControllers = angular.module("GifterControllers", ["ngResource", "ngAnimate", "ui.bootstrap"])
+GifterControllers = angular.module("GifterControllers", ["ngResource", "ngAnimate"])
 
 class GifterCtrl
-  constructor: (@scope, @http, @resource, @rootScope, @location, @timeout, @modal, @Suggestions)->
+  constructor: (@scope, @http, @resource, @rootScope, @location, @timeout, @Suggestions)->
     # console.log "HELLO! I'm the Gifter Controller!"
     # if !@rootScope.sessionID
     #   console.log "SESSION DOESN'T EXIST"
@@ -125,6 +125,11 @@ class GifterCtrl
 
     .error ()=>
       location.path("/login")
+
+
+
+  test: =>
+    console.log "TEST"
 
 
 #FUNCTIONS
@@ -525,4 +530,4 @@ class GifterCtrl
       location.href = "/"
     @rootScope.sessionID = null
     console.log "LOGGED OUT!"
-GifterControllers.controller("GifterCtrl", ["$scope","$http", "$resource", "$rootScope", "$location", "$timeout", "$modal", "Suggestions", GifterCtrl])
+GifterControllers.controller("GifterCtrl", ["$scope","$http", "$resource", "$rootScope", "$location", "$timeout", "Suggestions", GifterCtrl])

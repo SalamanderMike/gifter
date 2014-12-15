@@ -1,48 +1,44 @@
 <!-- NAVBAR ************************************************************************************-->
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-left">
-        <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.home">My Profile</button>
-        <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.giftee">Event:</button>
-        <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.admin">Event:</button>
-        <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.chooseEvent">Choose Event</button>
-      <li class="gifteeEventTitle" ng-show="gifter.eventHeadding">{{gifter.eventTitle}}</li>
-      <li class="gifteeEventTitle" ng-show="gifter.newEventShow">{{newEvent.eventName}}</li>
-      </ul>
+  <ul class="nav navbar-nav navbar-left">
+    <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.home">My Profile</button>
+    <button class="navButtonLeft" ng-click="gifter.homePage()" ng-show="gifter.giftee">Event:</button>
+    <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.admin">Event:</button>
+    <button class="navButtonLeft" ng-click="gifter.adminPage()" ng-show="gifter.chooseEvent">Choose Event</button>
+  <li class="gifteeEventTitle" ng-show="gifter.eventHeadding">{{gifter.eventTitle}}</li>
+  <li class="gifteeEventTitle" ng-show="gifter.newEventShow">{{newEvent.eventName}}</li>
+  </ul>
 
-      <ul class="nav navbar-nav navbar-right">
-        <div class="navButtonRight">
-          <span class="dropdown" is-open="gifter.toggleDropdown">
-            <a href class="dropdown-toggle">
-              {{gifter.user.firstname}} {{gifter.user.lastname}}<span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a ng-click="gifter.homePage()">My Profile</a></li>
+  <ul class="nav navbar-nav navbar-right">
+    <div id="navDropRight" class="dropdown" is-open="gifter.toggleDropdown">
+      <a href class="dropdown-toggle">
+        {{gifter.user.firstname}} {{gifter.user.lastname}}<span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a ng-click="gifter.homePage()">My Profile</a></li>
 
-                <li><a  ng-show="gifter.demoLimits"
-                        style="color:#e0c8c8;background:transparent;">
-                  Join Event!</a></li>
-                <li><a  ng-show="gifter.demoLimits"
-                        style="color:#e0c8c8;background:transparent;">
-                  Create New Event</a></li>
+        <li><a  ng-show="gifter.demoLimits"
+                style="color:#e0c8c8;background:transparent;">
+                Join Event!</a></li>
+        <li><a  ng-show="gifter.demoLimits"
+                style="color:#e0c8c8;background:transparent;">
+                Create New Event</a></li>
 
-                <li><a  ng-hide="gifter.demoLimits"
-                        ng-click="gifter.joinEventPage()">
-                  Join Event!</a></li>
-                <li><a  ng-hide="gifter.demoLimits"
-                        ng-click="gifter.EventCreatePage()">
-                  Create New Event</a></li>
+        <li><a  ng-hide="gifter.demoLimits"
+                ng-click="gifter.joinEventPage()">
+                Join Event!</a></li>
+        <li><a  ng-hide="gifter.demoLimits"
+                ng-click="gifter.EventCreatePage()">
+                Create New Event</a></li>
 
 <!-- Delete This Event appears while viewing an event-->
-              <li><a ng-click="gifter.findAdminsEvents()">Event Details</a></li>
-              <li class="divider"></li>
-              <li><a ng-click="gifter.logout()">Sign Out</a></li>
-            </ul>
-          </span>
-        </div>
+        <li><a ng-click="gifter.findAdminsEvents()">Event Details</a></li>
+        <li class="divider"></li>
+        <li><a ng-click="gifter.logout()">Sign Out</a></li>
       </ul>
     </div>
-  </div>
+  </ul>
+
 </nav><br/><br/><br/>
 
 <!-- IMAGES ********************************************************************************-->

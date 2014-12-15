@@ -111,7 +111,6 @@ div.flower-paper {
   border-radius: 10px;
 }
 
-
 #titleSmall {
   position: fixed;
   top: 45px;
@@ -121,16 +120,6 @@ div.flower-paper {
   font-size: 5em;
   z-index: 10;
 }
-
-
-.construction {
-  position: fixed;
-  bottom: 100px;
-  left: 50px;
-  font-family: 'Raleway', sans-serif;
-  font-size: 2em;
-}
-
 
 .loginSignup {
   position: fixed;
@@ -147,6 +136,17 @@ div.flower-paper {
 }
 
 
+/*NAVBAR *************************************/
+.navbar-default {
+  background: white;
+}
+
+.navbar-default .navbar-nav .dropdown-menu{
+  background: transparent;
+  top: 2.25em;
+  right: -0.5em;
+  padding: 10px;
+}
 
 .navButtonLeft {
   position: absolute;
@@ -160,11 +160,10 @@ div.flower-paper {
   cursor: pointer;
 }
 
-.navButtonRight {
+#navDropRight {
   position: absolute;
   top: 7px;
   right: 20px;
-  background-color: rgba(250, 250, 250, .9);
   border: 0px;
   color: #0074ad;
   font-family: 'Raleway', sans-serif;
@@ -172,6 +171,37 @@ div.flower-paper {
   cursor: pointer;
 }
 
+.dropdown:hover .dropdown-menu{
+  display: block;
+  background: white;
+  top: 2.1em;
+  right: 0em;
+  left: 0em;
+  padding: 10px;
+}
+
+.dropdown:focus .dropdown-menu {
+  display: block;
+  top: 2.25em;
+  right: -0.5em;
+  padding: 10px;
+  color:#0074ad;
+}
+
+.navbar-default .navbar-nav .dropdown-menu li a {
+  color:#2db5cd;
+}
+
+.dropdown-menu li a:hover {
+  background:rgba(0,0,0,0.10);
+}
+
+.dropdown .divider {
+  background: #d6008b;
+}
+
+
+/*SPLASH IMAGES ****************************/
 div.splashimage {
   position: fixed;
   width: 720px;
