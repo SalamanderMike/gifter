@@ -38496,6 +38496,7 @@ if (typeof jQuery === 'undefined') {
       this.removeTag = __bind(this.removeTag, this);
       this.addTag = __bind(this.addTag, this);
       this.getTags = __bind(this.getTags, this);
+      this.updateProfilePage = __bind(this.updateProfilePage, this);
       this.matchEveryoneNow = __bind(this.matchEveryoneNow, this);
       this.test = __bind(this.test, this);
       this.http.get("/authorized.json").success((function(_this) {
@@ -38527,6 +38528,8 @@ if (typeof jQuery === 'undefined') {
           _this.regexNum = /^[0-9]+$/;
           _this.demoLimits = _this.sessionID === 4 ? true : false;
           _this.toggleDropdown = false;
+          _this.matchNow = false;
+          _this.matched = false;
           User = _this.resource("/users/:id.json", {
             id: _this.sessionID
           }, {
@@ -38545,17 +38548,14 @@ if (typeof jQuery === 'undefined') {
               isArray: true
             }
           });
-          UserEvents.query(function(data) {
-            var eventLink, link, _fn;
-            link = data.slice(-data.length);
+          UserEvents.query(function(links) {
+            var eventLink, _fn;
             _fn = function(eventLink) {
-              var usersArray;
-              if (data[eventLink].event_id) {
-                usersArray = [];
-                return (function(usersArray) {
+              if (links[eventLink].event_id) {
+                return (function() {
                   var UsersInEvents;
                   UsersInEvents = _this.resource("/index_participants/:event_id.json", {
-                    event_id: data[eventLink].event_id
+                    event_id: links[eventLink].event_id
                   }, {
                     'query': {
                       method: 'GET',
@@ -38565,10 +38565,9 @@ if (typeof jQuery === 'undefined') {
                   return UsersInEvents.query(function(users) {
                     var Event;
                     _this.totalParticipants = users.length;
-                    usersArray = users.slice(-users.length);
                     Event = _this.resource("/users/:user_id/events/:id.json", {
                       user_id: _this.sessionID,
-                      id: data[eventLink].event_id
+                      id: links[eventLink].event_id
                     }, {
                       update: {
                         method: 'PUT'
@@ -38597,10 +38596,10 @@ if (typeof jQuery === 'undefined') {
                       }, 50);
                     });
                   });
-                })(usersArray);
+                })();
               }
             };
-            for (eventLink in link) {
+            for (eventLink in links) {
               _fn(eventLink);
             }
             return _this.timeout(function() {
@@ -38648,8 +38647,11 @@ if (typeof jQuery === 'undefined') {
     GifterCtrl.prototype.matchEveryoneNow = function(eventID) {
       var usersArray;
       usersArray = [];
-      return (function(_this) {
-        return function(usersArray) {
+      if (this.matched === true) {
+        confirm("WARNING: Rematching participants may lead to people having to return gifts. Are you sure?");
+      }
+      (function(_this) {
+        return (function(usersArray) {
           var UsersInEvents;
           UsersInEvents = _this.resource("/index_participants/:event_id.json", {
             event_id: eventID
@@ -38671,52 +38673,122 @@ if (typeof jQuery === 'undefined') {
                 }
               });
               return Event.get(function(thisEvent) {
-                var result;
-                if (!thisEvent.match) {
-                  result = confirm("WARNING: Matching everyone now will close the goup. You will not be able to add any more participants or rematch. Are you sure?");
-                  if (result) {
-                    return (function(thisEvent) {
-                      var currentIndex, lastUser;
-                      console.log("MATCH EVENT:", thisEvent.id);
-                      currentIndex = usersArray.length - 1;
-                      lastUser = currentIndex;
-                      return (function(usersArray) {
-                        var matchArray;
-                        while (currentIndex !== 0) {
-                          (function(currentIndex) {
-                            var randomIndex, temporaryValue;
-                            randomIndex = Math.floor(Math.random() * currentIndex);
-                            temporaryValue = usersArray[currentIndex];
-                            usersArray[currentIndex] = usersArray[randomIndex];
-                            return usersArray[randomIndex] = temporaryValue;
-                          })(currentIndex);
-                          currentIndex -= 1;
-                        }
-                        matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id];
-                        currentIndex = lastUser;
-                        while (currentIndex !== 0) {
-                          (function(currentIndex) {
-                            return matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id);
-                          })(currentIndex);
-                          currentIndex -= 1;
-                        }
-                        thisEvent.match = matchArray;
-                        thisEvent.participants = usersArray.length;
-                        thisEvent.$update();
-                        return console.log(matchArray);
-                      })(usersArray);
-                    })(thisEvent);
-                  }
-                } else {
-                  return alert("This Event has ALREADY BEEN MATCHED! You will need to create a new Event to rematch. This is to prevent gifters from having to take back gifts they have already gotten for their giftee.");
-                }
+                return (function(thisEvent) {
+                  var currentIndex, lastUser;
+                  currentIndex = usersArray.length - 1;
+                  lastUser = currentIndex;
+                  return (function(usersArray) {
+                    var matchArray;
+                    while (currentIndex !== 0) {
+                      (function(currentIndex) {
+                        var randomIndex, temporaryValue;
+                        randomIndex = Math.floor(Math.random() * currentIndex);
+                        temporaryValue = usersArray[currentIndex];
+                        usersArray[currentIndex] = usersArray[randomIndex];
+                        return usersArray[randomIndex] = temporaryValue;
+                      })(currentIndex);
+                      currentIndex -= 1;
+                    }
+                    matchArray = [usersArray[0].user_id, usersArray[lastUser].user_id];
+                    currentIndex = lastUser;
+                    while (currentIndex !== 0) {
+                      (function(currentIndex) {
+                        return matchArray.push(usersArray[currentIndex].user_id, usersArray[currentIndex - 1].user_id);
+                      })(currentIndex);
+                      currentIndex -= 1;
+                    }
+                    thisEvent.match = matchArray;
+                    thisEvent.participants = usersArray.length;
+                    return thisEvent.$update();
+                  })(usersArray);
+                })(thisEvent);
               });
             } else {
               return alert("You need a minimum of THREE participants to Match");
             }
           });
-        };
+        });
       })(this)(usersArray);
+      return this.timeout((function(_this) {
+        return function() {
+          _this.matched = false;
+          _this.matchNow = false;
+          _this.updateProfilePage();
+          return _this.participantsInEvent(eventID);
+        };
+      })(this), 200);
+    };
+
+    GifterCtrl.prototype.updateProfilePage = function() {
+      var UserEvents;
+      this.myMatch = [];
+      this.myEvents = [];
+      UserEvents = this.resource("/index_user_events/:user_id/events.json", {
+        user_id: this.sessionID
+      }, {
+        'query': {
+          method: 'GET',
+          isArray: true
+        }
+      });
+      return UserEvents.query((function(_this) {
+        return function(links) {
+          var eventLink, _results;
+          _results = [];
+          for (eventLink in links) {
+            _results.push((function(eventLink) {
+              if (links[eventLink].event_id) {
+                return (function() {
+                  var UsersInEvents;
+                  UsersInEvents = _this.resource("/index_participants/:event_id.json", {
+                    event_id: links[eventLink].event_id
+                  }, {
+                    'query': {
+                      method: 'GET',
+                      isArray: true
+                    }
+                  });
+                  return UsersInEvents.query(function(users) {
+                    var Event;
+                    _this.totalParticipants = users.length;
+                    Event = _this.resource("/users/:user_id/events/:id.json", {
+                      user_id: _this.sessionID,
+                      id: links[eventLink].event_id
+                    }, {
+                      update: {
+                        method: 'PUT'
+                      }
+                    });
+                    return Event.get(function(thisEvent) {
+                      (function(thisEvent) {})(thisEvent);
+                      return _this.timeout(function() {
+                        var userID, _results1;
+                        _this.myEvents.push(thisEvent);
+                        if (thisEvent.match) {
+                          userID = thisEvent.match.length - 2;
+                          _results1 = [];
+                          while (userID > -1) {
+                            (function(userID) {
+                              if (+thisEvent.match[userID] === _this.sessionID) {
+                                return _this.myMatch.push(+thisEvent.match[userID + 1], thisEvent.id);
+                              }
+                            })(userID);
+                            _results1.push(userID = userID - 2);
+                          }
+                          return _results1;
+                        } else {
+                          return _this.myMatch.push(false, thisEvent.id);
+                        }
+                      }, 50);
+                    });
+                  });
+                })();
+              }
+            })(eventLink));
+          }
+          return _results;
+        };
+      })(this));
     };
 
     GifterCtrl.prototype.getTags = function() {
@@ -38837,7 +38909,6 @@ if (typeof jQuery === 'undefined') {
           _this.participating = thisEvent.participants;
           _this.eventLimit = thisEvent.spendingLimit;
           matches = thisEvent.match;
-          console.log(matches);
           _this.participants = [];
           participant = [];
           i = 0;
@@ -38860,10 +38931,34 @@ if (typeof jQuery === 'undefined') {
                   id: participants[i].user_id
                 });
                 return User.get(function(user) {
-                  var name;
+                  var index, name, _results;
                   name = "" + user.firstname + " " + user.lastname;
-                  _this.participants[i] = [];
-                  return _this.participants[i].push(user.id, name);
+                  if (matches) {
+                    _this.matched = true;
+                    index = matches.length - 2;
+                    _results = [];
+                    while (index > -1) {
+                      (function(index) {
+                        if (+matches[index] === user.id) {
+                          User = _this.resource("/users/:id.json", {
+                            id: +matches[index + 1]
+                          });
+                          return User.get(function(match) {
+                            var matchName;
+                            matchName = "" + match.firstname + " " + match.lastname;
+                            _this.participants[i] = [];
+                            return _this.participants[i].push(user.id, name, matchName);
+                          });
+                        }
+                      })(index);
+                      _results.push(index -= 2);
+                    }
+                    return _results;
+                  } else {
+                    _this.matchNow = true;
+                    _this.participants[i] = [];
+                    return _this.participants[i].push(user.id, name, "");
+                  }
                 });
               })(i);
               i += 1;
@@ -39023,6 +39118,8 @@ if (typeof jQuery === 'undefined') {
       this.toggleDropdown = false;
       this.newEventShow = false;
       this.eventHeadding = false;
+      this.matchNow = false;
+      this.matched = false;
       return this.home = true;
     };
 
@@ -39033,6 +39130,8 @@ if (typeof jQuery === 'undefined') {
       this.createEvent = false;
       this.joinEventVisible = false;
       this.toggleDropdown = false;
+      this.matchNow = false;
+      this.matched = false;
       this.giftee = true;
       return this.eventHeadding = true;
     };
@@ -39060,6 +39159,8 @@ if (typeof jQuery === 'undefined') {
       this.toggleDropdown = false;
       this.newEventShow = false;
       this.eventHeadding = false;
+      this.matchNow = false;
+      this.matched = false;
       this.chooseEvent = true;
       this.participants = [];
       this.adminsEvents = [];
@@ -39075,6 +39176,8 @@ if (typeof jQuery === 'undefined') {
       this.toggleDropdown = false;
       this.newEventShow = false;
       this.eventHeadding = false;
+      this.matchNow = false;
+      this.matched = false;
       return this.joinEventVisible = true;
     };
 
@@ -39087,6 +39190,8 @@ if (typeof jQuery === 'undefined') {
       this.joinEventVisible = false;
       this.toggleDropdown = false;
       this.eventHeadding = false;
+      this.matchNow = false;
+      this.matched = false;
       this.newEventShow = true;
       return this.createEvent = true;
     };

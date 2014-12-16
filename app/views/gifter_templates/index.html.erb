@@ -51,9 +51,14 @@
 <div class="brown-paper" ng-show="gifter.admin"></div>
 
 <!-- MATCH BUTTON -->
-<div id="matchButton" ng-show="gifter.admin" class="visible">
+<div id="matchButton" ng-show="gifter.matchNow">
   <button type="button" class="btn btn-hot"
           ng-click="gifter.matchEveryoneNow(gifter.eventID)">Match Everyone NOW</button>
+</div>
+
+<div id="matchButton" ng-show="gifter.matched">
+  <button type="button" class="btn btn-hot"
+          ng-click="gifter.matchEveryoneNow(gifter.eventID)">Find New Matches?</button>
 </div>
 
 <!-- <div id="matchButton" ng-show="gifter.admin" class="visible">
@@ -192,8 +197,9 @@
     <div class="displayPanelInlay">
       <ul style="list-style-type: none;">
         <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
-        {{participant[1]}}
+        {{participant[1]}}&nbsp > &nbsp{{participant[2]}}
           <button class="btn btn-danger" style="float:right;"
+                  ng-hide="gifter.matched"
                   ng-click="gifter.removeParticipant($index, participant[0], gifter.eventID)">X</button>
         </li>
       </ul>
