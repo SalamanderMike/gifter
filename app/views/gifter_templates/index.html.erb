@@ -31,7 +31,6 @@
                 ng-click="gifter.EventCreatePage()">
                 Create New Event</a></li>
 
-<!-- Delete This Event appears while viewing an event-->
         <li><a ng-click="gifter.findAdminsEvents()">Event Details</a></li>
         <li class="divider"></li>
         <li><a ng-click="gifter.logout()">Sign Out</a></li>
@@ -44,10 +43,7 @@
 <!-- IMAGES ********************************************************************************-->
 <div id="titleSmall">Gifter</div>
 
-<div class="flower-paper" ng-show="gifter.giftee">
-  <!-- <div class="gifter-box"></div> -->
-</div>
-
+<div class="flower-paper" ng-show="gifter.giftee"></div>
 <div class="brown-paper" ng-show="gifter.admin"></div>
 
 <!-- MATCH BUTTON -->
@@ -82,7 +78,7 @@
     </div>
   </div>
 
-    <div class="spacer"></div>
+  <div class="ribbon"></div>
 
   <!-- INTERESTS PANELS ****************************************************************************-->
   <div class="interestPanelContainer">
@@ -162,52 +158,48 @@
 <!-- EVENT DETAILS ******************************************************************************-->
 <div ng-show="gifter.admin" class="visible">
   <div id="eventSettingsHeading">Event Settings</div>
+
   <div class="panelContainer">
-  <div class="displayPanel" style="opacity:1;">
-      <div class="counter" style="float:left;">
-        <span class="btn btn-danger" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
-        <span>{{gifter.participating}}</span>
-        <span class="btn btn-success" ng-click="gifter.increaseParticipants(gifter.eventID)">+</span>
+    <div class="displayPanel" style="opacity:1;">
+        <div class="counter" style="float:left;">
+          <span class="btn btn-danger" ng-click="gifter.decreaseParticipants(gifter.eventID)">-</span>
+          <span>{{gifter.participating}}</span>
+          <span class="btn btn-success" ng-click="gifter.increaseParticipants(gifter.eventID)">+</span>
+        </div>
+
+        <div class="counter" style="float:right;">
+          <span class="btn btn-danger" ng-click="gifter.decreaseLimit(gifter.eventID)">-</span>
+          <span>${{gifter.eventLimit}}</span>
+          <span class="btn btn-success" ng-click="gifter.increaseLimit(gifter.eventID)">+</span>
+        </div>
+
+        <div class="counterDirections">
+          <span style="float:left;">
+            <p>Participants</p>
+          </span>
+          <span style="float:right;">
+            <p>Spending Limit</p>
+          </span>
+        </div>
+      <div style="position:relative;left:20px;color:grey;text-align:left;">
+        Participants who've signed up: {{gifter.participantNum}}<br>
+        Gifter will randomly match everyone<br>
+        When all members have signed up<br>
       </div>
 
-      <div class="counter" style="float:right;">
-        <span class="btn btn-danger" ng-click="gifter.decreaseLimit(gifter.eventID)">-</span>
-        <span>${{gifter.eventLimit}}</span>
-        <span class="btn btn-success" ng-click="gifter.increaseLimit(gifter.eventID)">+</span>
+      <div class="displayPanelInlay">
+        <ul style="list-style-type: none;">
+          <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
+          {{participant[1]}}&nbsp > &nbsp{{participant[2]}}
+            <button class="btn btn-danger" style="float:right;"
+                    ng-hide="gifter.matched"
+                    ng-click="gifter.removeParticipant($index, participant[0], gifter.eventID)">X</button>
+          </li>
+        </ul>
       </div>
 
-      <div class="counterDirections">
-        <span style="float:left;">
-          <p>Participants</p>
-        </span>
-        <span style="float:right;">
-          <p>Spending Limit</p>
-        </span>
-      </div>
-    <div style="position:relative;left:20px;color:grey;text-align:left;">
-      Participants who've signed up: {{gifter.participantNum}}<br>
-      Gifter will randomly match everyone<br>
-      When all members have signed up<br>
     </div>
-
-    <div class="displayPanelInlay">
-      <ul style="list-style-type: none;">
-        <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
-        {{participant[1]}}&nbsp > &nbsp{{participant[2]}}
-          <button class="btn btn-danger" style="float:right;"
-                  ng-hide="gifter.matched"
-                  ng-click="gifter.removeParticipant($index, participant[0], gifter.eventID)">X</button>
-        </li>
-      </ul>
-    </div>
-
   </div>
-  </div>
-  <!-- <div>{{gifter.test}}</div> -->
-<!-- <div>progress bar of participants</div>
-<div>Match Button</div> -->
-
-
 
 </div>
 <!-- JOIN EXISTING EVENT ******************************************************************************-->
