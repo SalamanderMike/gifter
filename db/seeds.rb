@@ -13,7 +13,7 @@ jimmy = User.create({firstname: "Jimmy", lastname: "Olsen", email: "jimmy@dailyp
 
 # DEMO ACCOUNTS !!!change me.com to demo.com in production
 jane = User.create({firstname: "Jane", lastname: "Demodo", email: "jane@me.com", password: "192837465"})
-john = User.create({firstname: "John", lastname: "Demodo", email: "john@me.com", password: "192837465"})
+john = User.create({firstname: "Mr. & Mrs. John", lastname: "Demodo", email: "john@me.com", password: "192837465"})
 joey = User.create({firstname: "Joey", lastname: "Demodo", email: "joey@demo.com", password: "192837465"})
 jasper = User.create({firstname: "Jasper", lastname: "Demodo", email: "jasper@demo.com", password: "192837465"})
 
