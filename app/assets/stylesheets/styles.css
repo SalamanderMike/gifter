@@ -583,6 +583,13 @@ span {
   z-index: 10;
 }
 
+#diagnosticButton {
+  position: relative;
+  top: 20px;
+  left: 42.5%;
+  z-index: 10;
+}
+
 .btn-hot {
   color: #fff;
   background-color: #db5566;

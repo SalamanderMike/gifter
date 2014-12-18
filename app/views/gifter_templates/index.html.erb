@@ -57,6 +57,12 @@
           ng-click="gifter.matchEveryoneNow(gifter.eventID)">Find New Matches?</button>
 </div>
 
+<!-- DIAGNOSTIC BUTTON -->
+<div id="diagnosticButton" ng-show="gifter.diagnosticButton">
+  <button type="button" class="btn btn-hot"
+          ng-click="gifter.diagnosticsPage(gifter.thisEvent)">DIAGNOSTICS</button>
+</div>
+
 <!-- USER HOME ***********************************************************************************-->
 <div  ng-show="gifter.home" class="visible">
 
@@ -144,10 +150,10 @@
   <h3 style="font-family: 'Raleway', sans-serif;">
   Choose which of your Events you'd like to see more details about
   </h3>
-    <div  class="eventPanel" ng-repeat="event in gifter.adminsEvents track by $index"
-          style="background:{{gifter.thisEventColor(event.match)}};"
-          ng-click="gifter.adminPage(event)">
-      <div class="eventTitles">{{event.eventName}}</div>
+    <div  class="eventPanel" ng-repeat="thisEvent in gifter.adminsEvents track by $index"
+          style="background:{{gifter.thisEventColor(thisEvent.match)}};"
+          ng-click="gifter.adminPage(thisEvent)">
+      <div class="eventTitles">{{thisEvent.eventName}}</div>
       <div class="eventPanelInlay" style="left:175px">
         <p class="eventName"></p>
         <div class="eventBox"></div>
@@ -282,4 +288,32 @@
   </div>
 </div>
 
+<!-- DIAGNOSTIC FORM ******************************************************************************-->
+<div ng-show="gifter.diagnostics" class="visible">
+  <div id="eventSettingsHeading">DIAGNOSTICS</div>
+
+  <div class="panelContainer">
+    <div class="displayPanel" style="opacity:1;">
+
+      <div style="position:relative;left:20px;color:grey;text-align:left;">
+        Here, you can delete participants<br>
+        Even if they are already matched<br>
+        If matched, the delete button will lead you<br>
+        To a replacement for the match<br>
+      </div>
+
+      <div class="displayPanelInlay">
+        <ul style="list-style-type: none;">
+          <li class="eventParticipants" ng-repeat="participant in gifter.participants track by $index">
+          {{participant[1]}}&nbsp > &nbsp{{participant[2]}}
+            <button class="btn btn-danger" style="float:right;"
+                    ng-click="gifter.diagnosticRemove($index, participant[0], gifter.eventID)">X</button>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 

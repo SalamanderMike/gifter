@@ -33,10 +33,13 @@ class GifterCtrl
       @regexNum = /^[0-9]+$/ # ERROR: returning undefined
 
       @demoLimits = if @sessionID == 4 then true else false
+      @diagnosticButton = false
 
       @toggleDropdown = false
       @matchNow = false
       @matched = false
+
+
 
 
 
@@ -60,6 +63,9 @@ class GifterCtrl
                 UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:links[eventLink].event_id}, {'query': {method: 'GET', isArray: true}})
                 UsersInEvents.query (users)=>
                   @totalParticipants = users.length
+
+                  # for i of users
+                  #   console.log users[i].user_id
 
                   # Find matches in Event
                   Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:links[eventLink].event_id}, {update: {method: 'PUT'}})
@@ -364,6 +370,49 @@ class GifterCtrl
                 i += 1
         , 0)
 
+  diagnosticParticipantList: (eventID)=>
+    console.log "DIAGNOSTICS..."
+    @matched = false
+    @matchNow = false
+    console.log eventID
+    # With a little forced synchonicity to keep list orderly
+    Event = @resource("/users/:user_id/events/:id.json", {user_id:@sessionID, id:eventID})
+    Event.get (thisEvent)=> # Grab Event Title & Spending Limit
+      @participating = thisEvent.participants
+      @eventLimit = thisEvent.spendingLimit
+      matches = thisEvent.match
+      @participants = []
+      participant = []
+      i = 0
+
+      # Get all users in event by id
+      UsersInEvents = @resource("/index_participants/:event_id.json", {event_id:eventID}, {'query': {method: 'GET', isArray: true}})
+      UsersInEvents.query (participants)=>
+        @participantNum = participants.length
+        unsignedParticipants = @participating - participants.length
+
+        # Find each user's id & name
+        while i < participants.length
+          do (i)=>
+            User = @resource("/users/:id.json", {id:participants[i].user_id})
+            User.get (user)=>
+              name = "#{user.firstname} #{user.lastname}"
+              @participants[i] = []
+              @participants[i].push(user.id, name)
+          i += 1
+
+
+
+  diagnosticRemove: (user, userID, eventID)=>
+    # Removes a participant. If matched, finds replacement
+    @participants.splice(user, 1)
+    @participantNum--
+    @participating--
+
+
+
+
+
   removeParticipant: (user, userID, eventID)=>
     result = confirm "Are you sure you wish to remove this person from the Event?"
     if result
@@ -433,6 +482,8 @@ class GifterCtrl
     @eventHeadding = false
     @matchNow = false
     @matched = false
+    @diagnosticButton = false
+    @diagnostics = false
     #Visible
     @home = true
 
@@ -446,24 +497,11 @@ class GifterCtrl
     @toggleDropdown = false
     @matchNow = false
     @matched = false
+    @diagnosticButton = false
+    @diagnostics = false
     #Visible
     @giftee = true
     @eventHeadding = true
-
-  adminPage: (event)=>
-    #Hidden
-    @home = false
-    @giftee = false
-    @chooseEvent = false
-    @createEvent = false
-    @joinEventVisible = false
-    @toggleDropdown = false
-    #Visible
-    @admin = true
-    @eventHeadding = true
-    @eventTitle = event.eventName
-    @eventID = event.id
-    @participantsInEvent(event.id)
 
   chooseEventToEdit: (events)=>
     #Hidden
@@ -477,11 +515,50 @@ class GifterCtrl
     @eventHeadding = false
     @matchNow = false
     @matched = false
+    @diagnosticButton = false
+    @diagnostics = false
     #Visible
     @chooseEvent = true
     @participants = []
     @adminsEvents = []
     @adminsEvents = events
+
+  adminPage: (thisEvent)=>
+    #Hidden
+    @home = false
+    @giftee = false
+    @chooseEvent = false
+    @createEvent = false
+    @joinEventVisible = false
+    @toggleDropdown = false
+    @diagnostics = false
+    #Visible
+    @diagnosticButton = if @sessionID == 1 then true else false
+    @admin = true
+    @eventHeadding = true
+    @eventTitle = thisEvent.eventName
+    @eventID = thisEvent.id
+    @thisEvent = thisEvent
+    @participantsInEvent(thisEvent.id)
+
+  diagnosticsPage: (@thisEvent)=>
+    #Hidden
+    @admin = false
+    @home = false
+    @giftee = false
+    @chooseEvent = false
+    @createEvent = false
+    @joinEventVisible = false
+    @toggleDropdown = false
+    @diagnosticButton = false
+    #Visible
+    @diagnostics = true
+    @eventHeadding = true
+    @eventTitle = @thisEvent.eventName
+    @eventID = @thisEvent.id
+    @diagnosticParticipantList(@thisEvent.id)
+
+
 
   joinEventPage: =>
     #Hidden
@@ -495,6 +572,8 @@ class GifterCtrl
     @eventHeadding = false
     @matchNow = false
     @matched = false
+    @diagnosticButton = false
+    @diagnostics = false
     #Visible
     @joinEventVisible = true
 
@@ -510,9 +589,13 @@ class GifterCtrl
     @eventHeadding = false
     @matchNow = false
     @matched = false
+    @diagnosticButton = false
+    @diagnostics = false
     #Visible
     @newEventShow = true
     @createEvent = true
+
+
 
 # EVENT JOIN/CREATE **************************
   #ADD: Alert if user is already joined to that Event
