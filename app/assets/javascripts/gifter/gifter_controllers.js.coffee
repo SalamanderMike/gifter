@@ -406,11 +406,12 @@ class GifterCtrl
   diagnosticRemove: (user, userID, thisEvent)=>
     # Removes a participant. If matched, finds replacement
     console.log thisEvent.match
+    console.log userID
     if thisEvent.match
       result = confirm "Everyone in this Event has been MATCHED. By deleting this participant, are you prepared with a REPLACEMENT for their match?"
     if result
       replacement = prompt "Please enter the ID number of the extra participant who will replace the one you are deleting"
-
+    # Add Error check here - make sure entered user has joined Event
       do (thisEvent)=>
         for i of thisEvent.match
           if +thisEvent.match[i] == userID
@@ -422,6 +423,9 @@ class GifterCtrl
         dbEvent.$update()
         console.log dbEvent.match
 
+        #Remove from UserEvents
+        UserInEvent = @resource("/users/:user_id/users_events/:id.json", {user_id:userID, id:thisEvent.id}, {'delete': {method: 'DELETE'}})
+        UserInEvent.delete()
         @participants.splice(user, 1)
         @participantNum--
         @participating--
@@ -550,7 +554,7 @@ class GifterCtrl
     @toggleDropdown = false
     @diagnostics = false
     #Visible
-    @diagnosticButton = if @sessionID == 4 then true else false
+    @diagnosticButton = if @sessionID == 1 then true else false
     @admin = true
     @eventHeadding = true
     @eventTitle = thisEvent.eventName

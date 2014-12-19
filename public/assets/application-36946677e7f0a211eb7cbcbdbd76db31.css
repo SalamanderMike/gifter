@@ -6348,39 +6348,6 @@ button.close {
 
  */
 
-/*NORMALIZE BETWEEN BROWSERS*/
-/*html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}*/
-
-/*span {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}*/
-
-
-
 body {
   background: url(paper.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -6424,8 +6391,7 @@ div.flower-paper {
 }
 
 /*ANIMATIONS*******************************/
-.visible {
-}
+.visible {}
 
 .visible.ng-hide-add, .visible.ng-hide-remove {
   -webkit-transition:all ease-in-out 0.3s;
@@ -6445,6 +6411,7 @@ div.flower-paper {
 .visible.ng-hide-remove.ng-hide-remove-active {
   opacity:1;
 }
+
 /********************************************/
 
 #newEventContainer {
@@ -6587,7 +6554,7 @@ div.bow-background {
   background-image: url('bow.png');
 }
 
-div.spacer {
+div.ribbon {
   position: relative;
   top: 100px;
   left: 20px;
@@ -6599,7 +6566,6 @@ div.spacer {
 .eventPanelContainer {
   position:relative;
   top: 100px;
-  /*display: inline-block;*/
   max-width: 1350px;
   text-align: center;
   margin: 0 auto;
@@ -6608,7 +6574,6 @@ div.spacer {
 .interestPanelContainer {
   position:relative;
   top: 100px;
-  /*display: inline-block;*/
   max-width: 1100px;
   text-align: center;
   margin: 0 auto;
@@ -6686,18 +6651,13 @@ span {
   position: relative;
   bottom: 20px;
   left: 50px;
-  /*background-color: -webkit-linear-gradient(-45deg, rgba(252,214,214,1) 0%,rgba(254,144,144,1) 27%,rgba(254,144,144,1) 69%,rgba(255,61,61,1) 100%);*/
   background: -webkit-linear-gradient(-45deg,#ffd6d6 0%,#ff9090 27%,#ff9090 69%,#ff3d3d 100%); /* Chrome10+,Safari5.1+ */
   background: -moz-linear-gradient(-45deg,#ffd6d6 0%,#ff9090 27%,#ff9090 69%,#ff3d3d 100%); /* FF3.6+ */
   background: -ms-linear-gradient(-45deg,#ffd6d6 0%,#ff9090 27%,#ff9090 69%,#ff3d3d 100%); /* IE10+ */
   background: -o-linear-gradient(-45deg,#ffd6d6 0%,#ff9090 27%,#ff9090 69%,#ff3d3d 100%); /* Opera 11.10+ */
   background: linear-gradient(135deg,#ffd6d6 0%,#ff9090 27%,#ff9090 69%,#ff3d3d 100%); /* W3C */
 }
-.spacer {
-  position: fixed;
-  width: 100%;
-  height: 500px;
-}
+
 /*INTEREST PANELS********************************************************************************/
 .interestPanel {
   position: relative;
@@ -6777,11 +6737,7 @@ span {
   border-radius: 5px;
 }
 
-
-
-.tagBorder {
-
-}
+.tagBorder {}
 
 .tags {
   position: relative;
@@ -6828,6 +6784,7 @@ span {
   left: 3px;
   color: #ff3d3d;
 }
+
 /*GIFTEE PAGE ********************************************************************************/
 .heading {
   position:relative;
@@ -6935,7 +6892,6 @@ span {
 
 
 /*ADMIN PAGE ********************************************************************************/
-
 .btn {
   font-size: .53em;
   opacity: .5;
@@ -6974,6 +6930,13 @@ span {
   position: relative;
   top: 10px;
   left: 40%;
+  z-index: 10;
+}
+
+#diagnosticButton {
+  position: relative;
+  top: 20px;
+  left: 42.5%;
   z-index: 10;
 }
 
