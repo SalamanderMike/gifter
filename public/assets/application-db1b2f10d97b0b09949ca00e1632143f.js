@@ -39095,23 +39095,26 @@ if (typeof jQuery === 'undefined') {
     };
 
     GifterCtrl.prototype.diagnosticsNameChange = function(userID) {
-      var User, newFirstName;
-      console.log(userID);
-      newFirstName = prompt("What would you like to change this user's First Name to?");
-      User = this.resource("/users/:id.json", {
-        id: userID
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      });
-      return User.get((function(_this) {
-        return function(user) {
-          user.firstname = newFirstName;
-          console.log("First name changed to:", user.firstname);
-          return user.$update();
-        };
-      })(this));
+      var User, newFirstName, result;
+      console.log("Chosen User ID:", userID);
+      result = confirm("Would you like to change this user's first name?");
+      if (result) {
+        newFirstName = prompt("What would you like to change this user's First Name to?");
+        User = this.resource("/users/:id.json", {
+          id: userID
+        }, {
+          update: {
+            method: 'PUT'
+          }
+        });
+        return User.get((function(_this) {
+          return function(user) {
+            user.firstname = newFirstName;
+            console.log("First name changed to:", user.firstname);
+            return user.$update();
+          };
+        })(this));
+      }
     };
 
     GifterCtrl.prototype.removeParticipant = function(user, userID, eventID) {

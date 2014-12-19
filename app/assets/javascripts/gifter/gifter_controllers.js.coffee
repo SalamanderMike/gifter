@@ -431,13 +431,15 @@ class GifterCtrl
         @participating--
 
   diagnosticsNameChange: (userID)=>
-    console.log userID
-    newFirstName = prompt "What would you like to change this user's First Name to?"
-    User = @resource("/users/:id.json", {id:userID}, {update: {method: 'PUT'}})
-    User.get (user)=>
-      user.firstname = newFirstName
-      console.log "First name changed to:", user.firstname
-      user.$update()
+    console.log "Chosen User ID:", userID
+    result = confirm "Would you like to change this user's first name?"
+    if result
+      newFirstName = prompt "What would you like to change this user's First Name to?"
+      User = @resource("/users/:id.json", {id:userID}, {update: {method: 'PUT'}})
+      User.get (user)=>
+        user.firstname = newFirstName
+        console.log "First name changed to:", user.firstname
+        user.$update()
 
 
   removeParticipant: (user, userID, eventID)=>
