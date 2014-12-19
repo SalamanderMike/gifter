@@ -560,7 +560,7 @@ class GifterCtrl
     @toggleDropdown = false
     @diagnostics = false
     #Visible
-    @diagnosticButton = if @sessionID == 4 then true else false
+    @diagnosticButton = if @sessionID == 1 then true else false
     @admin = true
     @eventHeadding = true
     @eventTitle = thisEvent.eventName

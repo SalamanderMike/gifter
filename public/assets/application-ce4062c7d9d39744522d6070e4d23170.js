@@ -39299,7 +39299,7 @@ if (typeof jQuery === 'undefined') {
       this.joinEventVisible = false;
       this.toggleDropdown = false;
       this.diagnostics = false;
-      this.diagnosticButton = this.sessionID === 4 ? true : false;
+      this.diagnosticButton = this.sessionID === 1 ? true : false;
       this.admin = true;
       this.eventHeadding = true;
       this.eventTitle = thisEvent.eventName;
