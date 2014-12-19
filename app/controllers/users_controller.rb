@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   end
 
   def update # Profile Data WIZARD ***TO BE IMPLEMENTED***
-    respond_with User.find(session[:id]).update(user_params)
+    respond_with User.find(params[:id]).update(user_params)
   end
 
   def destroy # Deletes user account from database

@@ -38490,6 +38490,7 @@ if (typeof jQuery === 'undefined') {
       this.decreaseParticipants = __bind(this.decreaseParticipants, this);
       this.increaseParticipants = __bind(this.increaseParticipants, this);
       this.removeParticipant = __bind(this.removeParticipant, this);
+      this.diagnosticsNameChange = __bind(this.diagnosticsNameChange, this);
       this.diagnosticRemove = __bind(this.diagnosticRemove, this);
       this.diagnosticParticipantList = __bind(this.diagnosticParticipantList, this);
       this.participantsInEvent = __bind(this.participantsInEvent, this);
@@ -39042,7 +39043,6 @@ if (typeof jQuery === 'undefined') {
     GifterCtrl.prototype.diagnosticRemove = function(user, userID, thisEvent) {
       var Event, replacement, result;
       console.log(thisEvent.match);
-      console.log(userID);
       if (thisEvent.match) {
         result = confirm("Everyone in this Event has been MATCHED. By deleting this participant, are you prepared with a REPLACEMENT for their match?");
       }
@@ -39075,6 +39075,7 @@ if (typeof jQuery === 'undefined') {
             var UserInEvent;
             dbEvent.match = thisEvent.match;
             dbEvent.$update();
+            console.log("MATCH CHANGED TO:");
             console.log(dbEvent.match);
             UserInEvent = _this.resource("/users/:user_id/users_events/:id.json", {
               user_id: userID,
@@ -39091,6 +39092,26 @@ if (typeof jQuery === 'undefined') {
           };
         })(this));
       }
+    };
+
+    GifterCtrl.prototype.diagnosticsNameChange = function(userID) {
+      var User, newFirstName;
+      console.log(userID);
+      newFirstName = prompt("What would you like to change this user's First Name to?");
+      User = this.resource("/users/:id.json", {
+        id: userID
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+      return User.get((function(_this) {
+        return function(user) {
+          user.firstname = newFirstName;
+          console.log("First name changed to:", user.firstname);
+          return user.$update();
+        };
+      })(this));
     };
 
     GifterCtrl.prototype.removeParticipant = function(user, userID, eventID) {
@@ -39278,7 +39299,7 @@ if (typeof jQuery === 'undefined') {
       this.joinEventVisible = false;
       this.toggleDropdown = false;
       this.diagnostics = false;
-      this.diagnosticButton = this.sessionID === 1 ? true : false;
+      this.diagnosticButton = this.sessionID === 4 ? true : false;
       this.admin = true;
       this.eventHeadding = true;
       this.eventTitle = thisEvent.eventName;

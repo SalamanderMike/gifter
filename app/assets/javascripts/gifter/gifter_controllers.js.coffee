@@ -406,7 +406,6 @@ class GifterCtrl
   diagnosticRemove: (user, userID, thisEvent)=>
     # Removes a participant. If matched, finds replacement
     console.log thisEvent.match
-    console.log userID
     if thisEvent.match
       result = confirm "Everyone in this Event has been MATCHED. By deleting this participant, are you prepared with a REPLACEMENT for their match?"
     if result
@@ -421,6 +420,7 @@ class GifterCtrl
       Event.get (dbEvent)=>
         dbEvent.match = thisEvent.match
         dbEvent.$update()
+        console.log "MATCH CHANGED TO:"
         console.log dbEvent.match
 
         #Remove from UserEvents
@@ -430,8 +430,14 @@ class GifterCtrl
         @participantNum--
         @participating--
 
-
-
+  diagnosticsNameChange: (userID)=>
+    console.log userID
+    newFirstName = prompt "What would you like to change this user's First Name to?"
+    User = @resource("/users/:id.json", {id:userID}, {update: {method: 'PUT'}})
+    User.get (user)=>
+      user.firstname = newFirstName
+      console.log "First name changed to:", user.firstname
+      user.$update()
 
 
   removeParticipant: (user, userID, eventID)=>
@@ -554,7 +560,7 @@ class GifterCtrl
     @toggleDropdown = false
     @diagnostics = false
     #Visible
-    @diagnosticButton = if @sessionID == 1 then true else false
+    @diagnosticButton = if @sessionID == 4 then true else false
     @admin = true
     @eventHeadding = true
     @eventTitle = thisEvent.eventName
