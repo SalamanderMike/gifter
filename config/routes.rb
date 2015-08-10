@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'users_events/index'
+   get 'users_events/index'
 
   # post "/users/:user_id/profile" => "profile#create", :as => :user_profile_bind
 
